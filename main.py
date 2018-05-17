@@ -15,6 +15,8 @@ from PyQt5.QtWidgets import (QApplication, QWidget,
     QGroupBox,
     QPushButton, QLabel)
 
+from imagebutton import ImageButton
+
 
 class MainWindow(QWidget):
 
@@ -27,7 +29,8 @@ class MainWindow(QWidget):
         title = QLabel("Atelier son", self)
         button = QPushButton("Envoyer", self)
         sounds_group = QGroupBox("Choisir un son", self)
-        sound1 = QLabel("son1", self)
+        sound1 = ImageButton("test.jpg")
+        sound1.resize(200, 200)
         sound2 = QLabel("son2", self)
 
         #Create Layouts
