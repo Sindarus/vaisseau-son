@@ -15,7 +15,7 @@ from PyQt5.QtWidgets import (QApplication, QWidget,
     QGroupBox,
     QPushButton, QLabel)
 
-from imagebutton import ImageButton
+from ImageButton import ImageButton
 
 
 class MainWindow(QWidget):
