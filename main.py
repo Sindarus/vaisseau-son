@@ -16,6 +16,7 @@ from PyQt5.QtWidgets import (QApplication, QWidget,
     QPushButton, QLabel)
 
 from ImageButton import ImageButton
+from ImageButtonGroup import ImageButtonGroup
 
 
 class MainWindow(QWidget):
@@ -25,13 +26,18 @@ class MainWindow(QWidget):
         self.init_UI()
 
     def init_UI(self):
+        #Create a group for sound selector buttons
+        self.sound_button_group = ImageButtonGroup()
+
         #Create widgets
         title = QLabel("Atelier son", self)
         button = QPushButton("Envoyer", self)
         sounds_group = QGroupBox("Choisir un son", self)
-        sound1 = ImageButton("test.jpg")
-        sound1.resize(200, 200)
-        sound2 = QLabel("son2", self)
+
+        sounds_buttons = [ImageButton("test.jpg") for i in range(8)]
+        for sound_button in sounds_buttons:
+            sound_button.resize(150, 150)
+            self.sound_button_group.add_image_button(sound_button)
 
         #Create Layouts
         main_layout = QVBoxLayout()
@@ -53,8 +59,9 @@ class MainWindow(QWidget):
 
         #Setup bank of sounds
         sounds_group.setLayout(sounds_layout)
-        sounds_layout.addWidget(sound1, 0, 0, Qt.AlignCenter)
-        sounds_layout.addWidget(sound2, 0, 1, Qt.AlignCenter)
+        positions = [(i,j) for i in range(2) for j in range(4)]
+        for pos, sound_button in zip(positions, sounds_buttons):
+            sounds_layout.addWidget(sound_button, pos[0], pos[1], Qt.AlignCenter)
 
         #Setup button
         button_layout.addStretch(1)
@@ -65,6 +72,7 @@ class MainWindow(QWidget):
         self.setWindowTitle('Borne son')
         self.show()
 
+        button.clicked.connect(lambda : self.sound_button_group.report())
 
 if __name__ == '__main__':
 
