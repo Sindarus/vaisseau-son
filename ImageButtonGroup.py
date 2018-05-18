@@ -9,12 +9,7 @@ Reference for style conventions : https://www.python.org/dev/peps/pep-0008/#nami
 """
 
 import sys
-from PyQt5.QtCore import Qt, QRect, pyqtSignal, pyqtSlot, QObject
-from PyQt5.QtWidgets import (QApplication, QWidget,
-    QVBoxLayout, QHBoxLayout, QGridLayout,
-    QGroupBox,
-    QPushButton, QLabel)
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtCore import Qt, pyqtSlot, QObject
 
 
 class ImageButtonGroup(QObject):

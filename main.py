@@ -12,8 +12,7 @@ import sys
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (QApplication, QWidget,
     QVBoxLayout, QHBoxLayout, QGridLayout,
-    QGroupBox,
-    QPushButton, QLabel)
+    QGroupBox, QPushButton, QLabel)
 
 from ImageButton import ImageButton
 from ImageButtonGroup import ImageButtonGroup
