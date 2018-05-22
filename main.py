@@ -10,15 +10,17 @@ Reference for style conventions : https://www.python.org/dev/peps/pep-0008/#nami
 
 import sys
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import (QApplication, QWidget,
-    QVBoxLayout, QHBoxLayout, QGridLayout,
+from PyQt5.QtWidgets import (QApplication, QWidget, qApp, QShortcut,
+    QVBoxLayout, QHBoxLayout, QGridLayout, QMainWindow,
     QGroupBox, QPushButton, QLabel)
+from PyQt5.QtGui import QKeySequence
 
 from ImageButton import ImageButton
 from ImageButtonGroup import ImageButtonGroup
+from WaveformDisplay import WaveformDisplay
 
 
-class MainWindow(QWidget):
+class MainWindow(QMainWindow):
 
     def __init__(self):
         super().__init__()
@@ -29,13 +31,16 @@ class MainWindow(QWidget):
         self.sound_button_group = ImageButtonGroup()
 
         #Create widgets
+        self.central_widget = QWidget()
         title = QLabel("Atelier son", self)
         button = QPushButton("Envoyer", self)
         sounds_group = QGroupBox("Choisir un son", self)
+        selected_sound_display = WaveformDisplay()
+        selected_sound_display.load_audio("212764__qubodup__lion-roar.flac")
 
         sounds_buttons = [ImageButton("test.jpg") for i in range(8)]
         for sound_button in sounds_buttons:
-            sound_button.resize(150, 150)
+            sound_button.resize_image(150, 150)
             self.sound_button_group.add_image_button(sound_button)
 
         #Create Layouts
@@ -45,9 +50,11 @@ class MainWindow(QWidget):
         sounds_layout = QGridLayout()
 
         #Setup main layout
-        self.setLayout(main_layout)
+        self.setCentralWidget(self.central_widget)
+        self.central_widget.setLayout(main_layout)
         main_layout.addLayout(title_layout)
         main_layout.addWidget(sounds_group)
+        main_layout.addWidget(selected_sound_display)
         main_layout.addStretch(1)
         main_layout.addLayout(button_layout)
 
@@ -66,10 +73,14 @@ class MainWindow(QWidget):
         button_layout.addStretch(1)
         button_layout.addWidget(button)
 
+        #actions
+        self.quit_shortcut = QShortcut(QKeySequence(Qt.CTRL + Qt.Key_Q), self)
+        self.quit_shortcut.activated.connect(qApp.quit)
+
         #Configure window
-        self.setGeometry(300, 300, 400, 300)
+        self.setGeometry(0, 0, 700, 700)
         self.setWindowTitle('Borne son')
-        self.show()
+        self.showFullScreen()
 
         button.clicked.connect(lambda : self.sound_button_group.report())
 

@@ -28,7 +28,7 @@ class ImageButton(QLabel):
         self.is_selected = False
         self._set_style_unselected()
 
-    def resize(self, width, height, aspect_ratio_mode = Qt.KeepAspectRatio):
+    def resize_image(self, width, height, aspect_ratio_mode = Qt.KeepAspectRatio):
         if self.img is not None:
             self.setPixmap(self.img.scaled(width, height, aspect_ratio_mode))
 
