@@ -15,9 +15,7 @@ from PyQt5.QtWidgets import (QApplication, QWidget, qApp, QShortcut,
     QGroupBox, QPushButton, QLabel)
 from PyQt5.QtGui import QKeySequence
 
-from ImageButton import ImageButton
-from ImageButtonGroup import ImageButtonGroup
-from WaveformDisplay import WaveformDisplay
+from SoundChooser import SoundChooser
 
 
 class MainWindow(QMainWindow):
@@ -27,36 +25,22 @@ class MainWindow(QMainWindow):
         self.init_UI()
 
     def init_UI(self):
-        #Create a group for sound selector buttons
-        self.sound_button_group = ImageButtonGroup()
-
         #Create widgets
         self.central_widget = QWidget()
         title = QLabel("Atelier son", self)
         button = QPushButton("Envoyer", self)
-        sounds_group = QGroupBox("Choisir un son", self)
-        sounds_buttons = [ImageButton("test.jpg") for i in range(8)]
-        for sound_button in sounds_buttons:
-            sound_button.resize_image(150, 150)
-            self.sound_button_group.add_image_button(sound_button)
-        selected_sound_display = WaveformDisplay()
-        selected_sound_display.load_audio("212764__qubodup__lion-roar.flac")
-        selected_sound_play_button = ImageButton("play2.png")
-        selected_sound_play_button.resize_image(100, 100)
+        sound_chooser = SoundChooser(self)
 
         #Create Layouts
         main_layout = QVBoxLayout()
         title_layout = QHBoxLayout()
         button_layout = QHBoxLayout()
-        sounds_layout = QGridLayout()
-        selected_sound_layout = QHBoxLayout()
 
         #Setup main layout
         self.setCentralWidget(self.central_widget)
         self.central_widget.setLayout(main_layout)
         main_layout.addLayout(title_layout)
-        main_layout.addWidget(sounds_group)
-        main_layout.addLayout(selected_sound_layout)
+        main_layout.addWidget(sound_chooser)
         main_layout.addStretch(1)
         main_layout.addLayout(button_layout)
 
@@ -64,16 +48,6 @@ class MainWindow(QMainWindow):
         title_layout.addStretch(1)
         title_layout.addWidget(title)
         title_layout.addStretch(1)
-
-        #Setup bank of sounds
-        sounds_group.setLayout(sounds_layout)
-        positions = [(i,j) for i in range(2) for j in range(4)]
-        for pos, sound_button in zip(positions, sounds_buttons):
-            sounds_layout.addWidget(sound_button, pos[0], pos[1], Qt.AlignCenter)
-
-        #selected sound player
-        selected_sound_layout.addWidget(selected_sound_play_button)
-        selected_sound_layout.addWidget(selected_sound_display)
 
         #Setup button
         button_layout.addStretch(1)
@@ -88,7 +62,7 @@ class MainWindow(QMainWindow):
         self.setWindowTitle('Borne son')
         self.showFullScreen()
 
-        button.clicked.connect(lambda : self.sound_button_group.report())
+        button.clicked.connect(lambda : sound_chooser.report())
 
 if __name__ == '__main__':
 
