@@ -15,7 +15,7 @@ from PyQt5.QtWidgets import (QApplication, QWidget, qApp, QShortcut,
     QGroupBox, QPushButton, QLabel)
 from PyQt5.QtGui import QKeySequence
 
-from SoundChooser import SoundChooser
+from MainWidget import MainWidget
 
 
 class MainWindow(QMainWindow):
@@ -25,33 +25,8 @@ class MainWindow(QMainWindow):
         self.init_UI()
 
     def init_UI(self):
-        #Create widgets
-        self.central_widget = QWidget()
-        title = QLabel("Atelier son", self)
-        button = QPushButton("Envoyer", self)
-        sound_chooser = SoundChooser(self)
-
-        #Create Layouts
-        main_layout = QVBoxLayout()
-        title_layout = QHBoxLayout()
-        button_layout = QHBoxLayout()
-
-        #Setup main layout
-        self.setCentralWidget(self.central_widget)
-        self.central_widget.setLayout(main_layout)
-        main_layout.addLayout(title_layout)
-        main_layout.addWidget(sound_chooser)
-        main_layout.addStretch(1)
-        main_layout.addLayout(button_layout)
-
-        #Setup title
-        title_layout.addStretch(1)
-        title_layout.addWidget(title)
-        title_layout.addStretch(1)
-
-        #Setup button
-        button_layout.addStretch(1)
-        button_layout.addWidget(button)
+        self.main_widget = MainWidget()
+        self.setCentralWidget(self.main_widget)
 
         #actions
         self.quit_shortcut = QShortcut(QKeySequence(Qt.CTRL + Qt.Key_Q), self)
@@ -61,8 +36,6 @@ class MainWindow(QMainWindow):
         self.setGeometry(0, 0, 700, 700)
         self.setWindowTitle('Borne son')
         self.showFullScreen()
-
-        button.clicked.connect(lambda : sound_chooser.report())
 
 if __name__ == '__main__':
 
