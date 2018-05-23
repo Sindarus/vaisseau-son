@@ -9,31 +9,32 @@ Reference for style conventions : https://www.python.org/dev/peps/pep-0008/#nami
 """
 
 from PyQt5.QtWidgets import (QWidget,
-    QVBoxLayout, QHBoxLayout,
-    QPushButton, QLabel)
+                             QVBoxLayout, QHBoxLayout,
+                             QPushButton, QLabel)
 
 from SoundChooser import SoundChooser
 from SoundRecorder import SoundRecorder
+
 
 class MainWidget(QWidget):
 
     def __init__(self):
         super().__init__()
-        self.init_UI()
+        self.init_ui()
 
-    def init_UI(self):
-        #Create widgets
+    def init_ui(self):
+        # Create widgets
         title = QLabel("Atelier son", self)
         button = QPushButton("Envoyer", self)
         sound_chooser = SoundChooser(self)
         sound_recorder = SoundRecorder(self)
 
-        #Create Layouts
+        # Create Layouts
         main_layout = QVBoxLayout()
         title_layout = QHBoxLayout()
         button_layout = QHBoxLayout()
 
-        #Setup main layout
+        # Setup main layout
         self.setLayout(main_layout)
         main_layout.addLayout(title_layout)
         main_layout.addWidget(sound_chooser)
@@ -41,13 +42,13 @@ class MainWidget(QWidget):
         main_layout.addStretch(1)
         main_layout.addLayout(button_layout)
 
-        #Setup title
+        # Setup title
         title_layout.addStretch(1)
         title_layout.addWidget(title)
         title_layout.addStretch(1)
 
-        #Setup button
+        # Setup button
         button_layout.addStretch(1)
         button_layout.addWidget(button)
 
-        button.clicked.connect(lambda : sound_chooser.report())
+        button.clicked.connect(lambda: sound_chooser.report())

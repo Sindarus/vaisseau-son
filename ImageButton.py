@@ -8,27 +8,25 @@ Creation date: 2018-05-17
 Reference for style conventions : https://www.python.org/dev/peps/pep-0008/#naming-conventions
 """
 
-import sys
 from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtWidgets import QLabel
 from PyQt5.QtGui import QPixmap
 
 
 class ImageButton(QLabel):
-
     selected = pyqtSignal()
 
     def __init__(self, filename):
         super().__init__()
 
-        #draw picture
+        # draw picture
         self.img = QPixmap(filename)
         self.setPixmap(self.img)
 
         self.is_selected = False
         self._set_style_unselected()
 
-    def resize_image(self, width, height, aspect_ratio_mode = Qt.KeepAspectRatio):
+    def resize_image(self, width, height, aspect_ratio_mode=Qt.KeepAspectRatio):
         if self.img is not None:
             self.setPixmap(self.img.scaled(width, height, aspect_ratio_mode))
 

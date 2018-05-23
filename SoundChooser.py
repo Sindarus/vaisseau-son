@@ -15,19 +15,20 @@ from ImageButton import ImageButton
 from ImageButtonGroup import ImageButtonGroup
 from WaveformDisplay import WaveformDisplay
 
+
 class SoundChooser(QGroupBox):
     """Widget that allows the user to choose a sound from a set, and to listen to it"""
 
     def __init__(self, parent_widget):
         super().__init__("Choisir un son", parent_widget)
-        self.init_UI()
+        self.init_ui()
 
-    def init_UI(self):
-        #Create a group for sound selector buttons
+    def init_ui(self):
+        # Create a group for sound selector buttons
         self.sound_button_group = ImageButtonGroup()
 
-        #Create widgets
-        #TODO: add different sounds/images
+        # Create widgets
+        # TODO: add different sounds/images
         sounds_buttons = [ImageButton("images/test.jpg") for i in range(8)]
         for sound_button in sounds_buttons:
             sound_button.resize_image(150, 150)
@@ -37,22 +38,22 @@ class SoundChooser(QGroupBox):
         selected_sound_play_button = ImageButton("images/play2.png")
         selected_sound_play_button.resize_image(100, 100)
 
-        #Create layouts
+        # Create layouts
         vertical_layout = QVBoxLayout()
         sounds_buttons_layout = QGridLayout()
         selected_sound_playback_layout = QHBoxLayout()
 
-        #Setup vertical layout
+        # Setup vertical layout
         self.setLayout(vertical_layout)
         vertical_layout.addLayout(sounds_buttons_layout)
         vertical_layout.addLayout(selected_sound_playback_layout)
 
-        #Setup grid of sounds
-        positions = [(i,j) for i in range(2) for j in range(4)]
+        # Setup grid of sounds
+        positions = [(i, j) for i in range(2) for j in range(4)]
         for pos, sound_button in zip(positions, sounds_buttons):
             sounds_buttons_layout.addWidget(sound_button, pos[0], pos[1], Qt.AlignCenter)
 
-        #Setup
+        # Setup
         selected_sound_playback_layout.addWidget(selected_sound_play_button)
         selected_sound_playback_layout.addWidget(selected_sound_display)
 

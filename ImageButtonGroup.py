@@ -8,8 +8,7 @@ Creation date: 2018-05-17
 Reference for style conventions : https://www.python.org/dev/peps/pep-0008/#naming-conventions
 """
 
-import sys
-from PyQt5.QtCore import Qt, pyqtSlot, QObject
+from PyQt5.QtCore import pyqtSlot, QObject
 
 
 class ImageButtonGroup(QObject):
@@ -24,7 +23,6 @@ class ImageButtonGroup(QObject):
 
     @pyqtSlot()
     def button_was_clicked(self):
-        sender = self.sender()
         for image_button in self.image_buttons:
             if image_button != self.sender():
                 image_button.unselect()
