@@ -13,7 +13,7 @@ from PyQt5.QtWidgets import QLabel
 from PyQt5.QtGui import QPixmap
 
 
-class ImageButton(QLabel):
+class ImageOptionButton(QLabel):
     selected = pyqtSignal()
 
     def __init__(self, filename):

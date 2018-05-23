@@ -11,7 +11,7 @@ Reference for style conventions : https://www.python.org/dev/peps/pep-0008/#nami
 from PyQt5.QtCore import pyqtSlot, QObject
 
 
-class ImageButtonGroup(QObject):
+class ImageOptionButtonGroup(QObject):
 
     def __init__(self):
         super().__init__()

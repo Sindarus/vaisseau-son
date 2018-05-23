@@ -11,8 +11,8 @@ Reference for style conventions : https://www.python.org/dev/peps/pep-0008/#nami
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QGridLayout, QGroupBox
 
-from ImageButton import ImageButton
-from ImageButtonGroup import ImageButtonGroup
+from ImageOptionButton import ImageOptionButton
+from ImageOptionButtonGroup import ImageOptionButtonGroup
 from WaveformDisplay import WaveformDisplay
 
 
@@ -25,17 +25,17 @@ class SoundChooser(QGroupBox):
 
     def init_ui(self):
         # Create a group for sound selector buttons
-        self.sound_button_group = ImageButtonGroup()
+        self.sound_button_group = ImageOptionButtonGroup()
 
         # Create widgets
         # TODO: add different sounds/images
-        sounds_buttons = [ImageButton("images/test.jpg") for i in range(8)]
+        sounds_buttons = [ImageOptionButton("images/test.jpg") for i in range(8)]
         for sound_button in sounds_buttons:
             sound_button.resize_image(150, 150)
             self.sound_button_group.add_image_button(sound_button)
         selected_sound_display = WaveformDisplay()
         selected_sound_display.load_audio("212764__qubodup__lion-roar.flac")
-        selected_sound_play_button = ImageButton("images/play2.png")
+        selected_sound_play_button = ImageOptionButton("images/play2.png")
         selected_sound_play_button.resize_image(100, 100)
 
         # Create layouts
