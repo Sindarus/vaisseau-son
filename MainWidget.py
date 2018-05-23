@@ -13,6 +13,7 @@ from PyQt5.QtWidgets import (QWidget,
     QPushButton, QLabel)
 
 from SoundChooser import SoundChooser
+from SoundRecorder import SoundRecorder
 
 class MainWidget(QWidget):
 
@@ -25,6 +26,7 @@ class MainWidget(QWidget):
         title = QLabel("Atelier son", self)
         button = QPushButton("Envoyer", self)
         sound_chooser = SoundChooser(self)
+        sound_recorder = SoundRecorder(self)
 
         #Create Layouts
         main_layout = QVBoxLayout()
@@ -35,6 +37,7 @@ class MainWidget(QWidget):
         self.setLayout(main_layout)
         main_layout.addLayout(title_layout)
         main_layout.addWidget(sound_chooser)
+        main_layout.addWidget(sound_recorder)
         main_layout.addStretch(1)
         main_layout.addLayout(button_layout)
 

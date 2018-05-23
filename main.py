@@ -25,6 +25,8 @@ class MainWindow(QMainWindow):
         self.init_UI()
 
     def init_UI(self):
+        fullscreen = False
+
         self.main_widget = MainWidget()
         self.setCentralWidget(self.main_widget)
 
@@ -35,7 +37,7 @@ class MainWindow(QMainWindow):
         #Configure window
         self.setGeometry(0, 0, 700, 700)
         self.setWindowTitle('Borne son')
-        self.showFullScreen()
+        self.showFullScreen() if fullscreen else self.show()
 
 if __name__ == '__main__':
 
