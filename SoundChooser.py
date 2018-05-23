@@ -28,13 +28,13 @@ class SoundChooser(QGroupBox):
 
         #Create widgets
         #TODO: add different sounds/images
-        sounds_buttons = [ImageButton("test.jpg") for i in range(8)]
+        sounds_buttons = [ImageButton("images/test.jpg") for i in range(8)]
         for sound_button in sounds_buttons:
             sound_button.resize_image(150, 150)
             self.sound_button_group.add_image_button(sound_button)
         selected_sound_display = WaveformDisplay()
         selected_sound_display.load_audio("212764__qubodup__lion-roar.flac")
-        selected_sound_play_button = ImageButton("play2.png")
+        selected_sound_play_button = ImageButton("images/play2.png")
         selected_sound_play_button.resize_image(100, 100)
 
         #Create layouts
