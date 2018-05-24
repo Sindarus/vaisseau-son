@@ -8,7 +8,7 @@ Creation date: 2018-05-17
 Reference for style conventions : https://www.python.org/dev/peps/pep-0008/#naming-conventions
 """
 
-import subprocess
+import subprocess, os
 
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QLabel, QSizePolicy
@@ -41,6 +41,10 @@ class WaveformDisplay(QLabel):
         name = filename.split('.')[0]
         output_path = "waveforms/" + name + "_waveform" + ".png"
         my_stderr = subprocess.STDOUT if debug_ffmpeg else subprocess.DEVNULL
+
+        # check output folder
+        if not os.path.exists("waveforms/"):
+            os.makedirs("waveforms/")
 
         subprocess.run(["ffmpeg",
                         "-y",
