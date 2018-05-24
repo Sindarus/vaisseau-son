@@ -28,7 +28,9 @@ class ImageOptionButton(QLabel):
 
     def resize_image(self, width, height, aspect_ratio_mode=Qt.KeepAspectRatio):
         if self.img is not None:
-            self.setPixmap(self.img.scaled(width, height, aspect_ratio_mode))
+            self.setPixmap(self.img.scaled(width, height,
+                                           aspectRatioMode=aspect_ratio_mode,
+                                           transformMode=Qt.SmoothTransformation))
 
     def mousePressEvent(self, event):
         self.is_selected = True

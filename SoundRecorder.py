@@ -24,7 +24,7 @@ class SoundRecorder(QGroupBox):
     def init_ui(self):
         # Create widgets
         sound_display = WaveformDisplay()
-        sound_display.load_audio("232289__zglar__zombie-or-monster-or-lion-roar.wav")
+        sound_display.load_audio("sounds/232289__zglar__zombie-or-monster-or-lion-roar.wav")
         sound_play_button = ImageButton("images/play2.png")
         sound_play_button.resize_image(100, 100)
         sound_rec_button = ImageButton("images/record.png")

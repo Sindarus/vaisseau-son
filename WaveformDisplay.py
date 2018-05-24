@@ -32,21 +32,19 @@ class WaveformDisplay(QLabel):
             }
             """)
 
-    def load_audio(self, filename):
-        """the file to open should be in sounds/"""
-
+    def load_audio(self, input_path):
         # config
         img_size = "1500x200"
         debug_ffmpeg = False
 
-        input_filename = "sounds/" + filename
-        output_filename = "waveforms/" + filename + "_waveform" + ".png"
+        filename = input_path.split('/')[-1]  # "split" gives a list of names, [-1] returns the last one of them
+        output_path = "waveforms/" + filename + "_waveform" + ".png"
         my_stderr = subprocess.STDOUT if debug_ffmpeg else subprocess.DEVNULL
 
         subprocess.run(["ffmpeg",
                         "-y",
                         "-i",
-                        input_filename,
+                        input_path,
                         "-filter_complex",
                         """[0:a]aformat=channel_layouts=mono,
                         showwavespic=s=""" + img_size + """:colors=#9cf42f[fg];
@@ -55,8 +53,8 @@ class WaveformDisplay(QLabel):
                         [bg][fg]overlay=format=rgb,drawbox=x=(iw-w)/2:y=(ih-h)/2:w=iw:h=1:color=#9cf42f""",
                         "-vframes",
                         "1",
-                        output_filename], check=True, stderr=my_stderr)
+                        output_path], check=True, stderr=my_stderr)
 
         # draw picture
-        self.img = QPixmap(output_filename)
+        self.img = QPixmap(output_path)
         self.setPixmap(self.img)

@@ -22,6 +22,17 @@ class SoundChooser(QGroupBox):
 
     def __init__(self, parent_widget):
         super().__init__("Choisir un son", parent_widget)
+
+        self.sound_bank = []  # list of dict containing the path to the sound and the path to the image
+        self.sound_bank.append({'sound_path': "sounds/232289__zglar__zombie-or-monster-or-lion-roar.wav",
+                                'image_path': "images/lion.png"})
+        self.sound_bank.append({'sound_path': "sounds/58277__benboncan__cow.wav",
+                                'image_path': "images/cow.png"})
+        self.sound_bank.append({'sound_path': "sounds/90014__thfc140491__police-siren-perpignan_cropped.wav",
+                                'image_path': "images/police.png"})
+        self.sound_bank.append({'sound_path': "sounds/84111__benboncan__wind-on-door-short_cropped.wav",
+                                'image_path': "images/wind.png"})
+
         self.init_ui()
 
     def init_ui(self):
@@ -29,13 +40,15 @@ class SoundChooser(QGroupBox):
         self.sound_button_group = ImageOptionButtonGroup()
 
         # Create widgets
-        # TODO: add different sounds/images
-        sounds_buttons = [ImageOptionButton("images/test.jpg") for i in range(8)]
-        for sound_button in sounds_buttons:
-            sound_button.resize_image(150, 150)
-            self.sound_button_group.add_image_button(sound_button)
+        sounds_buttons = []
+        for sound in self.sound_bank:
+            img_opt_button = ImageOptionButton(sound['image_path'])
+            img_opt_button.resize_image(150, 150)
+            self.sound_button_group.add_image_button(img_opt_button)
+            sounds_buttons.append(img_opt_button)
+
         selected_sound_display = WaveformDisplay()
-        selected_sound_display.load_audio("212764__qubodup__lion-roar.flac")
+        selected_sound_display.load_audio("sounds/232289__zglar__zombie-or-monster-or-lion-roar.wav")
         selected_sound_play_button = ImageButton("images/play2.png")
         selected_sound_play_button.resize_image(100, 100)
 
@@ -47,10 +60,11 @@ class SoundChooser(QGroupBox):
         # Setup vertical layout
         self.setLayout(vertical_layout)
         vertical_layout.addLayout(sounds_buttons_layout)
+        vertical_layout.addStretch()
         vertical_layout.addLayout(selected_sound_playback_layout)
 
         # Setup grid of sounds
-        positions = [(i, j) for i in range(2) for j in range(4)]
+        positions = [(i, j) for i in range(1) for j in range(4)]
         for pos, sound_button in zip(positions, sounds_buttons):
             sounds_buttons_layout.addWidget(sound_button, pos[0], pos[1], Qt.AlignCenter)
 
