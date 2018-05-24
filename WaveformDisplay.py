@@ -38,7 +38,8 @@ class WaveformDisplay(QLabel):
         debug_ffmpeg = False
 
         filename = input_path.split('/')[-1]  # "split" gives a list of names, [-1] returns the last one of them
-        output_path = "waveforms/" + filename + "_waveform" + ".png"
+        name = filename.split('.')[0]
+        output_path = "waveforms/" + name + "_waveform" + ".png"
         my_stderr = subprocess.STDOUT if debug_ffmpeg else subprocess.DEVNULL
 
         subprocess.run(["ffmpeg",

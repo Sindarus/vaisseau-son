@@ -40,15 +40,14 @@ class SoundChooser(QGroupBox):
         self.sound_button_group = ImageOptionButtonGroup()
 
         # Create widgets
-        sounds_buttons = []
-        for sound in self.sound_bank:
-            img_opt_button = ImageOptionButton(sound['image_path'])
-            img_opt_button.resize_image(150, 150)
-            self.sound_button_group.add_image_button(img_opt_button)
-            sounds_buttons.append(img_opt_button)
+        self.sounds_buttons = []
+        for i, sound in enumerate(self.sound_bank):
+            self.sounds_buttons.append(ImageOptionButton(i, sound['image_path']))
+            self.sounds_buttons[-1].resize_image(150, 150)
+            self.sounds_buttons[-1].selected.connect(self.update_waveform_display)
+            self.sound_button_group.add_image_button(self.sounds_buttons[-1])
 
-        selected_sound_display = WaveformDisplay()
-        selected_sound_display.load_audio("sounds/232289__zglar__zombie-or-monster-or-lion-roar.wav")
+        self.selected_sound_display = WaveformDisplay()
         selected_sound_play_button = ImageButton("images/play2.png")
         selected_sound_play_button.resize_image(100, 100)
 
@@ -65,12 +64,18 @@ class SoundChooser(QGroupBox):
 
         # Setup grid of sounds
         positions = [(i, j) for i in range(1) for j in range(4)]
-        for pos, sound_button in zip(positions, sounds_buttons):
+        for pos, sound_button in zip(positions, self.sounds_buttons):
             sounds_buttons_layout.addWidget(sound_button, pos[0], pos[1], Qt.AlignCenter)
 
         # Setup
         selected_sound_playback_layout.addWidget(selected_sound_play_button)
-        selected_sound_playback_layout.addWidget(selected_sound_display)
+        selected_sound_playback_layout.addWidget(self.selected_sound_display)
+
+        self.sounds_buttons[0].select()
+
+    def update_waveform_display(self):
+        sound_id = self.sender().id
+        self.selected_sound_display.load_audio(self.sound_bank[sound_id]['sound_path'])
 
     def report(self):
         self.sound_button_group.report()

@@ -16,10 +16,12 @@ from PyQt5.QtGui import QPixmap
 class ImageOptionButton(QLabel):
     selected = pyqtSignal()
 
-    def __init__(self, filename):
+    def __init__(self, id_, filename):
         super().__init__()
+        self.id = id_
 
         # draw picture
+        self.img_filename = filename
         self.img = QPixmap(filename)
         self.setPixmap(self.img)
 
@@ -33,6 +35,9 @@ class ImageOptionButton(QLabel):
                                            transformMode=Qt.SmoothTransformation))
 
     def mousePressEvent(self, event):
+        self.select()
+
+    def select(self):
         self.is_selected = True
         if self.is_selected:
             self.selected.emit()
@@ -55,3 +60,6 @@ class ImageOptionButton(QLabel):
     def unselect(self):
         self.is_selected = False
         self._set_style_unselected()
+
+    def __repr__(self):
+        return "ImageOptionButton : " + self.img_filename
