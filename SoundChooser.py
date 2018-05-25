@@ -8,7 +8,8 @@ Creation date: 2018-05-22
 Reference for style conventions : https://www.python.org/dev/peps/pep-0008/#naming-conventions
 """
 
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QUrl, pyqtSlot
+from PyQt5.QtMultimedia import QSoundEffect
 from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QGridLayout, QGroupBox
 
 from ImageButton import ImageButton
@@ -36,20 +37,23 @@ class SoundChooser(QGroupBox):
         self.init_ui()
 
     def init_ui(self):
-        # Create a group for sound selector buttons
+        self.init_player()
         self.sound_button_group = ImageOptionButtonGroup()
 
         # Create widgets
         self.sounds_buttons = []
         for i, sound in enumerate(self.sound_bank):
+            # It is important that the id passed to the ImageOptionButton constructor matches the index of the sound
+            # in the sound_bank list, since it will be used to update the waveform display upon selection
             self.sounds_buttons.append(ImageOptionButton(i, sound['image_path']))
             self.sounds_buttons[-1].resize_image(150, 150)
-            self.sounds_buttons[-1].selected.connect(self.update_waveform_display)
+            self.sounds_buttons[-1].selected.connect(self.selected_sound_action)
             self.sound_button_group.add_image_button(self.sounds_buttons[-1])
 
         self.selected_sound_display = WaveformDisplay()
         selected_sound_play_button = ImageButton("images/play2.png")
         selected_sound_play_button.resize_image(100, 100)
+        selected_sound_play_button.clicked.connect(self.play_selected_sound)
 
         # Create layouts
         vertical_layout = QVBoxLayout()
@@ -73,9 +77,22 @@ class SoundChooser(QGroupBox):
 
         self.sounds_buttons[0].select()
 
-    def update_waveform_display(self):
-        sound_id = self.sender().id
-        self.selected_sound_display.load_audio(self.sound_bank[sound_id]['sound_path'])
+    def init_player(self):
+        self.player = QSoundEffect()
+        self.player.setVolume(1)
+        self.player.playingChanged.connect(self.play_selected_sound)
+
+    @pyqtSlot()
+    def selected_sound_action(self):
+        # Update waveform display
+        sound_path = self.sound_bank[self.sender().id]['sound_path']
+        self.selected_sound_display.load_audio(sound_path)
+
+    @pyqtSlot()
+    def play_selected_sound(self):
+        sound_path = self.sound_bank[self.sound_button_group.get_id_selected()]['sound_path']
+        self.player.setSource(QUrl.fromLocalFile(sound_path))
+        self.player.play()
 
     def report(self):
-        self.sound_button_group.report()
+        print("Button #", self.sound_button_group.get_id_selected(), "is selected")

@@ -16,6 +16,7 @@ class ImageOptionButtonGroup(QObject):
     def __init__(self):
         super().__init__()
         self.image_buttons = []
+        self.id_selected = None
 
     def add_image_button(self, button):
         self.image_buttons.append(button)
@@ -23,10 +24,14 @@ class ImageOptionButtonGroup(QObject):
 
     @pyqtSlot()
     def button_was_clicked(self):
-        for image_button in self.image_buttons:
+        for i, image_button in enumerate(self.image_buttons):
             if image_button != self.sender():
                 image_button.unselect()
+            else:
+                self.id_selected = i
 
-    def report(self):
-        for i, button in enumerate(self.image_buttons):
-            print(i+1, "th button is", "selected" if button.is_selected else "not selected")
+    def get_id_selected(self):
+        """Returns the id of the button that is currently selected. Buttons are assigned IDs according to the order
+        they were added to the group.
+        Warning: returns None if no button was selected"""
+        return self.id_selected
