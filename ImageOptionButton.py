@@ -8,40 +8,22 @@ Creation date: 2018-05-17
 Reference for style conventions : https://www.python.org/dev/peps/pep-0008/#naming-conventions
 """
 
-from PyQt5.QtCore import Qt, pyqtSignal
-from PyQt5.QtWidgets import QLabel
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtCore import pyqtSignal
+
+from ImageButton import ImageButton
 
 
-class ImageOptionButton(QLabel):
+class ImageOptionButton(ImageButton):
     selected = pyqtSignal()
 
-    def __init__(self, id_, filename):
-        super().__init__()
-        self.id = id_
+    def __init__(self, img_path, name):
+        super().__init__(img_path)
+        self.name = name
 
-        # draw picture
-        self.img_filename = filename
-        self.img = QPixmap(filename)
-        self.setPixmap(self.img)
+        self.setCheckable(True)
+        self.setAutoExclusive(True)
 
-        self.is_selected = False
         self._set_style_unselected()
-
-    def resize_image(self, width, height, aspect_ratio_mode=Qt.KeepAspectRatio):
-        if self.img is not None:
-            self.setPixmap(self.img.scaled(width, height,
-                                           aspectRatioMode=aspect_ratio_mode,
-                                           transformMode=Qt.SmoothTransformation))
-
-    def mousePressEvent(self, event):
-        self.select()
-
-    def select(self):
-        self.is_selected = True
-        if self.is_selected:
-            self.selected.emit()
-            self._set_style_selected()
 
     def _set_style_selected(self):
         self.setStyleSheet("""
@@ -57,9 +39,5 @@ class ImageOptionButton(QLabel):
             }
             """)
 
-    def unselect(self):
-        self.is_selected = False
-        self._set_style_unselected()
-
-    def __repr__(self):
-        return "ImageOptionButton : " + self.img_filename
+    def get_name(self):
+        return self.name

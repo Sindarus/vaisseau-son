@@ -14,13 +14,17 @@ from PyQt5.QtWidgets import QPushButton
 
 class ImageButton(QPushButton):
 
-    def __init__(self, filename):
+    def __init__(self, img_path):
         super().__init__()
 
-        self.img = QPixmap(filename)
+        self.img_path = img_path
+        self.img = QPixmap(img_path)
 
         icon = QIcon(self.img)
         self.setIcon(icon)
 
     def resize_image(self, width, height):
         self.setIconSize(QSize(width, height))
+
+    def __repr__(self):
+        return "ImageButton : " + str(self.img_path)
