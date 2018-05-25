@@ -51,9 +51,9 @@ class SoundChooser(QGroupBox):
             self.sound_button_group.add_image_button(self.sounds_buttons[-1])
 
         self.selected_sound_display = WaveformDisplay()
-        selected_sound_play_button = ImageButton("images/play2.png")
-        selected_sound_play_button.resize_image(100, 100)
-        selected_sound_play_button.clicked.connect(self.play_selected_sound)
+        self.selected_sound_play_button = ImageButton("images/play2.png")
+        self.selected_sound_play_button.resize_image(100, 100)
+        self.selected_sound_play_button.clicked.connect(self.play_selected_sound)
 
         # Create layouts
         vertical_layout = QVBoxLayout()
@@ -72,7 +72,7 @@ class SoundChooser(QGroupBox):
             sounds_buttons_layout.addWidget(sound_button, pos[0], pos[1], Qt.AlignCenter)
 
         # Setup
-        selected_sound_playback_layout.addWidget(selected_sound_play_button)
+        selected_sound_playback_layout.addWidget(self.selected_sound_play_button)
         selected_sound_playback_layout.addWidget(self.selected_sound_display)
 
         self.sounds_buttons[0].select()
@@ -80,7 +80,7 @@ class SoundChooser(QGroupBox):
     def init_player(self):
         self.player = QSoundEffect()
         self.player.setVolume(1)
-        self.player.playingChanged.connect(self.play_selected_sound)
+        self.player.playingChanged.connect(self.playing_changed_action)
 
     @pyqtSlot()
     def selected_sound_action(self):
@@ -90,9 +90,15 @@ class SoundChooser(QGroupBox):
 
     @pyqtSlot()
     def play_selected_sound(self):
+        self.selected_sound_play_button.setEnabled(False)
         sound_path = self.sound_bank[self.sound_button_group.get_id_selected()]['sound_path']
         self.player.setSource(QUrl.fromLocalFile(sound_path))
         self.player.play()
+
+    @pyqtSlot()
+    def playing_changed_action(self):
+        if not self.player.isPlaying():
+            self.selected_sound_play_button.setEnabled(True)
 
     def report(self):
         print("Button #", self.sound_button_group.get_id_selected(), "is selected")
