@@ -12,6 +12,7 @@ from PyQt5.QtWidgets import (QWidget,
                              QVBoxLayout, QHBoxLayout,
                              QPushButton, QLabel)
 
+from Config import Config
 from SoundChooser import SoundChooser
 from SoundRecorder import SoundRecorder
 
@@ -24,8 +25,8 @@ class MainWidget(QWidget):
 
     def init_ui(self):
         # Create widgets
-        title = QLabel("Atelier son", self)
-        button = QPushButton("Envoyer", self)
+        title = QLabel(Config.TITLE, self)
+        button = QPushButton(Config.VALIDATE_BUTTON, self)
         sound_chooser = SoundChooser(self)
         sound_recorder = SoundRecorder(self)
 

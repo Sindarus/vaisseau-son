@@ -14,6 +14,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QKeySequence
 from PyQt5.QtWidgets import (QApplication, qApp, QShortcut, QMainWindow)
 
+from Config import Config
 from MainWidget import MainWidget
 
 
@@ -24,7 +25,6 @@ class MainWindow(QMainWindow):
         self.init_ui()
 
     def init_ui(self):
-        fullscreen = False
 
         self.main_widget = MainWidget()
         self.setCentralWidget(self.main_widget)
@@ -36,7 +36,7 @@ class MainWindow(QMainWindow):
         # Configure window
         self.setGeometry(0, 0, 700, 700)
         self.setWindowTitle('Borne son')
-        self.showFullScreen() if fullscreen else self.show()
+        self.showFullScreen() if Config.FULLSCREEN else self.show()
 
 
 if __name__ == '__main__':

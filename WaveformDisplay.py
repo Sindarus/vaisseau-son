@@ -13,6 +13,8 @@ import subprocess, os
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QLabel, QSizePolicy
 
+from Config import Config
+
 
 class WaveformDisplay(QLabel):
 
@@ -33,14 +35,10 @@ class WaveformDisplay(QLabel):
             """)
 
     def load_audio(self, input_path):
-        # config
-        img_size = "1500x200"
-        debug_ffmpeg = False
-
         filename = input_path.split('/')[-1]  # "split" gives a list of names, [-1] returns the last one of them
         name = filename.split('.')[0]
         output_path = "waveforms/" + name + "_waveform" + ".png"
-        my_stderr = subprocess.STDOUT if debug_ffmpeg else subprocess.DEVNULL
+        my_stderr = subprocess.STDOUT if Config.DEBUG_FFMPEG else subprocess.DEVNULL
 
         # check output folder
         if not os.path.exists("waveforms/"):
@@ -52,8 +50,8 @@ class WaveformDisplay(QLabel):
                         input_path,
                         "-filter_complex",
                         """[0:a]aformat=channel_layouts=mono,
-                        showwavespic=s=""" + img_size + """:colors=#9cf42f[fg];
-                        color=s=""" + img_size + """:color=#44582c,
+                        showwavespic=s=""" + Config.WAVEFORM_IMG_SIZE + """:colors=#9cf42f[fg];
+                        color=s=""" + Config.WAVEFORM_IMG_SIZE + """:color=#44582c,
                         drawgrid=width=iw/10:height=ih/5:color=#9cf42f@0.1[bg];
                         [bg][fg]overlay=format=rgb,drawbox=x=(iw-w)/2:y=(ih-h)/2:w=iw:h=1:color=#9cf42f""",
                         "-vframes",

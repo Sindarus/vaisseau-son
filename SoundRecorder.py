@@ -10,6 +10,7 @@ Reference for style conventions : https://www.python.org/dev/peps/pep-0008/#nami
 
 from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QGroupBox
 
+from Config import Config
 from ImageButton import ImageButton
 from WaveformDisplay import WaveformDisplay
 
@@ -25,9 +26,9 @@ class SoundRecorder(QGroupBox):
         # Create widgets
         sound_display = WaveformDisplay()
         sound_play_button = ImageButton("images/play2.png")
-        sound_play_button.resize_image(100, 100)
+        sound_play_button.resize_image(Config.PLAYBACK_BUTTON_ICON_SIZE, Config.PLAYBACK_BUTTON_ICON_SIZE)
         sound_rec_button = ImageButton("images/record.png")
-        sound_rec_button.resize_image(100, 100)
+        sound_rec_button.resize_image(Config.PLAYBACK_BUTTON_ICON_SIZE, Config.PLAYBACK_BUTTON_ICON_SIZE)
 
         # Create layouts
         sound_playback_layout = QHBoxLayout()
