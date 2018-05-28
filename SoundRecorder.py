@@ -8,11 +8,9 @@ Creation date: 2018-05-23
 Reference for style conventions : https://www.python.org/dev/peps/pep-0008/#naming-conventions
 """
 
-from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QGroupBox
+from PyQt5.QtWidgets import QGroupBox, QHBoxLayout
 
-from Config import Config
-from ImageButton import ImageButton
-from WaveformDisplay import WaveformDisplay
+from AudioPlayer import AudioPlayer
 
 
 class SoundRecorder(QGroupBox):
@@ -23,22 +21,8 @@ class SoundRecorder(QGroupBox):
         self.init_ui()
 
     def init_ui(self):
-        # Create widgets
-        sound_display = WaveformDisplay()
-        sound_play_button = ImageButton("images/play2.png")
-        sound_play_button.resize_image(Config.PLAYBACK_BUTTON_ICON_SIZE, Config.PLAYBACK_BUTTON_ICON_SIZE)
-        sound_rec_button = ImageButton("images/record.png")
-        sound_rec_button.resize_image(Config.PLAYBACK_BUTTON_ICON_SIZE, Config.PLAYBACK_BUTTON_ICON_SIZE)
+        self.player_recorder = AudioPlayer(recordable=True)
+        self.layout = QHBoxLayout()
+        self.layout.addWidget(self.player_recorder)
 
-        # Create layouts
-        sound_playback_layout = QHBoxLayout()
-        playrec_buttons_layout = QVBoxLayout()
-
-        # Setup main layout
-        self.setLayout(sound_playback_layout)
-        sound_playback_layout.addLayout(playrec_buttons_layout)
-        sound_playback_layout.addWidget(sound_display)
-
-        # Setup layout for play and rec buttons
-        playrec_buttons_layout.addWidget(sound_play_button)
-        playrec_buttons_layout.addWidget(sound_rec_button)
+        self.setLayout(self.layout)
