@@ -14,6 +14,7 @@ from PyQt5.QtWidgets import (QWidget,
 
 from Config import Config
 from LoadingTime import LoadingTime
+from ResultsWindow import ResultsWindow
 from SoundChooser import SoundChooser
 from SoundRecorder import SoundRecorder
 
@@ -26,6 +27,7 @@ class MainWidget(QWidget):
 
         self.loading_window = LoadingTime()
         self.loading_window.back_button.clicked.connect(self.interrupt)
+        self.results_window = ResultsWindow()
 
     def init_ui(self):
         # Create widgets
@@ -60,15 +62,15 @@ class MainWidget(QWidget):
 
     def process_comparison(self):
         rec_sound_path = None
-        selected_sound_path = None
+        selected_sound_name = None
 
         self.loading_window.show()
         # TODO: Start comparing sounds
-        QTimer.singleShot(5000, self.show_results)
+        QTimer.singleShot(500, self.show_results)
 
     def show_results(self):
         self.loading_window.hide()
-        self.results_window.show()
+        self.results_window.showFullScreen()
 
     def close_child_windows(self):
         self.loading_window.hide()

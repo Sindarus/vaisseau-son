@@ -31,3 +31,5 @@ class Config:
     SOUND_IMAGES_ROWS = 1
     LOADING_TEXT = "L'IA analyse votre son, merci de patienter :)"
     CANCEL_IA_TEXT = "Annuler"
+    MAIN_RESULT_IMAGE_SIZE = 300
+    EXTRA_RESULT_IMAGE_SIZE = 150
