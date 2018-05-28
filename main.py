@@ -25,7 +25,6 @@ class MainWindow(QMainWindow):
         self.init_ui()
 
     def init_ui(self):
-
         self.main_widget = MainWidget()
         self.setCentralWidget(self.main_widget)
 
@@ -37,6 +36,11 @@ class MainWindow(QMainWindow):
         self.setGeometry(0, 0, 700, 700)
         self.setWindowTitle('Borne son')
         self.showFullScreen() if Config.FULLSCREEN else self.show()
+
+    def closeEvent(self, event):
+        print("closed")
+        self.main_widget.close_child_windows()
+        super().closeEvent(event)
 
 
 if __name__ == '__main__':
