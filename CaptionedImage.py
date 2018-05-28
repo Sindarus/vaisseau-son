@@ -8,12 +8,13 @@ Creation date: 2018-05-28
 Reference for style conventions : https://www.python.org/dev/peps/pep-0008/#naming-conventions
 """
 
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QWidget, QLabel, QHBoxLayout, QVBoxLayout, QSizePolicy
 
 
 class CaptionedImage(QWidget):
+    clicked = pyqtSignal()
 
     def __init__(self, text, image_path):
         super().__init__()
@@ -43,3 +44,7 @@ class CaptionedImage(QWidget):
 
     def resize_image(self, width, height):
         self.image_label.setPixmap(self.img.scaled(width, height, transformMode=Qt.SmoothTransformation))
+
+    def mouseReleaseEvent(self, e):
+        super().mouseReleaseEvent(e)
+        self.clicked.emit()

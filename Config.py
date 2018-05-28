@@ -10,7 +10,6 @@ Reference for style conventions : https://www.python.org/dev/peps/pep-0008/#nami
 
 
 class Config:
-    FULLSCREEN = False
     SOUNDS = {
         "lion": {'sound_path': "sounds/232289__zglar__zombie-or-monster-or-lion-roar.wav",
                  'image_path': "images/lion.png"},
@@ -21,15 +20,24 @@ class Config:
         "wind": {'sound_path': "sounds/84111__benboncan__wind-on-door-short_cropped.wav",
                  'image_path': "images/wind.png"}
     }
-    TITLE = "Atelier son"
-    VALIDATE_BUTTON = "Envoyer"
-    WAVEFORM_IMG_SIZE = "1500x200"
     DEBUG_FFMPEG = False
+
+    # UI
+    FULLSCREEN = False
     SOUND_IMAGE_SIZE = 150
     PLAYBACK_BUTTON_ICON_SIZE = 100
     SOUND_IMAGES_COLUMNS = 4
     SOUND_IMAGES_ROWS = 1
+    MAIN_RESULT_IMAGE_SIZE = 400
+    EXTRA_RESULT_IMAGE_SIZE = 150
+    WAVEFORM_IMG_SIZE = "1500x200"
+    NAV_ICON_SIZE = 75
+
+    # Text
+    TITLE = "Atelier son"
+    VALIDATE_BUTTON = "Envoyer"
     LOADING_TEXT = "L'IA analyse votre son, merci de patienter :)"
     CANCEL_IA_TEXT = "Annuler"
-    MAIN_RESULT_IMAGE_SIZE = 300
-    EXTRA_RESULT_IMAGE_SIZE = 150
+    RESULTS_GROUP_TEXT = "Résultats"
+    BACK_ARROW_TEXT = "Retour"
+    RELOAD_ICON_TEXT = "Tout recommencer"

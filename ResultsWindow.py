@@ -10,7 +10,7 @@ Reference for style conventions : https://www.python.org/dev/peps/pep-0008/#nami
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QKeySequence
-from PyQt5.QtWidgets import QWidget, QShortcut, qApp, QHBoxLayout, QVBoxLayout, QDesktopWidget
+from PyQt5.QtWidgets import QWidget, QShortcut, qApp, QHBoxLayout, QVBoxLayout, QDesktopWidget, QGroupBox
 
 from CaptionedImage import CaptionedImage
 from Config import Config
@@ -50,15 +50,26 @@ class ResultsWindow(QWidget):
         layout = QVBoxLayout()
         layout.addLayout(main_result_layout)
         layout.addLayout(extra_results_layout)
-        self.setLayout(layout)
+
+        results_group = QGroupBox(Config.RESULTS_GROUP_TEXT)
+        results_group.setLayout(layout)
+
+        self.back_arrow = CaptionedImage(Config.BACK_ARROW_TEXT, "images/left-arrow.png")
+        self.back_arrow.resize_image(Config.NAV_ICON_SIZE, Config.NAV_ICON_SIZE)
+        self.reload_arrow = CaptionedImage(Config.RELOAD_ICON_TEXT, "images/reload.png")
+        self.reload_arrow.resize_image(Config.NAV_ICON_SIZE, Config.NAV_ICON_SIZE)
+
+        nav_icons_layout = QHBoxLayout()
+        nav_icons_layout.addWidget(self.back_arrow)
+        nav_icons_layout.addWidget(self.reload_arrow)
+        nav_icons_layout.addStretch(1)
+
+        main_layout = QVBoxLayout()
+        main_layout.addWidget(results_group)
+        main_layout.addLayout(nav_icons_layout)
+        self.setLayout(main_layout)
 
         self._center()
-
-    def show_waiting_widget(self):
-        pass
-
-    def show_results(self):
-        pass
 
     def _center(self):
         qr = self.frameGeometry()
