@@ -12,14 +12,14 @@ Reference for style conventions : https://www.python.org/dev/peps/pep-0008/#nami
 class Config:
     FULLSCREEN = False
     SOUNDS = {
-        "lion":     {'sound_path': "sounds/232289__zglar__zombie-or-monster-or-lion-roar.wav",
-                     'image_path': "images/lion.png"},
-        "cow":      {'sound_path': "sounds/58277__benboncan__cow.wav",
-                     'image_path': "images/cow.png"},
-        "police":   {'sound_path': "sounds/90014__thfc140491__police-siren-perpignan_cropped.wav",
-                     'image_path': "images/police.png"},
-        "wind":     {'sound_path': "sounds/84111__benboncan__wind-on-door-short_cropped.wav",
-                     'image_path': "images/wind.png"}
+        "lion": {'sound_path': "sounds/232289__zglar__zombie-or-monster-or-lion-roar.wav",
+                 'image_path': "images/lion.png"},
+        "cow": {'sound_path': "sounds/58277__benboncan__cow.wav",
+                'image_path': "images/cow.png"},
+        "police": {'sound_path': "sounds/90014__thfc140491__police-siren-perpignan_cropped.wav",
+                   'image_path': "images/police.png"},
+        "wind": {'sound_path': "sounds/84111__benboncan__wind-on-door-short_cropped.wav",
+                 'image_path': "images/wind.png"}
     }
     TITLE = "Atelier son"
     VALIDATE_BUTTON = "Envoyer"
@@ -29,3 +29,5 @@ class Config:
     PLAYBACK_BUTTON_ICON_SIZE = 100
     SOUND_IMAGES_COLUMNS = 4
     SOUND_IMAGES_ROWS = 1
+    LOADING_TEXT = "L'IA analyse votre son, merci de patienter :)"
+    CANCEL_IA_TEXT = "Annuler"
