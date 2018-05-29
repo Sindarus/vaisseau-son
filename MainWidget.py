@@ -18,6 +18,7 @@ from LoadingTime import LoadingTime
 from ResultsWindow import ResultsWindow
 from SoundChooser import SoundChooser
 from SoundRecorder import SoundRecorder
+from SoundClassifier import SoundClassifier
 
 
 class MainWidget(QWidget):
@@ -74,10 +75,12 @@ class MainWidget(QWidget):
         selected_sound_name = None
 
         self.loading_window.show()
-        # TODO: Start comparing sounds in a thread
-        QTimer.singleShot(500, self.show_results)
+        classifier = SoundClassifier(rec_sound_path, self.show_results)
+        classifier.start()
 
-    def show_results(self):
+    def show_results(self, results):
+        print("show_results called in", current_thread())
+        print(results)
         self.loading_window.hide()
         self.results_window.showFullScreen() if Config.FULLSCREEN else self.results_window.show()
 
