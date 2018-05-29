@@ -35,6 +35,7 @@ class WaveformDisplay(QLabel):
             """)
 
     def load_audio(self, input_path):
+        assert os.path.isfile(input_path)
         filename = input_path.split('/')[-1]  # "split" gives a list of names, [-1] returns the last one of them
         name = filename.split('.')[0]
         output_path = "waveforms/" + name + "_waveform" + ".png"

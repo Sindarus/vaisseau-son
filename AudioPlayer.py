@@ -7,6 +7,7 @@ Creation date: 2018-05-25
 
 Reference for style conventions : https://www.python.org/dev/peps/pep-0008/#naming-conventions
 """
+
 from PyQt5.QtCore import pyqtSlot, QUrl, QDateTime
 from PyQt5.QtMultimedia import QSoundEffect, QAudioRecorder, QAudioEncoderSettings, QMultimedia, QMediaRecorder
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout
@@ -22,6 +23,7 @@ class AudioPlayer(QWidget):
         super().__init__()
         self.recordable = recordable
         self.sound_path = None
+        self.recorded_sound_path = None
         self.init_ui()
         self.init_player()
         if recordable:
@@ -45,6 +47,7 @@ class AudioPlayer(QWidget):
         self.play_button = ImageButton("images/play2.png")
         self.play_button.resize_image(Config.PLAYBACK_BUTTON_ICON_SIZE, Config.PLAYBACK_BUTTON_ICON_SIZE)
         self.play_button.clicked.connect(self.play_sound)
+        self.play_button.setEnabled(False)
         if self.recordable:
             self.rec_button = ImageButton("images/record.png")
             self.rec_button.resize_image(Config.PLAYBACK_BUTTON_ICON_SIZE, Config.PLAYBACK_BUTTON_ICON_SIZE)
@@ -79,12 +82,15 @@ class AudioPlayer(QWidget):
         self.sound_path = sound_path
         self.wave_display.load_audio(sound_path)
         self.player.setSource(QUrl.fromLocalFile(sound_path))
+        self.play_button.setEnabled(True)
 
     def start_recording(self):
         print("recording")
         assert self.recordable
         datetime_stamp = QDateTime.currentDateTime().toString("yyyyMMdd_hhmmss")
-        self.recorder.setOutputLocation(QUrl.fromLocalFile("user_sounds/user_sound_" + datetime_stamp + ".wav"))
+        self.recorded_sound_path = "user_sounds/user_sound_" + datetime_stamp + ".wav"
+        self.recorder.setOutputLocation(QUrl.fromLocalFile(self.sound_path))
+
         assert self.recorder.status() == QMediaRecorder.LoadedStatus, \
             "Media Recorder not ready to record. Status :" + str(self.recorder.status())
         self.recorder.record()
@@ -92,6 +98,10 @@ class AudioPlayer(QWidget):
     def stop_recording(self):
         print("not recording")
         self.recorder.stop()
+        self.load_sound(self.recorded_sound_path)
+
+    def get_recorded_sound_path(self):
+        return self.recorded_sound_path
 
     @pyqtSlot()
     def playing_changed_action(self):

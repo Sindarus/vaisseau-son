@@ -64,5 +64,5 @@ class SoundChooser(QGroupBox):
         self.selected_sound_name = sound_name
         self.player.load_sound(self.sound_bank[self.selected_sound_name]['sound_path'])
 
-    def report(self):
-        print("Sound", self.selected_sound_name, "is selected")
+    def get_selected_sound_name(self):
+        return self.selected_sound_name
