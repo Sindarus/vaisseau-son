@@ -79,9 +79,9 @@ class MainWidget(QWidget):
         classifier.start()
 
     def show_results(self, results):
-        print("show_results called in", current_thread())
         print(results)
         self.loading_window.hide()
+        self.results_window.load_results(results)
         self.results_window.showFullScreen() if Config.FULLSCREEN else self.results_window.show()
 
     def close_child_windows(self):

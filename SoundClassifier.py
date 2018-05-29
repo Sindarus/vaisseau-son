@@ -23,5 +23,5 @@ class SoundClassifier(Thread):
     def run(self):
         time.sleep(1)
         #TODO: do some real calculation
-        results = {"lion": 85, "police": 20, "wind": 3, "cow": 5}
+        results = [("lion", 85), ("police", 20), ("cow", 5), ("wind", 3)]
         self.callback_func(results)

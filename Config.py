@@ -12,13 +12,17 @@ Reference for style conventions : https://www.python.org/dev/peps/pep-0008/#nami
 class Config:
     SOUNDS = {
         "lion": {'sound_path': "sounds/232289__zglar__zombie-or-monster-or-lion-roar.wav",
-                 'image_path': "images/lion.png"},
+                 'image_path': "images/lion.png",
+                 'display_name': "un rugissement"},
         "cow": {'sound_path': "sounds/58277__benboncan__cow.wav",
-                'image_path': "images/cow.png"},
+                'image_path': "images/cow.png",
+                'display_name': "un beuglement"},
         "police": {'sound_path': "sounds/90014__thfc140491__police-siren-perpignan_cropped.wav",
-                   'image_path': "images/police.png"},
+                   'image_path': "images/police.png",
+                   'display_name': "un sifflement de vent"},
         "wind": {'sound_path': "sounds/84111__benboncan__wind-on-door-short_cropped.wav",
-                 'image_path': "images/wind.png"}
+                 'image_path': "images/wind.png",
+                 'display_name': "un sifflement de vent"}
     }
     DEBUG_FFMPEG = False
 
@@ -41,3 +45,4 @@ class Config:
     RESULTS_GROUP_TEXT = "Résultats"
     BACK_ARROW_TEXT = "Retour"
     RELOAD_ICON_TEXT = "Tout recommencer"
+    RESULT_ITEM_TEXT = "L'IA a reconnu %s avec une certitude de %i%%"

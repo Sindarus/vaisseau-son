@@ -27,29 +27,12 @@ class ResultsWindow(QWidget):
         self.quit_shortcut.activated.connect(qApp.quit)
 
     def init_ui(self):
-        main_result = CaptionedImage("L'IA a reconnu un rugissement\navec une certitude de 93%.", "images/lion.png")
-        main_result.resize_image(Config.MAIN_RESULT_IMAGE_SIZE, Config.MAIN_RESULT_IMAGE_SIZE)
-        extra_results = [CaptionedImage("L'IA a reconnu une sirène de police\navec une certitude de 22%.",
-                                        "images/police.png"),
-                         CaptionedImage("L'IA a reconnu un beuglement\navec une certitude de 13%.",
-                                        "images/cow.png"),
-                         CaptionedImage("L'IA a reconnu un sifflement de vent\navec une certitude de 3%.",
-                                        "images/wind.png")]
-        for result in extra_results:
-            result.resize_image(Config.EXTRA_RESULT_IMAGE_SIZE, Config.EXTRA_RESULT_IMAGE_SIZE)
-
-        main_result_layout = QHBoxLayout()
-        main_result_layout.addStretch(1)
-        main_result_layout.addWidget(main_result)
-        main_result_layout.addStretch(1)
-
-        extra_results_layout = QHBoxLayout()
-        for result in extra_results:
-            extra_results_layout.addWidget(result)
+        self.main_result_layout = QHBoxLayout()
+        self.extra_results_layout = QHBoxLayout()
 
         layout = QVBoxLayout()
-        layout.addLayout(main_result_layout)
-        layout.addLayout(extra_results_layout)
+        layout.addLayout(self.main_result_layout)
+        layout.addLayout(self.extra_results_layout)
 
         results_group = QGroupBox(Config.RESULTS_GROUP_TEXT)
         results_group.setLayout(layout)
@@ -70,6 +53,30 @@ class ResultsWindow(QWidget):
         self.setLayout(main_layout)
 
         self._center()
+
+    def load_results(self, results):
+        """Results must be a list of 2-tuples containing the name of the sound and the probability"""
+
+        # Adding main result
+        (main_result_name, main_result_percent) = results.pop(0)
+        main_result_display_name = Config.SOUNDS[main_result_name]['display_name']
+        main_result_img_path = Config.SOUNDS[main_result_name]['image_path']
+        main_result_widget = CaptionedImage(Config.RESULT_ITEM_TEXT % (main_result_display_name, main_result_percent),
+                                            main_result_img_path)
+        main_result_widget.resize_image(Config.MAIN_RESULT_IMAGE_SIZE, Config.MAIN_RESULT_IMAGE_SIZE)
+        self.main_result_layout.addStretch(1)
+        self.main_result_layout.addWidget(main_result_widget)
+        self.main_result_layout.addStretch(1)
+
+        # Adding extra results
+        for result in results:
+            (result_name, result_percent) = result
+            result_display_name = Config.SOUNDS[result_name]['display_name']
+            result_img_path = Config.SOUNDS[result_name]['image_path']
+            result_widget = CaptionedImage(Config.RESULT_ITEM_TEXT % (result_display_name, result_percent),
+                                 result_img_path)
+            result_widget.resize_image(Config.EXTRA_RESULT_IMAGE_SIZE, Config.EXTRA_RESULT_IMAGE_SIZE)
+            self.extra_results_layout.addWidget(result_widget)
 
     def _center(self):
         qr = self.frameGeometry()
