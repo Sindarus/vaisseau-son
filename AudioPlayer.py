@@ -7,9 +7,10 @@ Creation date: 2018-05-25
 
 Reference for style conventions : https://www.python.org/dev/peps/pep-0008/#naming-conventions
 """
+import os
 import wave
 
-from PyQt5.QtCore import pyqtSlot, QUrl, QDateTime, QFile, QIODevice
+from PyQt5.QtCore import pyqtSlot, QUrl, QDateTime, QFile, QIODevice, pyqtSignal
 from PyQt5.QtMultimedia import QSoundEffect, QAudioInput, QAudioFormat, QAudioDeviceInfo
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout
 
@@ -19,6 +20,7 @@ from WaveformDisplay import WaveformDisplay
 
 
 class AudioPlayer(QWidget):
+    was_recorded = pyqtSignal();
 
     def __init__(self, recordable=False):
         super().__init__()
@@ -123,6 +125,7 @@ class AudioPlayer(QWidget):
         self.load_sound(self.recorded_wav_path)
         if not self.is_recorded:
             self.is_recorded = True
+            self.was_recorded.emit()
 
     def get_recorded_sound_path(self):
         return self.recorded_wav_path
