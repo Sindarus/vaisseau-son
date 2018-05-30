@@ -8,9 +8,7 @@ Creation date: 2018-05-22
 Reference for style conventions : https://www.python.org/dev/peps/pep-0008/#naming-conventions
 """
 from PyQt5.QtCore import QTimer
-from PyQt5.QtWidgets import (QWidget,
-                             QVBoxLayout, QHBoxLayout,
-                             QPushButton, QLabel)
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel
 
 from CaptionedImage import CaptionedImage
 from Config import Config
@@ -37,7 +35,7 @@ class MainWidget(QWidget):
         # Create widgets
         title = QLabel(Config.TITLE, self)
         self.sound_chooser = SoundChooser(self)
-        sound_recorder = SoundRecorder(self)
+        self.sound_recorder = SoundRecorder(self)
         go_button = CaptionedImage(Config.VALIDATE_BUTTON, "images/right-arrow.png")
         go_button.resize_image(Config.NAV_ICON_SIZE, Config.NAV_ICON_SIZE)
         go_button.clicked.connect(self.process_comparison)
@@ -54,10 +52,9 @@ class MainWidget(QWidget):
         self.setLayout(main_layout)
         main_layout.addLayout(title_layout)
         main_layout.addWidget(self.sound_chooser)
-        main_layout.addWidget(sound_recorder)
+        main_layout.addWidget(self.sound_recorder)
         main_layout.addStretch(1)
         main_layout.addLayout(buttons_layout)
-
 
         # Setup title
         title_layout.addStretch(1)
@@ -70,9 +67,12 @@ class MainWidget(QWidget):
         buttons_layout.addWidget(go_button)
 
     def process_comparison(self):
+        # TODO: Check that a sound was recorded
         # TODO: Retrieve info
-        rec_sound_path = None
-        selected_sound_name = None
+        rec_sound_path = self.sound_recorder.player_recorder.get_recorded_sound_path()
+        selected_sound_name = self.sound_chooser.get_selected_sound_name()
+        selected_sound_path = Config.SOUNDS[selected_sound_name]['sound_path']
+        print("comparing", rec_sound_path, "to", selected_sound_path)
 
         self.loading_window.show()
         classifier = SoundClassifier(rec_sound_path, self.show_results)
