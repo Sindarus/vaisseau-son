@@ -8,8 +8,9 @@ Creation date: 2018-05-25
 Reference for style conventions : https://www.python.org/dev/peps/pep-0008/#naming-conventions
 """
 
-from PyQt5.QtCore import pyqtSlot, QUrl, QDateTime
-from PyQt5.QtMultimedia import QSoundEffect, QAudioRecorder, QAudioEncoderSettings, QMultimedia, QMediaRecorder
+from PyQt5.QtCore import pyqtSlot, QUrl, QDateTime, QFile, QIODevice
+from PyQt5.QtMultimedia import QSoundEffect, QAudioRecorder, QAudioEncoderSettings, QMultimedia, QMediaRecorder, \
+    QAudioInput, QAudioFormat, QAudioDeviceInfo
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout
 
 from Config import Config
@@ -35,11 +36,24 @@ class AudioPlayer(QWidget):
         self.player.playingChanged.connect(self.playing_changed_action)
 
     def init_recorder(self):
-        self.recorder = QAudioRecorder()
-        audio_settings = QAudioEncoderSettings()
-        audio_settings.setCodec("audio/wav")
-        audio_settings.setQuality(QMultimedia.HighQuality)
-        self.recorder.setEncodingSettings(audio_settings)
+
+        self.file_to_record = QFile()
+
+        audio_format = QAudioFormat()
+        audio_format.setSampleRate(44100)
+        audio_format.setChannelCount(1)
+        audio_format.setSampleSize(32)
+        audio_format.setCodec("audio/pcm")
+        audio_format.setByteOrder(QAudioFormat.LittleEndian)
+        audio_format.setSampleType(QAudioFormat.SignedInt)
+
+        device_info = QAudioDeviceInfo.defaultInputDevice()
+        if not device_info.isFormatSupported(audio_format):
+            print("Default format not supported, trying to use the nearest. Supported formats:")
+            print(device_info.supportedCodecs())
+            audio_format = device_info.nearestFormat(audio_format)
+
+        self.recorder = QAudioInput(device_info, audio_format)
 
     def init_ui(self):
         # Create widgets
@@ -88,16 +102,17 @@ class AudioPlayer(QWidget):
         print("recording")
         assert self.recordable
         datetime_stamp = QDateTime.currentDateTime().toString("yyyyMMdd_hhmmss")
-        self.recorded_sound_path = "user_sounds/user_sound_" + datetime_stamp + ".wav"
-        self.recorder.setOutputLocation(QUrl.fromLocalFile(self.sound_path))
 
-        assert self.recorder.status() == QMediaRecorder.LoadedStatus, \
-            "Media Recorder not ready to record. Status :" + str(self.recorder.status())
-        self.recorder.record()
+        self.recorded_sound_path = "user_sounds/user_sound_" + datetime_stamp + ".pcm"
+        self.file_to_record.setFileName(self.recorded_sound_path)
+        self.file_to_record.open(QIODevice.WriteOnly | QIODevice.Truncate)
+
+        self.recorder.start(self.file_to_record)
 
     def stop_recording(self):
         print("not recording")
         self.recorder.stop()
+        self.file_to_record.close()
         self.load_sound(self.recorded_sound_path)
 
     def get_recorded_sound_path(self):
