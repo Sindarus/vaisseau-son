@@ -133,7 +133,7 @@ class AudioPlayer(QWidget):
             pcmdata = pcmfile.read()
         with wave.open(wav_output_file_path, 'wb') as wavfile:
             wavfile.setparams((Config.N_CHANNELS,       # nchannels
-                               Config.SAMPLE_SIZE/4,    # sampwidth (in bytes) (= sample size)
+                               Config.SAMPLE_SIZE//8,    # sampwidth (in bytes) (= sample size)
                                Config.SAMPLE_RATE,      # framerate (in hertz) (= sample rate)
                                0, "NONE", "NONE"))
             wavfile.writeframes(pcmdata)
