@@ -8,7 +8,7 @@ Creation date: 2018-05-22
 Reference for style conventions : https://www.python.org/dev/peps/pep-0008/#naming-conventions
 """
 from PyQt5.QtCore import QTimer
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QMessageBox
 
 from CaptionedImage import CaptionedImage
 from Config import Config
@@ -67,8 +67,10 @@ class MainWidget(QWidget):
         buttons_layout.addWidget(go_button)
 
     def process_comparison(self):
-        # TODO: Check that a sound was recorded
-        # TODO: Retrieve info
+        if not self.sound_recorder.player_recorder.is_recorded:
+            #TODO build a window
+            QMessageBox.information(self, "Attention", "Vous devez enregistrer un son à analyser")
+            return
         rec_sound_path = self.sound_recorder.player_recorder.get_recorded_sound_path()
         selected_sound_name = self.sound_chooser.get_selected_sound_name()
         selected_sound_path = Config.SOUNDS[selected_sound_name]['sound_path']

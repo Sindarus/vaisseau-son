@@ -28,6 +28,7 @@ class AudioPlayer(QWidget):
         self.recorded_pcm_path = None  # pcm file
         self.init_ui()
         self.init_player()
+        self.is_recorded = False  # Set to true if a sound was recorded at least once
         if recordable:
             self.init_recorder()
 
@@ -37,7 +38,6 @@ class AudioPlayer(QWidget):
         self.player.playingChanged.connect(self.playing_changed_action)
 
     def init_recorder(self):
-
         self.file_to_record = QFile()
 
         audio_format = QAudioFormat()
@@ -118,6 +118,8 @@ class AudioPlayer(QWidget):
 
         self.pcm_to_wav(self.recorded_pcm_path, self.recorded_wav_path)
         self.load_sound(self.recorded_wav_path)
+        if not self.is_recorded:
+            self.is_recorded = True
 
     def get_recorded_sound_path(self):
         return self.recorded_wav_path
