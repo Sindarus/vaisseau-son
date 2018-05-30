@@ -8,11 +8,9 @@ Creation date: 2018-05-22
 Reference for style conventions : https://www.python.org/dev/peps/pep-0008/#naming-conventions
 """
 from PyQt5.QtCore import QTimer
-from PyQt5.QtWidgets import (QWidget,
-                             QVBoxLayout, QHBoxLayout,
-                             QPushButton, QLabel)
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QMessageBox
 
-from CaptionedImage import CaptionedImage
+from CaptionedImageButton import CaptionedImageButton
 from Config import Config
 from LoadingTime import LoadingTime
 from ResultsWindow import ResultsWindow
@@ -36,14 +34,22 @@ class MainWidget(QWidget):
         self.results = None  # Results of the classifying process
 
     def init_ui(self):
-        # Create widgets
+        # Create sound chooser and recorder widgets
         title = QLabel(Config.TITLE, self)
         self.sound_chooser = SoundChooser(self)
-        sound_recorder = SoundRecorder(self)
-        go_button = CaptionedImage(Config.VALIDATE_BUTTON, "images/right-arrow.png")
-        go_button.resize_image(Config.NAV_ICON_SIZE, Config.NAV_ICON_SIZE)
-        go_button.clicked.connect(self.step1_process_comparison)
-        reload_button = CaptionedImage(Config.RELOAD_ICON_TEXT, "images/reload.png")
+        self.sound_recorder = SoundRecorder(self)
+
+        # Create go button
+        self.go_button = CaptionedImageButton(Config.VALIDATE_BUTTON,
+                                              "images/right-arrow.png",
+                                              "images/right-arrow-disabled.png")
+        self.go_button.set_disabled(True)
+        self.sound_recorder.player_recorder.was_recorded.connect(lambda: self.go_button.set_disabled(False))
+        self.go_button.resize_image(Config.NAV_ICON_SIZE, Config.NAV_ICON_SIZE)
+        self.go_button.clicked.connect(self.process_comparison)
+
+        # Create reload button
+        reload_button = CaptionedImageButton(Config.RELOAD_ICON_TEXT, "images/reload.png")
         reload_button.resize_image(Config.NAV_ICON_SIZE, Config.NAV_ICON_SIZE)
         reload_button.clicked.connect(self.reset)
 
@@ -56,7 +62,7 @@ class MainWidget(QWidget):
         self.setLayout(main_layout)
         main_layout.addLayout(title_layout)
         main_layout.addWidget(self.sound_chooser)
-        main_layout.addWidget(sound_recorder)
+        main_layout.addWidget(self.sound_recorder)
         main_layout.addStretch(1)
         main_layout.addLayout(buttons_layout)
 
@@ -68,12 +74,13 @@ class MainWidget(QWidget):
         # Setup go_button
         buttons_layout.addWidget(reload_button)
         buttons_layout.addStretch(1)
-        buttons_layout.addWidget(go_button)
+        buttons_layout.addWidget(self.go_button)
 
     def step1_process_comparison(self):
-        # TODO: Retrieve info
-        rec_sound_path = None
-        selected_sound_name = None
+        rec_sound_path = self.sound_recorder.player_recorder.get_recorded_sound_path()
+        selected_sound_name = self.sound_chooser.get_selected_sound_name()
+        selected_sound_path = Config.SOUNDS[selected_sound_name]['sound_path']
+        print("comparing", rec_sound_path, "to", selected_sound_path)
 
         self.classifier = SoundClassifier(rec_sound_path, self.set_results)
         self.classifier.start()

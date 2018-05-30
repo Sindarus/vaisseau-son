@@ -19,6 +19,10 @@ class CaptionedImage(QWidget):
     def __init__(self, text, image_path):
         super().__init__()
 
+        self.resized = False
+        self.resized_width = None
+        self.resized_height = None
+
         self.image_label = QLabel()
         self.img = QPixmap(image_path)
         self.image_label.setPixmap(self.img)
@@ -43,8 +47,18 @@ class CaptionedImage(QWidget):
         self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
 
     def resize_image(self, width, height):
-        self.image_label.setPixmap(self.img.scaled(width, height, transformMode=Qt.SmoothTransformation))
+        self.image_label.setPixmap(self.img.scaled(width,
+                                                   height,
+                                                   transformMode=Qt.SmoothTransformation))
+        self.resized = True
+        self.resized_width = width
+        self.resized_height = height
 
-    def mouseReleaseEvent(self, e):
-        super().mouseReleaseEvent(e)
-        self.clicked.emit()
+    def change_image(self, image_path):
+        self.img = QPixmap(image_path)
+        if self.resized:
+            self.image_label.setPixmap(self.img.scaled(self.resized_width,
+                                                       self.resized_height,
+                                                       transformMode=Qt.SmoothTransformation))
+        else:
+            self.image_label.setPixmap(self.img)

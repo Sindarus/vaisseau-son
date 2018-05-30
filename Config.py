@@ -47,3 +47,8 @@ class Config:
     RELOAD_ICON_TEXT = "Tout recommencer"
     RESULT_ITEM_TEXT = "L'IA a reconnu %s avec une certitude de %i%%"
     EXTRA_RESULT_ITEM_TEXT = "%i%%"
+
+    # Audio
+    N_CHANNELS = 1
+    SAMPLE_SIZE = 32        # in bits
+    SAMPLE_RATE = 44100     # in hertz
