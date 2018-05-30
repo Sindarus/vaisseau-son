@@ -18,9 +18,21 @@ class SoundClassifier(Thread):
         super().__init__()
         self.user_sound_path = user_sound_path
         self.set_results_func = set_results_func
+        self.should_stop = False  # Is set to True if someone requested that this thread terminates asap
 
     def run(self):
         time.sleep(3)
         # TODO: do some real calculation
         results = [("lion", 85), ("police", 20), ("cow", 5), ("wind", 3)]
+        if self.should_stop:
+            return
         self.set_results_func(results)
+
+    def please_stop_asap(self):
+        """This is a function to call when you want this thread to terminate.
+        This is indeed the prefered method to stop a thread :
+        https://stackoverflow.com/questions/323972/is-there-any-way-to-kill-a-thread-in-python#325528"""
+        self.should_stop = True
+        # TODO: In the "run" function, check this value on a regular basis so that the thread can stop itself.
+        # TODO: If this is not done properly, there's a risk that the thread will remain alive even after all other
+        # TODO: windows have been closed, until run() reaches an end.

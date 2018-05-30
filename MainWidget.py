@@ -75,20 +75,24 @@ class MainWidget(QWidget):
         rec_sound_path = None
         selected_sound_name = None
 
-        self.loading_window.show()
         self.classifier = SoundClassifier(rec_sound_path, self.set_results)
         self.classifier.start()
-        self.step2_wait_for_results()
+        self.step2_wait_for_results(self.classifier.ident)
+        self.loading_window.show()
 
-    def step2_wait_for_results(self):
-        if self.classifier.is_alive():
-            QTimer.singleShot(500, self.step2_wait_for_results)
+    def step2_wait_for_results(self, ident_classifier_thread):
+        if self.classifier.ident != ident_classifier_thread or self.classifier.should_stop:
+            return
+            # this defuses this wait_for_results loop, because the classifier we were waiting for has been canceled
+            # or was replaced by a new one that has its own dedicated wait_for_results loop
+        elif self.classifier.is_alive():
+            QTimer.singleShot(500, lambda: self.step2_wait_for_results(ident_classifier_thread))
         else:
             self.step3_show_results()
 
     def step3_show_results(self):
         assert self.results is not None, "No results to show"
-        print(self.results)
+        print("results:", self.results)
         self.loading_window.hide()
         self.results_window.load_results(self.results)
         self.results_window.showFullScreen() if Config.FULLSCREEN else self.results_window.show()
@@ -101,8 +105,7 @@ class MainWidget(QWidget):
 
     def interrupt(self):
         self.loading_window.hide()
-        print("processing was interrupted")
-        # TODO: halt processing
+        self.classifier.please_stop_asap()
 
     def reset(self):
         self.results_window.hide()
