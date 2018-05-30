@@ -46,3 +46,4 @@ class Config:
     BACK_ARROW_TEXT = "Retour"
     RELOAD_ICON_TEXT = "Tout recommencer"
     RESULT_ITEM_TEXT = "L'IA a reconnu %s avec une certitude de %i%%"
+    EXTRA_RESULT_ITEM_TEXT = "%i%%"

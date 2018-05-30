@@ -33,6 +33,8 @@ class MainWidget(QWidget):
         self.results_window.back_arrow.clicked.connect(self.results_window.hide)
         self.results_window.reload_arrow.clicked.connect(self.reset)
 
+        self.results = None  # Results of the classifying process
+
     def init_ui(self):
         # Create widgets
         title = QLabel(Config.TITLE, self)
@@ -40,7 +42,7 @@ class MainWidget(QWidget):
         sound_recorder = SoundRecorder(self)
         go_button = CaptionedImage(Config.VALIDATE_BUTTON, "images/right-arrow.png")
         go_button.resize_image(Config.NAV_ICON_SIZE, Config.NAV_ICON_SIZE)
-        go_button.clicked.connect(self.process_comparison)
+        go_button.clicked.connect(self.step1_process_comparison)
         reload_button = CaptionedImage(Config.RELOAD_ICON_TEXT, "images/reload.png")
         reload_button.resize_image(Config.NAV_ICON_SIZE, Config.NAV_ICON_SIZE)
         reload_button.clicked.connect(self.reset)
@@ -58,7 +60,6 @@ class MainWidget(QWidget):
         main_layout.addStretch(1)
         main_layout.addLayout(buttons_layout)
 
-
         # Setup title
         title_layout.addStretch(1)
         title_layout.addWidget(title)
@@ -69,20 +70,31 @@ class MainWidget(QWidget):
         buttons_layout.addStretch(1)
         buttons_layout.addWidget(go_button)
 
-    def process_comparison(self):
+    def step1_process_comparison(self):
         # TODO: Retrieve info
         rec_sound_path = None
         selected_sound_name = None
 
         self.loading_window.show()
-        classifier = SoundClassifier(rec_sound_path, self.show_results)
-        classifier.start()
+        self.classifier = SoundClassifier(rec_sound_path, self.set_results)
+        self.classifier.start()
+        self.step2_wait_for_results()
 
-    def show_results(self, results):
-        print(results)
+    def step2_wait_for_results(self):
+        if self.classifier.is_alive():
+            QTimer.singleShot(500, self.step2_wait_for_results)
+        else:
+            self.step3_show_results()
+
+    def step3_show_results(self):
+        assert self.results is not None, "No results to show"
+        print(self.results)
         self.loading_window.hide()
-        self.results_window.load_results(results)
+        self.results_window.load_results(self.results)
         self.results_window.showFullScreen() if Config.FULLSCREEN else self.results_window.show()
+
+    def set_results(self, results):
+        self.results = results
 
     def close_child_windows(self):
         self.loading_window.hide()

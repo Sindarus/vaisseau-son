@@ -71,10 +71,8 @@ class ResultsWindow(QWidget):
         # Adding extra results
         for result in results:
             (result_name, result_percent) = result
-            result_display_name = Config.SOUNDS[result_name]['display_name']
             result_img_path = Config.SOUNDS[result_name]['image_path']
-            result_widget = CaptionedImage(Config.RESULT_ITEM_TEXT % (result_display_name, result_percent),
-                                 result_img_path)
+            result_widget = CaptionedImage(Config.EXTRA_RESULT_ITEM_TEXT % result_percent, result_img_path)
             result_widget.resize_image(Config.EXTRA_RESULT_IMAGE_SIZE, Config.EXTRA_RESULT_IMAGE_SIZE)
             self.extra_results_layout.addWidget(result_widget)
 
