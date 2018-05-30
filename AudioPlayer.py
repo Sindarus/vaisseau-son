@@ -31,6 +31,9 @@ class AudioPlayer(QWidget):
         self.is_recorded = False  # Set to true if a sound was recorded at least once
         if recordable:
             self.init_recorder()
+            # check output folder
+            if not os.path.exists("user_sounds/"):
+                os.makedirs("user_sounds/")
 
     def init_player(self):
         self.player = QSoundEffect()
