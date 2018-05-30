@@ -41,3 +41,8 @@ class Config:
     RESULTS_GROUP_TEXT = "Résultats"
     BACK_ARROW_TEXT = "Retour"
     RELOAD_ICON_TEXT = "Tout recommencer"
+
+    # Audio
+    N_CHANNELS = 1
+    SAMPLE_SIZE = 32        # in bits
+    SAMPLE_RATE = 44100     # in hertz

@@ -7,10 +7,10 @@ Creation date: 2018-05-25
 
 Reference for style conventions : https://www.python.org/dev/peps/pep-0008/#naming-conventions
 """
+import wave
 
 from PyQt5.QtCore import pyqtSlot, QUrl, QDateTime, QFile, QIODevice
-from PyQt5.QtMultimedia import QSoundEffect, QAudioRecorder, QAudioEncoderSettings, QMultimedia, QMediaRecorder, \
-    QAudioInput, QAudioFormat, QAudioDeviceInfo
+from PyQt5.QtMultimedia import QSoundEffect, QAudioInput, QAudioFormat, QAudioDeviceInfo
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout
 
 from Config import Config
@@ -24,7 +24,8 @@ class AudioPlayer(QWidget):
         super().__init__()
         self.recordable = recordable
         self.sound_path = None
-        self.recorded_sound_path = None
+        self.recorded_wav_path = None  # wav file
+        self.recorded_pcm_path = None  # pcm file
         self.init_ui()
         self.init_player()
         if recordable:
@@ -40,9 +41,9 @@ class AudioPlayer(QWidget):
         self.file_to_record = QFile()
 
         audio_format = QAudioFormat()
-        audio_format.setSampleRate(44100)
-        audio_format.setChannelCount(1)
-        audio_format.setSampleSize(32)
+        audio_format.setSampleRate(Config.SAMPLE_RATE)  # in hertz
+        audio_format.setChannelCount(Config.N_CHANNELS)
+        audio_format.setSampleSize(Config.SAMPLE_SIZE)  # in bits
         audio_format.setCodec("audio/pcm")
         audio_format.setByteOrder(QAudioFormat.LittleEndian)
         audio_format.setSampleType(QAudioFormat.SignedInt)
@@ -103,8 +104,9 @@ class AudioPlayer(QWidget):
         assert self.recordable
         datetime_stamp = QDateTime.currentDateTime().toString("yyyyMMdd_hhmmss")
 
-        self.recorded_sound_path = "user_sounds/user_sound_" + datetime_stamp + ".pcm"
-        self.file_to_record.setFileName(self.recorded_sound_path)
+        self.recorded_pcm_path = "user_sounds/user_sound_" + datetime_stamp + ".pcm"
+        self.recorded_wav_path = "user_sounds/user_sound_" + datetime_stamp + ".wav"  # for use in stop_recording
+        self.file_to_record.setFileName(self.recorded_pcm_path)
         self.file_to_record.open(QIODevice.WriteOnly | QIODevice.Truncate)
 
         self.recorder.start(self.file_to_record)
@@ -113,10 +115,23 @@ class AudioPlayer(QWidget):
         print("not recording")
         self.recorder.stop()
         self.file_to_record.close()
-        self.load_sound(self.recorded_sound_path)
+
+        self.pcm_to_wav(self.recorded_pcm_path, self.recorded_wav_path)
+        self.load_sound(self.recorded_wav_path)
 
     def get_recorded_sound_path(self):
-        return self.recorded_sound_path
+        return self.recorded_wav_path
+
+    @staticmethod
+    def pcm_to_wav(pcm_input_file_path, wav_output_file_path):
+        with open(pcm_input_file_path, 'rb') as pcmfile:
+            pcmdata = pcmfile.read()
+        with wave.open(wav_output_file_path, 'wb') as wavfile:
+            wavfile.setparams((Config.N_CHANNELS,       # nchannels
+                               Config.SAMPLE_SIZE/4,    # sampwidth (in bytes) (= sample size)
+                               Config.SAMPLE_RATE,      # framerate (in hertz) (= sample rate)
+                               0, "NONE", "NONE"))
+            wavfile.writeframes(pcmdata)
 
     @pyqtSlot()
     def playing_changed_action(self):
