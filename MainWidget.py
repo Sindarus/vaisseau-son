@@ -31,6 +31,8 @@ class MainWidget(QWidget):
         self.results_window.back_arrow.clicked.connect(self.results_window.hide)
         self.results_window.reload_arrow.clicked.connect(self.reset)
 
+        self.results = None  # Results of the classifying process
+
     def init_ui(self):
         # Create sound chooser and recorder widgets
         title = QLabel(Config.TITLE, self)
@@ -74,29 +76,43 @@ class MainWidget(QWidget):
         buttons_layout.addStretch(1)
         buttons_layout.addWidget(self.go_button)
 
-    def process_comparison(self):
+    def step1_process_comparison(self):
         rec_sound_path = self.sound_recorder.player_recorder.get_recorded_sound_path()
         selected_sound_name = self.sound_chooser.get_selected_sound_name()
         selected_sound_path = Config.SOUNDS[selected_sound_name]['sound_path']
         print("comparing", rec_sound_path, "to", selected_sound_path)
 
+        self.classifier = SoundClassifier(rec_sound_path, self.set_results)
+        self.classifier.start()
+        self.step2_wait_for_results(self.classifier.ident)
         self.loading_window.show()
-        classifier = SoundClassifier(rec_sound_path, self.show_results)
-        classifier.start()
 
-    def show_results(self, results):
-        print("show_results called in", current_thread())
-        print(results)
+    def step2_wait_for_results(self, ident_classifier_thread):
+        if self.classifier.ident != ident_classifier_thread or self.classifier.should_stop:
+            return
+            # this defuses this wait_for_results loop, because the classifier we were waiting for has been canceled
+            # or was replaced by a new one that has its own dedicated wait_for_results loop
+        elif self.classifier.is_alive():
+            QTimer.singleShot(500, lambda: self.step2_wait_for_results(ident_classifier_thread))
+        else:
+            self.step3_show_results()
+
+    def step3_show_results(self):
+        assert self.results is not None, "No results to show"
+        print("results:", self.results)
         self.loading_window.hide()
+        self.results_window.load_results(self.results)
         self.results_window.showFullScreen() if Config.FULLSCREEN else self.results_window.show()
+
+    def set_results(self, results):
+        self.results = results
 
     def close_child_windows(self):
         self.loading_window.hide()
 
     def interrupt(self):
         self.loading_window.hide()
-        print("processing was interrupted")
-        # TODO: halt processing
+        self.classifier.please_stop_asap()
 
     def reset(self):
         self.results_window.hide()
