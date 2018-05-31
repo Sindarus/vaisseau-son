@@ -62,3 +62,7 @@ class WaveformDisplay(QLabel):
         # draw picture
         self.img = QPixmap(output_path)
         self.setPixmap(self.img)
+
+    def reset(self):
+        self.img = None
+        self.clear()

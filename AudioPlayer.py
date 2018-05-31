@@ -133,6 +133,17 @@ class AudioPlayer(QWidget):
             self.is_recorded = True
             self.was_recorded.emit()
 
+    def reset(self):
+        self.sound_path = None
+        self.recorded_wav_path = None
+        self.recorded_pcm_path = None
+        self.is_recorded = None
+
+        self.player.stop()
+        self.play_button.setEnabled(True)
+
+        self.wave_display.reset()
+
     def get_recorded_sound_path(self):
         return self.recorded_wav_path
 

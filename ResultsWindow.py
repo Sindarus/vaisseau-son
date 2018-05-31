@@ -82,3 +82,6 @@ class ResultsWindow(QWidget):
         cp = QDesktopWidget().availableGeometry().center()
         qr.moveCenter(cp)
         self.move(qr.topLeft())
+
+    def reset(self):
+        pass

@@ -114,7 +114,6 @@ class MainWidget(QWidget):
         self.loading_window.hide()
         self.classifier.please_stop_asap()
 
-    def reset(self):
-        self.results_window.hide()
-        print("reset")
-        # TODO: reset
+    def full_reset(self):
+        self.sound_recorder.player_recorder.reset()
+        self.results_window.reset()
