@@ -23,6 +23,9 @@ class ResultsWindow(QWidget):
         super().__init__()
         self.init_ui()
 
+        # This will disable input on all other windows
+        self.setWindowModality(Qt.ApplicationModal)
+
         # actions
         self.quit_shortcut = QShortcut(QKeySequence(Qt.CTRL + Qt.Key_Q), self)
         self.quit_shortcut.activated.connect(qApp.quit)

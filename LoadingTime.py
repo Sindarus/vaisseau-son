@@ -7,6 +7,8 @@ Creation date: 2018-05-28
 
 Reference for style conventions : https://www.python.org/dev/peps/pep-0008/#naming-conventions
 """
+
+from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QMovie
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout, QPushButton
 
@@ -20,6 +22,9 @@ class LoadingTime(QWidget):
     def __init__(self):
         super().__init__()
         self.init_ui()
+
+        # This will disable input on all other windows
+        self.setWindowModality(Qt.ApplicationModal)
 
     def init_ui(self):
         spinner_label = QLabel()
