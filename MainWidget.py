@@ -29,7 +29,7 @@ class MainWidget(QWidget):
         self.loading_window.back_button.clicked.connect(self.interrupt)
         self.results_window = ResultsWindow()
         self.results_window.back_arrow.clicked.connect(self.results_window.hide)
-        self.results_window.reload_arrow.clicked.connect(self.reset)
+        self.results_window.reload_arrow.clicked.connect(self.full_reset)
 
         self.results = None  # Results of the classifying process
 
@@ -51,7 +51,7 @@ class MainWidget(QWidget):
         # Create reload button
         reload_button = CaptionedImageButton(Config.RELOAD_ICON_TEXT, "images/reload.png")
         reload_button.resize_image(Config.NAV_ICON_SIZE, Config.NAV_ICON_SIZE)
-        reload_button.clicked.connect(self.reset)
+        reload_button.clicked.connect(self.full_reset)
 
         # Create Layouts
         main_layout = QVBoxLayout()
@@ -116,4 +116,5 @@ class MainWidget(QWidget):
 
     def full_reset(self):
         self.sound_recorder.player_recorder.reset()
+        self.results_window.hide()
         self.results_window.reset()

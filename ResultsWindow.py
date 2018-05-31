@@ -97,4 +97,6 @@ class ResultsWindow(QWidget):
         self.move(qr.topLeft())
 
     def reset(self):
-        pass
+        self.main_result_widget.clear()
+        for cur_result_widget in self.extra_results_widgets:
+            cur_result_widget.clear()

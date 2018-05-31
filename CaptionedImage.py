@@ -72,3 +72,7 @@ class CaptionedImage(QWidget):
                                                        transformMode=Qt.SmoothTransformation))
         else:
             self.image_label.setPixmap(self.img)
+
+    def clear(self):
+        self.text_label.clear()
+        self.image_label.clear()
