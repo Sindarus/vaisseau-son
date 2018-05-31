@@ -34,10 +34,14 @@ class Config:
     SOUND_IMAGES_ROWS = 1
     MAIN_RESULT_IMAGE_SIZE = 400
     EXTRA_RESULT_IMAGE_SIZE = 150
+    NAV_ICON_SIZE = 75
+    NOTIFICATION_MESSAGES_TIMEOUT = 5000  # in msec
+    # Waveform
     WAVEFORM_IMG_SIZE = "2000x250"
     WAVEFORM_DISPLAY_HEIGHT = 250
-    NAV_ICON_SIZE = 75
-    NOTIFICATION_MESSAGES_TIMEOUT = 5000    # in msec
+    WAVEFORM_DISPLAY_WAVE_COLOR = "9cf42f"
+    WAVEFORM_DISPLAY_BG_COLOR = "44582c"
+    WAVEFORM_DISPLAY_GRID_OPACITY = "0.1"
 
     # Text
     TITLE = "Atelier son"
@@ -53,6 +57,6 @@ class Config:
 
     # Audio
     N_CHANNELS = 1
-    SAMPLE_SIZE = 32        # in bits
-    SAMPLE_RATE = 44100     # in hertz
-    TOO_SHORT_THRESHOLD = 0.5   # minimum duration of a user recording. If shorter, it will not be taken into account
+    SAMPLE_SIZE = 32  # in bits
+    SAMPLE_RATE = 44100  # in hertz
+    TOO_SHORT_THRESHOLD = 0.5  # minimum duration of a user recording. If shorter, it will not be taken into account
