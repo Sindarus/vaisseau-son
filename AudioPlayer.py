@@ -7,12 +7,14 @@ Creation date: 2018-05-25
 
 Reference for style conventions : https://www.python.org/dev/peps/pep-0008/#naming-conventions
 """
+
+import contextlib
 import os
 import wave
 
-from PyQt5.QtCore import pyqtSlot, QUrl, QDateTime, QFile, QIODevice, pyqtSignal
+from PyQt5.QtCore import pyqtSlot, QUrl, QDateTime, QFile, QIODevice, pyqtSignal, QPoint
 from PyQt5.QtMultimedia import QSoundEffect, QAudioInput, QAudioFormat, QAudioDeviceInfo
-from PyQt5.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout
+from PyQt5.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QToolTip
 
 from Config import Config
 from ImageButton import ImageButton
@@ -122,6 +124,10 @@ class AudioPlayer(QWidget):
         self.file_to_record.close()
 
         self.pcm_to_wav(self.recorded_pcm_path, self.recorded_wav_path)
+        if self.get_wav_duration(self.recorded_wav_path) < 0.5:
+            QToolTip.showText(self.rec_button.mapToGlobal(QPoint(0, 0)), Config.REC_TOO_SHORT_TOOLTIP_MSG)
+            return
+
         self.load_sound(self.recorded_wav_path)
         if not self.is_recorded:
             self.is_recorded = True
@@ -130,18 +136,26 @@ class AudioPlayer(QWidget):
     def get_recorded_sound_path(self):
         return self.recorded_wav_path
 
+    @pyqtSlot()
+    def playing_changed_action(self):
+        if not self.player.isPlaying():
+            self.play_button.setEnabled(True)
+
     @staticmethod
     def pcm_to_wav(pcm_input_file_path, wav_output_file_path):
         with open(pcm_input_file_path, 'rb') as pcmfile:
             pcmdata = pcmfile.read()
         with wave.open(wav_output_file_path, 'wb') as wavfile:
-            wavfile.setparams((Config.N_CHANNELS,       # nchannels
-                               Config.SAMPLE_SIZE//8,    # sampwidth (in bytes) (= sample size)
-                               Config.SAMPLE_RATE,      # framerate (in hertz) (= sample rate)
+            wavfile.setparams((Config.N_CHANNELS,           # nchannels
+                               Config.SAMPLE_SIZE // 8,     # sampwidth (in bytes) (= sample size)
+                               Config.SAMPLE_RATE,          # framerate (in hertz) (= sample rate)
                                0, "NONE", "NONE"))
             wavfile.writeframes(pcmdata)
 
-    @pyqtSlot()
-    def playing_changed_action(self):
-        if not self.player.isPlaying():
-            self.play_button.setEnabled(True)
+    @staticmethod
+    def get_wav_duration(wav_file_path):
+        with contextlib.closing(wave.open(wav_file_path, 'r')) as f:
+            frames = f.getnframes()
+            rate = f.getframerate()
+            duration = frames / float(rate)
+        return duration

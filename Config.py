@@ -47,8 +47,10 @@ class Config:
     RELOAD_ICON_TEXT = "Tout recommencer"
     RESULT_ITEM_TEXT = "L'IA a reconnu %s avec une certitude de %i%%"
     EXTRA_RESULT_ITEM_TEXT = "%i%%"
+    REC_TOO_SHORT_TOOLTIP_MSG = "Maintenez enfoncé pour enregistrer"
 
     # Audio
     N_CHANNELS = 1
     SAMPLE_SIZE = 32        # in bits
     SAMPLE_RATE = 44100     # in hertz
+    TOO_SHORT_THRESHOLD = 0.5   # minimum duration of a user recording. If shorter, it will not be taken into account
