@@ -12,9 +12,9 @@ import contextlib
 import os
 import wave
 
-from PyQt5.QtCore import pyqtSlot, QUrl, QDateTime, QFile, QIODevice, pyqtSignal, QPoint
+from PyQt5.QtCore import pyqtSlot, QUrl, QDateTime, QFile, QIODevice, pyqtSignal
 from PyQt5.QtMultimedia import QSoundEffect, QAudioInput, QAudioFormat, QAudioDeviceInfo
-from PyQt5.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QToolTip
+from PyQt5.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout
 
 from Config import Config
 from ImageButton import ImageButton

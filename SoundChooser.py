@@ -44,7 +44,6 @@ class SoundChooser(QGroupBox):
         # Setup vertical layout
         self.setLayout(vertical_layout)
         vertical_layout.addLayout(sounds_buttons_layout)
-        vertical_layout.addStretch()
         vertical_layout.addWidget(self.player)
 
         # Setup grid of sounds

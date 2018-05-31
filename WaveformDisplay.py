@@ -8,7 +8,8 @@ Creation date: 2018-05-17
 Reference for style conventions : https://www.python.org/dev/peps/pep-0008
 """
 
-import subprocess, os
+import os
+import subprocess
 
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QLabel, QSizePolicy
@@ -26,7 +27,10 @@ class WaveformDisplay(QLabel):
 
         # Expanding : "the widget can be shrunk and still be useful. The widget can make use of extra space,
         #             so it should get as much space as possible"
-        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Ignored)
+
+        self.setMinimumWidth(1)     # Allows QLabel to shrink below pixmap's width
+        self.setFixedHeight(Config.WAVEFORM_DISPLAY_HEIGHT)
 
         self.setStyleSheet("""
             QFrame, QLabel, QToolTip {
