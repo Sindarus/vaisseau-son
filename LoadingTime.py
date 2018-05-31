@@ -26,6 +26,8 @@ class LoadingTime(QWidget):
         # This will disable input on all other windows
         self.setWindowModality(Qt.ApplicationModal)
 
+        self.setWindowFlags(Qt.FramelessWindowHint)
+
     def init_ui(self):
         spinner_label = QLabel()
         spinner_movie = QMovie("images/spinner.gif")
