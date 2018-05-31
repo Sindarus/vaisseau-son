@@ -11,7 +11,7 @@ Reference for style conventions : https://www.python.org/dev/peps/pep-0008
 from PyQt5.QtCore import QTimer
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel
 
-from CaptionedImageButton import CaptionedImageButton
+from LabeledImageButton import LabeledImageButton
 from Config import Config
 from LoadingTime import LoadingTime
 from MessageDisplay import MessageDisplay
@@ -42,16 +42,14 @@ class MainWidget(QWidget):
         self.sound_recorder = SoundRecorder(self)
 
         # Create go button
-        self.go_button = CaptionedImageButton(Config.VALIDATE_BUTTON,
-                                              "images/right-arrow.png",
-                                              "images/right-arrow-disabled.png")
-        self.go_button.set_disabled(True)
-        self.sound_recorder.player_recorder.was_recorded.connect(lambda: self.go_button.set_disabled(False))
+        self.go_button = LabeledImageButton(Config.VALIDATE_BUTTON, "images/right-arrow.png",)
+        self.go_button.setEnabled(False)
+        self.sound_recorder.player_recorder.was_recorded.connect(lambda: self.go_button.setEnabled(True))
         self.go_button.resize_image(Config.NAV_ICON_SIZE, Config.NAV_ICON_SIZE)
         self.go_button.clicked.connect(self.step1_process_comparison)
 
         # Create reload button
-        reload_button = CaptionedImageButton(Config.RELOAD_ICON_TEXT, "images/reload.png")
+        reload_button = LabeledImageButton(Config.RELOAD_ICON_TEXT, "images/reload.png")
         reload_button.resize_image(Config.NAV_ICON_SIZE, Config.NAV_ICON_SIZE)
         reload_button.clicked.connect(self.full_reset)
 

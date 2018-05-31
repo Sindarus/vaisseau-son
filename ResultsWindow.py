@@ -13,7 +13,7 @@ from PyQt5.QtGui import QKeySequence
 from PyQt5.QtWidgets import QWidget, QShortcut, qApp, QHBoxLayout, QVBoxLayout, QDesktopWidget, QGroupBox
 
 from CaptionedImage import CaptionedImage
-from CaptionedImageButton import CaptionedImageButton
+from LabeledImageButton import LabeledImageButton
 from Config import Config
 
 
@@ -42,9 +42,9 @@ class ResultsWindow(QWidget):
         results_group = QGroupBox(Config.RESULTS_GROUP_TEXT)
         results_group.setLayout(layout)
 
-        self.back_arrow = CaptionedImageButton(Config.BACK_ARROW_TEXT, "images/left-arrow.png")
+        self.back_arrow = LabeledImageButton(Config.BACK_ARROW_TEXT, "images/left-arrow.png")
         self.back_arrow.resize_image(Config.NAV_ICON_SIZE, Config.NAV_ICON_SIZE)
-        self.reload_arrow = CaptionedImageButton(Config.RELOAD_ICON_TEXT, "images/reload.png")
+        self.reload_arrow = LabeledImageButton(Config.RELOAD_ICON_TEXT, "images/reload.png")
         self.reload_arrow.resize_image(Config.NAV_ICON_SIZE, Config.NAV_ICON_SIZE)
 
         nav_icons_layout = QHBoxLayout()
