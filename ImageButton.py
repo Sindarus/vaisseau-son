@@ -23,8 +23,22 @@ class ImageButton(QPushButton):
         icon = QIcon(self.img)
         self.setIcon(icon)
 
+        self._set_style()
+
     def resize_image(self, width, height):
         self.setIconSize(QSize(width, height))
+
+    def _set_style(self):
+        self.setStyleSheet("""
+            QPushButton
+            {
+              border: none;
+            }
+            QPushButton:pressed
+            {
+              background-color: #cccccc;
+            }
+            """)
 
     def __repr__(self):
         return "ImageButton : " + str(self.img_path)
