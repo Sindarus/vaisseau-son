@@ -46,7 +46,7 @@ class MainWidget(QWidget):
         self.go_button.set_disabled(True)
         self.sound_recorder.player_recorder.was_recorded.connect(lambda: self.go_button.set_disabled(False))
         self.go_button.resize_image(Config.NAV_ICON_SIZE, Config.NAV_ICON_SIZE)
-        self.go_button.clicked.connect(self.process_comparison)
+        self.go_button.clicked.connect(self.step1_process_comparison)
 
         # Create reload button
         reload_button = CaptionedImageButton(Config.RELOAD_ICON_TEXT, "images/reload.png")
