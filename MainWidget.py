@@ -56,10 +56,10 @@ class MainWidget(QWidget):
         reload_button.clicked.connect(self.full_reset)
 
         # Create message display widget
-        self.msg_display = MessageDisplay()
+        self.notif_zone = MessageDisplay()
         self.sound_recorder.player_recorder.recorded_too_short.connect(
-            lambda: self.msg_display.display_text(Config.REC_TOO_SHORT_TOOLTIP_MSG,
-                                                  Config.NOTIFICATION_MESSAGES_TIMEOUT))
+            lambda: self.notif_zone.display_text(Config.REC_TOO_SHORT_TOOLTIP_MSG,
+                                                 Config.NOTIFICATION_MESSAGES_TIMEOUT))
 
         # Create Layouts
         main_layout = QVBoxLayout()
@@ -82,7 +82,7 @@ class MainWidget(QWidget):
         # Setup nav buttons
         buttons_layout.addWidget(reload_button)
         buttons_layout.addStretch(1)
-        buttons_layout.addWidget(self.msg_display)
+        buttons_layout.addWidget(self.notif_zone)
         buttons_layout.addStretch(1)
         buttons_layout.addWidget(self.go_button)
 
