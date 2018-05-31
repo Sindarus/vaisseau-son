@@ -5,7 +5,7 @@
 Author: Clément Saintier
 Creation date: 2018-05-25
 
-Reference for style conventions : https://www.python.org/dev/peps/pep-0008/#naming-conventions
+Reference for style conventions : https://www.python.org/dev/peps/pep-0008
 """
 
 import contextlib
