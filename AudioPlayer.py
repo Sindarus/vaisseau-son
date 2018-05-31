@@ -22,7 +22,8 @@ from WaveformDisplay import WaveformDisplay
 
 
 class AudioPlayer(QWidget):
-    was_recorded = pyqtSignal();
+    was_recorded = pyqtSignal()         # This signal is emited when a sound was recorded the first time
+    recorded_too_short = pyqtSignal()   # This signal is emited when the user recorded a sound that was too short
 
     def __init__(self, recordable=False):
         super().__init__()
@@ -125,7 +126,7 @@ class AudioPlayer(QWidget):
 
         self.pcm_to_wav(self.recorded_pcm_path, self.recorded_wav_path)
         if self.get_wav_duration(self.recorded_wav_path) < 0.5:
-            QToolTip.showText(self.rec_button.mapToGlobal(QPoint(0, 0)), Config.REC_TOO_SHORT_TOOLTIP_MSG)
+            self.recorded_too_short.emit()
             return
 
         self.load_sound(self.recorded_wav_path)

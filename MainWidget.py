@@ -7,16 +7,18 @@ Creation date: 2018-05-22
 
 Reference for style conventions : https://www.python.org/dev/peps/pep-0008/#naming-conventions
 """
+
 from PyQt5.QtCore import QTimer
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QMessageBox
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel
 
 from CaptionedImageButton import CaptionedImageButton
 from Config import Config
 from LoadingTime import LoadingTime
+from MessageDisplay import MessageDisplay
 from ResultsWindow import ResultsWindow
 from SoundChooser import SoundChooser
-from SoundRecorder import SoundRecorder
 from SoundClassifier import SoundClassifier
+from SoundRecorder import SoundRecorder
 
 
 class MainWidget(QWidget):
@@ -53,6 +55,12 @@ class MainWidget(QWidget):
         reload_button.resize_image(Config.NAV_ICON_SIZE, Config.NAV_ICON_SIZE)
         reload_button.clicked.connect(self.full_reset)
 
+        # Create message display widget
+        self.msg_display = MessageDisplay()
+        self.sound_recorder.player_recorder.recorded_too_short.connect(
+            lambda: self.msg_display.display_text(Config.REC_TOO_SHORT_TOOLTIP_MSG,
+                                                  Config.NOTIFICATION_MESSAGES_TIMEOUT))
+
         # Create Layouts
         main_layout = QVBoxLayout()
         title_layout = QHBoxLayout()
@@ -71,8 +79,10 @@ class MainWidget(QWidget):
         title_layout.addWidget(title)
         title_layout.addStretch(1)
 
-        # Setup go_button
+        # Setup nav buttons
         buttons_layout.addWidget(reload_button)
+        buttons_layout.addStretch(1)
+        buttons_layout.addWidget(self.msg_display)
         buttons_layout.addStretch(1)
         buttons_layout.addWidget(self.go_button)
 

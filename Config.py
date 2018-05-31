@@ -36,6 +36,7 @@ class Config:
     EXTRA_RESULT_IMAGE_SIZE = 150
     WAVEFORM_IMG_SIZE = "1000x200"
     NAV_ICON_SIZE = 75
+    NOTIFICATION_MESSAGES_TIMEOUT = 5000    # in msec
 
     # Text
     TITLE = "Atelier son"
