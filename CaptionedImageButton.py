@@ -27,6 +27,6 @@ class CaptionedImageButton(CaptionedImage):
     def set_disabled(self, state):
         self.disabled = state
         if (state is True) and (self.image_path_disabled is not None):
-            self.change_image(self.image_path_disabled)
+            self.load_image(self.image_path_disabled)
         if (state is False) and (self.image_path_disabled is not None):
-            self.change_image(self.image_path)
+            self.load_image(self.image_path)

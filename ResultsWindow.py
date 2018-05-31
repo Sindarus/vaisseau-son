@@ -34,6 +34,7 @@ class ResultsWindow(QWidget):
         layout = QVBoxLayout()
         layout.addLayout(self.main_result_layout)
         layout.addLayout(self.extra_results_layout)
+        self.init_results_widgets()
 
         results_group = QGroupBox(Config.RESULTS_GROUP_TEXT)
         results_group.setLayout(layout)
@@ -55,27 +56,39 @@ class ResultsWindow(QWidget):
 
         self._center()
 
+    def init_results_widgets(self):
+        self.main_result_widget = CaptionedImage()
+        self.main_result_widget.resize_image(Config.MAIN_RESULT_IMAGE_SIZE, Config.MAIN_RESULT_IMAGE_SIZE)
+        self.main_result_layout.addStretch(1)
+        self.main_result_layout.addWidget(self.main_result_widget)
+        self.main_result_layout.addStretch(1)
+
+        self.extra_results_widgets = []
+        for i in range(3):
+            cur_result_widget = CaptionedImage()
+            cur_result_widget.resize_image(Config.EXTRA_RESULT_IMAGE_SIZE, Config.EXTRA_RESULT_IMAGE_SIZE)
+            self.extra_results_widgets.append(cur_result_widget)
+            self.extra_results_layout.addWidget(cur_result_widget)
+
     def load_results(self, results):
         """Results must be a list of 2-tuples containing the name of the sound and the probability"""
+
+        # Only keep the first 4 results (this operation will not alter the list objet in argument)
+        results = results[:4]
 
         # Adding main result
         (main_result_name, main_result_percent) = results.pop(0)
         main_result_display_name = Config.SOUNDS[main_result_name]['display_name']
         main_result_img_path = Config.SOUNDS[main_result_name]['image_path']
-        main_result_widget = CaptionedImage(Config.RESULT_ITEM_TEXT % (main_result_display_name, main_result_percent),
-                                            main_result_img_path)
-        main_result_widget.resize_image(Config.MAIN_RESULT_IMAGE_SIZE, Config.MAIN_RESULT_IMAGE_SIZE)
-        self.main_result_layout.addStretch(1)
-        self.main_result_layout.addWidget(main_result_widget)
-        self.main_result_layout.addStretch(1)
+        self.main_result_widget.load_caption(Config.RESULT_ITEM_TEXT % (main_result_display_name, main_result_percent))
+        self.main_result_widget.load_image(main_result_img_path)
 
         # Adding extra results
-        for result in results:
+        for i, result in enumerate(results):
             (result_name, result_percent) = result
             result_img_path = Config.SOUNDS[result_name]['image_path']
-            result_widget = CaptionedImage(Config.EXTRA_RESULT_ITEM_TEXT % result_percent, result_img_path)
-            result_widget.resize_image(Config.EXTRA_RESULT_IMAGE_SIZE, Config.EXTRA_RESULT_IMAGE_SIZE)
-            self.extra_results_layout.addWidget(result_widget)
+            self.extra_results_widgets[i].load_caption(Config.EXTRA_RESULT_ITEM_TEXT % result_percent)
+            self.extra_results_widgets[i].load_image(result_img_path)
 
     def _center(self):
         qr = self.frameGeometry()
