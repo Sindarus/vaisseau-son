@@ -8,7 +8,7 @@ Creation date: 2018-05-22
 Reference for style conventions : https://www.python.org/dev/peps/pep-0008
 """
 
-from PyQt5.QtCore import QTimer, pyqtSlot
+from PyQt5.QtCore import QTimer, pyqtSlot, pyqtSignal
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel
 
 from Config import Config
@@ -87,6 +87,7 @@ class MainWidget(QWidget):
         buttons_layout.addStretch(1)
         buttons_layout.addWidget(self.go_button)
 
+    @pyqtSlot()
     def step1_process_comparison(self):
         rec_sound_path = self.sound_recorder.player_recorder.get_recorded_sound_path()
         selected_sound_name = self.sound_chooser.get_selected_sound_name()
@@ -122,10 +123,12 @@ class MainWidget(QWidget):
     def close_child_windows(self):
         self.loading_window.hide()
 
+    @pyqtSlot()
     def interrupt(self):
         self.loading_window.hide()
         self.classifier.please_stop_asap()
 
+    @pyqtSlot()
     def full_reset(self):
         self.sound_recorder.player_recorder.reset()
         self.results_window.hide()

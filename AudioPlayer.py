@@ -89,6 +89,7 @@ class AudioPlayer(QWidget):
         self.main_layout.addLayout(self.buttons_layout)
         self.main_layout.addWidget(self.wave_display)
 
+    @pyqtSlot()
     def play_sound(self):
         assert self.sound_path is not None, "Trying to play a sound but none were loaded in this AudioPlayer"
 
@@ -101,6 +102,7 @@ class AudioPlayer(QWidget):
         self.player.setSource(QUrl.fromLocalFile(sound_path))
         self.play_button.setEnabled(True)
 
+    @pyqtSlot()
     def start_recording(self):
         print("recording")
         assert self.recordable
@@ -113,6 +115,7 @@ class AudioPlayer(QWidget):
 
         self.recorder.start(self.file_to_record)
 
+    @pyqtSlot()
     def stop_recording(self):
         print("not recording")
         self.recorder.stop()
