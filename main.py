@@ -35,7 +35,7 @@ class MainWindow(QMainWindow):
         self.quit_shortcut.activated.connect(qApp.quit)
 
         # Configure window
-        self.setGeometry(0, 0, 700, 700)
+        self.setGeometry(0, 0, Config.WINDOW_MODE_WIDTH, Config.WINDOW_MODE_HEIGHT)
         self.setWindowTitle('Borne son')
         self.showFullScreen() if Config.FULLSCREEN else self.show()
 

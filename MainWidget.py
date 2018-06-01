@@ -8,7 +8,7 @@ Creation date: 2018-05-22
 Reference for style conventions : https://www.python.org/dev/peps/pep-0008
 """
 
-from PyQt5.QtCore import QTimer
+from PyQt5.QtCore import QTimer, Qt
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel
 
 from LabeledImageButton import LabeledImageButton
@@ -99,6 +99,7 @@ class MainWidget(QWidget):
         self.classifier.start()
         self.step2_wait_for_results(self.classifier.ident)
         self.loading_window.show()
+        self.loading_window.center()
 
     def step2_wait_for_results(self, ident_classifier_thread):
         if self.classifier.ident != ident_classifier_thread or self.classifier.should_stop:

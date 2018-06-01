@@ -10,7 +10,7 @@ Reference for style conventions : https://www.python.org/dev/peps/pep-0008
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QKeySequence
-from PyQt5.QtWidgets import QWidget, QShortcut, qApp, QHBoxLayout, QVBoxLayout, QDesktopWidget
+from PyQt5.QtWidgets import QWidget, QShortcut, qApp, QHBoxLayout, QVBoxLayout, QDesktopWidget, QSizePolicy
 
 from CaptionedImage import CaptionedImage
 from Config import Config
@@ -23,6 +23,7 @@ class ResultsWindow(QWidget):
     def __init__(self):
         super().__init__()
         self.init_ui()
+        self.setGeometry(0, 0, Config.WINDOW_MODE_WIDTH, Config.WINDOW_MODE_HEIGHT)
 
         # This will disable input on all other windows
         self.setWindowModality(Qt.ApplicationModal)
@@ -43,6 +44,7 @@ class ResultsWindow(QWidget):
         self.init_results_widgets()
 
         results_group = CustomStyleGroupBox(Config.RESULTS_GROUP_TEXT)
+        results_group.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         results_group.setLayout(layout)
 
         self.back_arrow = LabeledImageButton(Config.BACK_ARROW_TEXT, "images/left-arrow.png")

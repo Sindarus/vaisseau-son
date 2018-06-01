@@ -8,7 +8,7 @@ Creation date: 2018-05-28
 Reference for style conventions : https://www.python.org/dev/peps/pep-0008
 """
 
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QRect
 from PyQt5.QtGui import QMovie
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout, QPushButton
 
@@ -19,8 +19,8 @@ class LoadingTime(QWidget):
     """Widget that shows a message and a spinner or a progress bar, to be shown while the program
     is processing/loading."""
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.init_ui()
 
         # This will disable input on all other windows
@@ -56,3 +56,9 @@ class LoadingTime(QWidget):
         layout.addLayout(button_layout)
         self.setLayout(layout)
 
+    def center(self):
+        self_rect = self.frameGeometry()
+        reference_rect = QRect(0, 0, Config.WINDOW_MODE_WIDTH, Config.WINDOW_MODE_HEIGHT)
+        center_point = reference_rect.center()
+        self_rect.moveCenter(center_point)
+        self.move(self_rect.topLeft())
