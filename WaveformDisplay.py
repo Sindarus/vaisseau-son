@@ -11,6 +11,7 @@ Reference for style conventions : https://www.python.org/dev/peps/pep-0008
 import os
 import subprocess
 
+from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QLabel, QSizePolicy
 
@@ -32,6 +33,12 @@ class WaveformDisplay(QLabel):
 
         self.setMinimumWidth(1)  # Allows QLabel to shrink below pixmap's width
         self.setFixedHeight(Config.WAVEFORM_DISPLAY_HEIGHT)
+
+        self.setAlignment(Qt.AlignCenter)
+        self.load_placeholder_text("coucou")
+
+    def load_placeholder_text(self, text):
+        self.setText(text)
 
     def load_audio(self, input_path):
         assert os.path.isfile(input_path)
@@ -75,6 +82,7 @@ class WaveformDisplay(QLabel):
     def reset(self):
         self.img = None
         self.clear()
+        self.load_placeholder_text("coucou")
 
     def _set_style(self):
         self.setStyleSheet("""
@@ -82,5 +90,6 @@ class WaveformDisplay(QLabel):
             {
                 border: 2px solid """ + Config.BORDER_BLUE + """;
                 background-color: """ + Config.LIGHT_BLUE + """;
+                font-size: 16px;
             }
         """)
