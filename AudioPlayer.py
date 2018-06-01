@@ -121,6 +121,7 @@ class AudioPlayer(QWidget):
         self.pcm_to_wav(self.recorded_pcm_path, self.recorded_wav_path)
         if self.get_wav_duration(self.recorded_wav_path) < 0.5:
             self.wave_display.reset()
+            self.reset()
             self.recorded_too_short.emit()
             return
 
@@ -133,7 +134,7 @@ class AudioPlayer(QWidget):
         self.sound_path = None
         self.recorded_wav_path = None
         self.recorded_pcm_path = None
-        self.is_recorded = None
+        self.is_recorded = False
 
         self.player.stop()
         self.play_button.setEnabled(True)
