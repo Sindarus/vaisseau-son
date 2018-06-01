@@ -21,6 +21,7 @@ class WaveformDisplay(QLabel):
 
     def __init__(self):
         super().__init__()
+        self._set_style()
 
         # This property holds whether the label will scale its contents to fill all available space.
         self.setScaledContents(True)
@@ -31,12 +32,6 @@ class WaveformDisplay(QLabel):
 
         self.setMinimumWidth(1)  # Allows QLabel to shrink below pixmap's width
         self.setFixedHeight(Config.WAVEFORM_DISPLAY_HEIGHT)
-
-        self.setStyleSheet("""
-            QFrame, QLabel, QToolTip {
-                border: 5px solid red;
-            }
-            """)
 
     def load_audio(self, input_path):
         assert os.path.isfile(input_path)
@@ -80,3 +75,12 @@ class WaveformDisplay(QLabel):
     def reset(self):
         self.img = None
         self.clear()
+
+    def _set_style(self):
+        self.setStyleSheet("""
+            WaveformDisplay
+            {
+              border: 2px solid """ + Config.BORDER_BLUE + """;
+              background-color: """ + Config.LIGHT_BLUE + """;
+            }
+            """)
