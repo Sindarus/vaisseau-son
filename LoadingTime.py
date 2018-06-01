@@ -13,6 +13,7 @@ from PyQt5.QtGui import QMovie
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout, QPushButton
 
 from Config import Config
+from LabeledImageButton import LabeledImageButton
 
 
 class LoadingTime(QWidget):
@@ -22,6 +23,7 @@ class LoadingTime(QWidget):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.init_ui()
+        self._set_style()
 
         # This will disable input on all other windows
         self.setWindowModality(Qt.ApplicationModal)
@@ -45,7 +47,8 @@ class LoadingTime(QWidget):
         text_layout.addWidget(text_label)
         text_layout.addStretch(1)
 
-        self.back_button = QPushButton(Config.CANCEL_IA_TEXT)
+        self.back_button = LabeledImageButton(Config.CANCEL_IA_TEXT, "images/left-arrow.png")
+        self.back_button.resize_image(Config.LITTLE_NAV_ICON_SIZE, Config.LITTLE_NAV_ICON_SIZE)
         button_layout = QHBoxLayout()
         button_layout.addStretch(1)
         button_layout.addWidget(self.back_button)
@@ -62,3 +65,11 @@ class LoadingTime(QWidget):
         center_point = reference_rect.center()
         self_rect.moveCenter(center_point)
         self.move(self_rect.topLeft())
+
+    def _set_style(self):
+        self.setStyleSheet("""
+            QWidget{
+                background: """ + Config.LIGHT_LIGHT_BLUE + """;
+                color: """ + Config.FONT_COLOR + """;
+            }
+        """)
