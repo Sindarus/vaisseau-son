@@ -23,19 +23,23 @@ class ImageOptionButton(ImageButton):
         self.setCheckable(True)
         self.setAutoExclusive(True)
 
-        self._set_style_unselected()
+        self._set_style_()
 
-    def _set_style_selected(self):
+    def _set_style_(self):
         self.setStyleSheet("""
-            QFrame, QLabel, QToolTip {
-                border: 5px solid green;
+            QPushButton
+            {
+              padding: 5px;
+              border: none;
+              background-color: #ff0000;
             }
-            """)
-
-    def _set_style_unselected(self):
-        self.setStyleSheet("""
-            QFrame, QLabel, QToolTip {
-                border: 5px solid;
+            QPushButton:pressed
+            {
+              background-color: #cccccc;
+            }
+            ImageOptionButton:checked
+            {
+                border: 3px solid green;
             }
             """)
 

@@ -51,10 +51,15 @@ class SoundChooser(QGroupBox):
         for pos, sound_button in zip(positions, self.sounds_buttons):
             sounds_buttons_layout.addWidget(sound_button, pos[0], pos[1], Qt.AlignCenter)
 
-        # Selecting first sound at startup
-        self.sounds_buttons[0].setChecked(True)
         self.selected_sound_name = self.sounds_buttons[0].get_name()
         self.player.load_sound(self.sound_bank[self.selected_sound_name]['sound_path'])
+
+    def after_show_init(self):
+        """Initializations that need to be done right after the mainwindow has been .show()'ed """
+        # Selecting first sound at startup. We need to do that after the mainwindow has been .show()'ed (and not before)
+        # to avoid a display bug where the border of the sound_button widget would be taken into account to define its
+        # size, which would make it bigger than the other buttons forever.
+        self.sounds_buttons[0].setChecked(True)
 
     @pyqtSlot()
     def selected_sound_action(self):

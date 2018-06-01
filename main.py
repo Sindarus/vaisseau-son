@@ -23,6 +23,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.init_ui()
+        self.main_widget.after_show_init()
 
     def init_ui(self):
         self.main_widget = MainWidget()
@@ -38,7 +39,6 @@ class MainWindow(QMainWindow):
         self.showFullScreen() if Config.FULLSCREEN else self.show()
 
     def closeEvent(self, event):
-        print("closed")
         self.main_widget.close_child_windows()
         super().closeEvent(event)
 

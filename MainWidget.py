@@ -126,3 +126,6 @@ class MainWidget(QWidget):
         self.sound_recorder.player_recorder.reset()
         self.results_window.hide()
         self.results_window.reset()
+
+    def after_show_init(self):
+        self.sound_chooser.after_show_init()
