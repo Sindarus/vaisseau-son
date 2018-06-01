@@ -23,7 +23,7 @@ class MessageDisplay(QLabel):
 
     def _set_style(self):
         self.setStyleSheet("""
-            QFrame, QLabel, QToolTip {
+            MessageDisplay {
                 border: 5px solid red;
             }
-            """)
+        """)

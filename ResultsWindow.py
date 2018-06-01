@@ -117,7 +117,7 @@ class ResultsWindow(QWidget):
 
     def _set_style(self):
         self.setStyleSheet("""
-            QWidget{
+            ResultsWindow {
                 background: """ + Config.LIGHT_LIGHT_BLUE + """;
                 color: """ + Config.FONT_COLOR + """;
             }

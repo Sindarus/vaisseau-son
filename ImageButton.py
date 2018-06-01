@@ -43,13 +43,13 @@ class ImageButton(QPushButton):
 
     def _set_style(self, border_radius="0px"):
         self.setStyleSheet("""
-            QPushButton
+            ImageButton
             {
                 padding: 2px 0px 2px 0px;
                 border: none;
                 background-color: rgba(0, 0, 0, 0%);
             }
-            QPushButton:pressed
+            ImageButton:pressed
             {
                 border: 4px solid """ + Config.BORDER_BLUE + """;
                 border-radius: """ + border_radius + """;

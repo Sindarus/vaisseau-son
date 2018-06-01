@@ -28,13 +28,13 @@ class ImageOptionButton(ImageButton):
 
     def _set_style_(self):
         self.setStyleSheet("""
-            QPushButton
+            ImageOptionButton
             {
                 padding: 4px 2px 4px 2px;
                 border: none;
                 background-color: rgba(0, 0, 0, 0%);
             }
-            QPushButton:pressed
+            ImageOptionButton:pressed
             {
                 background-color: #cccccc;
             }
