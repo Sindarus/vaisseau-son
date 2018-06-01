@@ -35,10 +35,10 @@ class WaveformDisplay(QLabel):
         self.setFixedHeight(Config.WAVEFORM_DISPLAY_HEIGHT)
 
         self.setAlignment(Qt.AlignCenter)
-        self.load_placeholder_text("coucou")
+        self.load_placeholder_text()
 
-    def load_placeholder_text(self, text):
-        self.setText(text)
+    def load_placeholder_text(self):
+        self.setText(Config.WAVEFORM_DISPLAY_PLACEHOLDER_MSG)
 
     def load_audio(self, input_path):
         assert os.path.isfile(input_path)
@@ -82,7 +82,7 @@ class WaveformDisplay(QLabel):
     def reset(self):
         self.img = None
         self.clear()
-        self.load_placeholder_text("coucou")
+        self.load_placeholder_text()
 
     def _set_style(self):
         self.setStyleSheet("""

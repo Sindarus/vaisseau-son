@@ -64,6 +64,7 @@ class Config:
     RESULT_ITEM_TEXT = "L'IA a reconnu %s\navec une certitude de %i%%"
     EXTRA_RESULT_ITEM_TEXT = "%i%%"
     REC_TOO_SHORT_TOOLTIP_MSG = "Maintenez enfoncé pour enregistrer"
+    WAVEFORM_DISPLAY_PLACEHOLDER_MSG = "Votre extrait sonore apparaitra ici après enregistrement"
 
     # Audio
     N_CHANNELS = 1
