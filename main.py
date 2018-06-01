@@ -45,7 +45,7 @@ class MainWindow(QMainWindow):
 
     def _set_style(self):
         self.setStyleSheet("""
-            MainWindow {
+            QWidget {
                 background: """ + Config.LIGHT_LIGHT_BLUE + """;
                 color: """ + Config.FONT_COLOR + """;
             }
