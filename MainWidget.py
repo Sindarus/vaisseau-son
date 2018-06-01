@@ -8,7 +8,7 @@ Creation date: 2018-05-22
 Reference for style conventions : https://www.python.org/dev/peps/pep-0008
 """
 
-from PyQt5.QtCore import QTimer, pyqtSlot, pyqtSignal
+from PyQt5.QtCore import QTimer, pyqtSlot
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel
 
 from Config import Config
@@ -60,6 +60,12 @@ class MainWidget(QWidget):
 
         # Create message display widget
         self.notif_zone = MessageDisplay()
+        self.notif_zone.setStyleSheet("""
+            QLabel {
+                font-size: 24px;
+                color: #ff0000;
+            }
+        """)
         self.sound_recorder.player_recorder.recorded_too_short.connect(self.recorded_too_short_action)
 
         # Create Layouts
