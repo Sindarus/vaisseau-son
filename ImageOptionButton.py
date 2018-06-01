@@ -17,7 +17,7 @@ class ImageOptionButton(ImageButton):
     selected = pyqtSignal()
 
     def __init__(self, img_path, name):
-        super().__init__(img_path)
+        super().__init__(img_path, is_round=False)  # ImageOptionButtons should never be round
         self.name = name
 
         self.setCheckable(True)
