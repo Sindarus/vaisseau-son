@@ -18,6 +18,7 @@ class CaptionedImage(QWidget):
 
     def __init__(self, text=None, image_path=None):
         super().__init__()
+        self._set_style()
 
         self.img = None
         self.resized = False
@@ -76,3 +77,11 @@ class CaptionedImage(QWidget):
     def clear(self):
         self.text_label.clear()
         self.image_label.clear()
+
+    def _set_style(self):
+        self.setStyleSheet("""
+            QLabel
+            {
+              background-color: rgba(0, 0, 0, 0%);
+            }
+            """)
