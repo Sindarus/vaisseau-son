@@ -89,12 +89,6 @@ class AudioPlayer(QWidget):
         self.main_layout.addLayout(self.buttons_layout)
         self.main_layout.addWidget(self.wave_display)
 
-        self.setStyleSheet("""
-            QFrame, QLabel, QToolTip {
-                border: 5px solid green;
-            }
-            """)
-
     def play_sound(self):
         assert self.sound_path is not None, "Trying to play a sound but none were loaded in this AudioPlayer"
 
