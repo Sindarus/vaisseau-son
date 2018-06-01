@@ -24,6 +24,9 @@ class CustomStyleGroupBox(QGroupBox):
                 border-radius: 8px;
                 margin-top: 10px;
                 padding-top: 5px;
+                color: white;
+                font-weight: bold;
+                font-size: 14px;
             }
 
             QGroupBox::title {

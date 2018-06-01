@@ -38,6 +38,11 @@ class MainWidget(QWidget):
     def init_ui(self):
         # Create sound chooser and recorder widgets
         title = QLabel(Config.TITLE, self)
+        title.setStyleSheet("""
+            QLabel{
+                font-size: 24px;
+            }
+        """)
         self.sound_chooser = SoundChooser(self)
         self.sound_recorder = SoundRecorder(self)
 

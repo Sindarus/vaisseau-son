@@ -65,6 +65,12 @@ class ResultsWindow(QWidget):
     def init_results_widgets(self):
         self.main_result_widget = CaptionedImage()
         self.main_result_widget.resize_image(Config.MAIN_RESULT_IMAGE_SIZE, Config.MAIN_RESULT_IMAGE_SIZE)
+        self.main_result_widget.setStyleSheet("""
+            QLabel{
+                background-color: rgba(0, 0, 0, 0%);
+                font-size: 24px;
+            }
+        """)
         self.main_result_layout.addStretch(1)
         self.main_result_layout.addWidget(self.main_result_widget)
         self.main_result_layout.addStretch(1)
@@ -110,6 +116,7 @@ class ResultsWindow(QWidget):
     def _set_style(self):
         self.setStyleSheet("""
             QWidget{
-                background: """ + Config.LIGHT_LIGHT_BLUE + """
+                background: """ + Config.LIGHT_LIGHT_BLUE + """;
+                color: """ + Config.FONT_COLOR + """;
             }
         """)

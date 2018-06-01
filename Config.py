@@ -48,6 +48,7 @@ class Config:
     BLUE = "#3232c8"
     BORDER_BLUE = "#6c8ebf"
     VIVID_BLUE = "#008cff"
+    FONT_COLOR = "#4d4d4d"
 
     # Text
     TITLE = "Atelier son"
@@ -57,7 +58,7 @@ class Config:
     RESULTS_GROUP_TEXT = "Résultats"
     BACK_ARROW_TEXT = "Retour"
     RELOAD_ICON_TEXT = "Tout recommencer"
-    RESULT_ITEM_TEXT = "L'IA a reconnu %s avec une certitude de %i%%"
+    RESULT_ITEM_TEXT = "L'IA a reconnu %s\navec une certitude de %i%%"
     EXTRA_RESULT_ITEM_TEXT = "%i%%"
     REC_TOO_SHORT_TOOLTIP_MSG = "Maintenez enfoncé pour enregistrer"
 
