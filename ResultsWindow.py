@@ -10,11 +10,12 @@ Reference for style conventions : https://www.python.org/dev/peps/pep-0008
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QKeySequence
-from PyQt5.QtWidgets import QWidget, QShortcut, qApp, QHBoxLayout, QVBoxLayout, QDesktopWidget, QGroupBox
+from PyQt5.QtWidgets import QWidget, QShortcut, qApp, QHBoxLayout, QVBoxLayout, QDesktopWidget
 
 from CaptionedImage import CaptionedImage
-from LabeledImageButton import LabeledImageButton
 from Config import Config
+from CustomStyleGroupBox import CustomStyleGroupBox
+from LabeledImageButton import LabeledImageButton
 
 
 class ResultsWindow(QWidget):
@@ -30,6 +31,8 @@ class ResultsWindow(QWidget):
         self.quit_shortcut = QShortcut(QKeySequence(Qt.CTRL + Qt.Key_Q), self)
         self.quit_shortcut.activated.connect(qApp.quit)
 
+        self._set_style()
+
     def init_ui(self):
         self.main_result_layout = QHBoxLayout()
         self.extra_results_layout = QHBoxLayout()
@@ -39,7 +42,7 @@ class ResultsWindow(QWidget):
         layout.addLayout(self.extra_results_layout)
         self.init_results_widgets()
 
-        results_group = QGroupBox(Config.RESULTS_GROUP_TEXT)
+        results_group = CustomStyleGroupBox(Config.RESULTS_GROUP_TEXT)
         results_group.setLayout(layout)
 
         self.back_arrow = LabeledImageButton(Config.BACK_ARROW_TEXT, "images/left-arrow.png")
@@ -103,3 +106,10 @@ class ResultsWindow(QWidget):
         self.main_result_widget.clear()
         for cur_result_widget in self.extra_results_widgets:
             cur_result_widget.clear()
+
+    def _set_style(self):
+        self.setStyleSheet("""
+            QWidget{
+                background: """ + Config.LIGHT_LIGHT_BLUE + """
+            }
+        """)

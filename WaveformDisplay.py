@@ -54,14 +54,14 @@ class WaveformDisplay(QLabel):
                             channel_layouts=mono,\
                         showwavespic=\
                             s=" + Config.WAVEFORM_IMG_SIZE + ":\
-                            colors=#" + Config.WAVEFORM_DISPLAY_WAVE_COLOR + "[fg],\
+                            colors=" + Config.BLUE + "[fg],\
                         color=\
                             s=" + Config.WAVEFORM_IMG_SIZE + ":\
-                            color=#" + Config.WAVEFORM_DISPLAY_BG_COLOR + ",\
+                            color=" + Config.LIGHT_BLUE + ",\
                         drawgrid=\
                             width=iw/10:\
                             height=ih/5:\
-                            color=#" + Config.WAVEFORM_DISPLAY_WAVE_COLOR + "@" + Config.WAVEFORM_DISPLAY_GRID_OPACITY + "[bg];\
+                            color=" + Config.BLUE + "@" + Config.WAVEFORM_DISPLAY_GRID_OPACITY + "[bg];\
                         [bg][fg]overlay=\
                             format=rgb,\
                         drawbox=\
@@ -69,7 +69,7 @@ class WaveformDisplay(QLabel):
                             y=(ih-h)/2:\
                             w=iw:\
                             h=1:\
-                            color=#" + Config.WAVEFORM_DISPLAY_WAVE_COLOR,
+                            color=" + Config.BLUE,
                         "-vframes", "1", output_path], check=True, stderr=my_stderr)
         # https://stackoverflow.com/questions/32254818/generating-a-waveform-using-ffmpeg#32276471
 

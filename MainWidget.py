@@ -27,13 +27,13 @@ class MainWidget(QWidget):
         super().__init__()
         self.init_ui()
 
+        self.results = None  # Results of the classifying process
+
         self.loading_window = LoadingTime()
         self.loading_window.back_button.clicked.connect(self.interrupt)
         self.results_window = ResultsWindow()
         self.results_window.back_arrow.clicked.connect(self.results_window.hide)
         self.results_window.reload_arrow.clicked.connect(self.full_reset)
-
-        self.results = None  # Results of the classifying process
 
     def init_ui(self):
         # Create sound chooser and recorder widgets
@@ -42,7 +42,7 @@ class MainWidget(QWidget):
         self.sound_recorder = SoundRecorder(self)
 
         # Create go button
-        self.go_button = LabeledImageButton(Config.VALIDATE_BUTTON, "images/right-arrow.png",)
+        self.go_button = LabeledImageButton(Config.VALIDATE_BUTTON, "images/right-arrow.png")
         self.go_button.setEnabled(False)
         self.sound_recorder.player_recorder.was_recorded.connect(lambda: self.go_button.setEnabled(True))
         self.go_button.resize_image(Config.NAV_ICON_SIZE, Config.NAV_ICON_SIZE)

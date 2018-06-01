@@ -22,6 +22,7 @@ class MainWindow(QMainWindow):
 
     def __init__(self):
         super().__init__()
+        self._set_style()
         self.init_ui()
         self.main_widget.after_show_init()
 
@@ -41,6 +42,13 @@ class MainWindow(QMainWindow):
     def closeEvent(self, event):
         self.main_widget.close_child_windows()
         super().closeEvent(event)
+
+    def _set_style(self):
+        self.setStyleSheet("""
+            QWidget{
+                background: """ + Config.LIGHT_LIGHT_BLUE + """
+            }
+        """)
 
 
 if __name__ == '__main__':

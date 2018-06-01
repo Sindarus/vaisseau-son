@@ -9,21 +9,21 @@ Reference for style conventions : https://www.python.org/dev/peps/pep-0008
 """
 
 from PyQt5.QtCore import Qt, pyqtSlot
-from PyQt5.QtWidgets import QVBoxLayout, QGridLayout, QGroupBox
+from PyQt5.QtWidgets import QVBoxLayout, QGridLayout
 
 from AudioPlayer import AudioPlayer
 from Config import Config
+from CustomStyleGroupBox import CustomStyleGroupBox
 from ImageOptionButton import ImageOptionButton
 
 
-class SoundChooser(QGroupBox):
+class SoundChooser(CustomStyleGroupBox):
     """Widget that allows the user to choose a sound from a set, and to listen to it"""
 
     def __init__(self, parent_widget):
         super().__init__("Choisir un son", parent_widget)
 
         self.sound_bank = Config.SOUNDS
-
         self.init_ui()
 
     def init_ui(self):
