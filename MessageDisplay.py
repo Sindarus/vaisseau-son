@@ -7,6 +7,7 @@ Creation date: 2018-05-31
 
 Reference for style conventions : https://www.python.org/dev/peps/pep-0008
 """
+
 from PyQt5.QtCore import QTimer
 from PyQt5.QtWidgets import QLabel
 

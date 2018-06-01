@@ -8,11 +8,11 @@ Creation date: 2018-05-22
 Reference for style conventions : https://www.python.org/dev/peps/pep-0008
 """
 
-from PyQt5.QtCore import QTimer, Qt
+from PyQt5.QtCore import QTimer
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel
 
-from LabeledImageButton import LabeledImageButton
 from Config import Config
+from LabeledImageButton import LabeledImageButton
 from LoadingTime import LoadingTime
 from MessageDisplay import MessageDisplay
 from ResultsWindow import ResultsWindow

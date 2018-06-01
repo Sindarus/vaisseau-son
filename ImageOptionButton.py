@@ -30,13 +30,13 @@ class ImageOptionButton(ImageButton):
         self.setStyleSheet("""
             QPushButton
             {
-              padding: 4px 2px 4px 2px;
-              border: none;
-              background-color: rgba(0, 0, 0, 0%);
+                padding: 4px 2px 4px 2px;
+                border: none;
+                background-color: rgba(0, 0, 0, 0%);
             }
             QPushButton:pressed
             {
-              background-color: #cccccc;
+                background-color: #cccccc;
             }
             ImageOptionButton:checked
             {

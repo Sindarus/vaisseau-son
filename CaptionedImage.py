@@ -82,6 +82,6 @@ class CaptionedImage(QWidget):
         self.setStyleSheet("""
             QLabel
             {
-              background-color: rgba(0, 0, 0, 0%);
+                background-color: rgba(0, 0, 0, 0%);
             }
             """)

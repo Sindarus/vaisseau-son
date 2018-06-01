@@ -80,7 +80,7 @@ class WaveformDisplay(QLabel):
         self.setStyleSheet("""
             WaveformDisplay
             {
-              border: 2px solid """ + Config.BORDER_BLUE + """;
-              background-color: """ + Config.LIGHT_BLUE + """;
+                border: 2px solid """ + Config.BORDER_BLUE + """;
+                background-color: """ + Config.LIGHT_BLUE + """;
             }
-            """)
+        """)

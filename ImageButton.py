@@ -7,6 +7,7 @@ Creation date: 2018-05-23
 
 Reference for style conventions : https://www.python.org/dev/peps/pep-0008
 """
+
 from PyQt5.QtCore import QSize
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import QPushButton
@@ -44,15 +45,15 @@ class ImageButton(QPushButton):
         self.setStyleSheet("""
             QPushButton
             {
-              padding: 2px 0px 2px 0px;
-              border: none;
-              background-color: rgba(0, 0, 0, 0%);
+                padding: 2px 0px 2px 0px;
+                border: none;
+                background-color: rgba(0, 0, 0, 0%);
             }
             QPushButton:pressed
             {
-              border: 4px solid """ + Config.BORDER_BLUE + """;
-              border-radius: """ + border_radius + """;
-              background-color: #cccccc;
+                border: 4px solid """ + Config.BORDER_BLUE + """;
+                border-radius: """ + border_radius + """;
+                background-color: #cccccc;
             }
             """)
 
