@@ -10,6 +10,7 @@ Reference for style conventions : https://www.python.org/dev/peps/pep-0008
 
 from PyQt5.QtCore import pyqtSignal
 
+from Config import Config
 from ImageButton import ImageButton
 
 
@@ -29,9 +30,9 @@ class ImageOptionButton(ImageButton):
         self.setStyleSheet("""
             QPushButton
             {
-              padding: 5px;
+              padding: 4px 2px 4px 2px;
               border: none;
-              background-color: #ff0000;
+              background-color: rgba(0, 0, 0, 0%);
             }
             QPushButton:pressed
             {
@@ -39,7 +40,7 @@ class ImageOptionButton(ImageButton):
             }
             ImageOptionButton:checked
             {
-                border: 3px solid green;
+                border: 4px solid """ + Config.BORDER_BLUE + """;
             }
             """)
 
