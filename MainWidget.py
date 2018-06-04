@@ -22,6 +22,19 @@ from SoundRecorder import SoundRecorder
 
 
 class MainWidget(QWidget):
+    """QWidget that displays the sound chooser, the sound recorder, the reset button and a "next" button.
+
+    This widget also deals with calling a new thread for sound processing through the three methods
+    step1_process_comparison, step2_wait_for_results and step3_show_results. Those three methods are called in
+    sequence : the "go" button is connected to the step1_process_comparison method, which starts a new thread,
+    shows a waiting window with a spinner, and then calls step2_wait_for_results. step2_wait_for_results implements a
+    loop for pooling the status of the thread, by calling itself again if the thread is not finished yet. When the
+    thread is finished, step2_wait_for_results calls step3_show_results which displays the result window.
+
+    self.results: results of the processing. This variable should be a list of 2-tuples containing the
+                  name of the sound and the probability that the user tried to imitate this sound.
+                  example: [("lion", 85), ("police", 20), ("cow", 5), ("wind", 3)]
+    self.classifier: runable thread that holds the sound processing algorithm, loaded in step1_process_comparison"""
 
     def __init__(self):
         super().__init__()
@@ -36,6 +49,7 @@ class MainWidget(QWidget):
         self.results_window.reload_arrow.clicked.connect(self.full_reset)
 
     def init_ui(self):
+        """Initialize child widgets and layout"""
         # Create sound chooser and recorder widgets
         title = QLabel(Config.TITLE, self)
         title.setStyleSheet("""
@@ -95,6 +109,11 @@ class MainWidget(QWidget):
 
     @pyqtSlot()
     def step1_process_comparison(self):
+        """Start classifier in a new thread, show a loading window and call the wait_for_result routine.
+
+        This function retrieves the path of the sound that was recorded by the user, loads a new SoundClassifier object
+        with this path, and launches the processing. It also shows a loading window with a spinner while the processing
+        is ongoing, and calls the step2_wait_for_results function."""
         rec_sound_path = self.sound_recorder.player_recorder.get_recorded_sound_path()
         selected_sound_name = self.sound_chooser.get_selected_sound_name()
         selected_sound_path = Config.SOUNDS[selected_sound_name]['sound_path']
@@ -107,6 +126,14 @@ class MainWidget(QWidget):
         self.loading_window.center()
 
     def step2_wait_for_results(self, ident_classifier_thread):
+        """Wait for the sound classifier thread to be finished and calls step3_show_results.
+
+        The ident_classifier_thread argument should be the ident of the thread that this function is waiting for.
+        When this function is called, it creates a loop (because it asks qt to call it again if the classifier thread
+        has not ended). If the user demands to cancel the classifying process, self.classifier.should_stop will be set
+        to 1 and the step2_wait_for_results will know that it should stop its loop. If however the user has demanded
+        a new classifying process to start, self.classifier.should_stop will be false, but the self.classifier.ident
+        will be different, and the step2_wait_for_results will still know it should stop its loop."""
         if self.classifier.ident != ident_classifier_thread or self.classifier.should_stop:
             return
             # this defuses this wait_for_results loop, because the classifier we were waiting for has been canceled
@@ -117,6 +144,10 @@ class MainWidget(QWidget):
             self.step3_show_results()
 
     def step3_show_results(self):
+        """Load results into the result window then show it.
+
+        This function is called by step2_wait_for_results when the sound classifier proccess is finished. It loads
+        the results into the results window and then show the said window."""
         assert self.results is not None, "No results to show"
         print("results:", self.results)
         self.loading_window.hide()
@@ -124,26 +155,37 @@ class MainWidget(QWidget):
         self.results_window.showFullScreen() if Config.FULLSCREEN else self.results_window.show()
 
     def set_results(self, results):
+        """Set the results instance variable to what has been passed in argument.
+
+        Function called by the classifier thread to return its results. Albeit this function is run in another thread,
+        it still updates the instance variable that is then accessible by the main thread."""
         self.results = results
 
     def close_child_windows(self):
+        """Hide or close windows that were created by this class"""
         self.loading_window.hide()
 
     @pyqtSlot()
     def interrupt(self):
+        """Interrupt classifier thread"""
         self.loading_window.hide()
         self.classifier.please_stop_asap()
 
     @pyqtSlot()
     def full_reset(self):
+        """Reset the entire UI"""
         self.sound_recorder.player_recorder.reset()
         self.results_window.hide()
         self.results_window.reset()
 
     def after_show_init(self):
+        """Performs initializations that needs to be done after the main window has been shown"""
         self.sound_chooser.after_show_init()
 
     @pyqtSlot()
     def recorded_too_short_action(self):
+        """Action following the event when the user recorded a sound that is too short to be valid.
+
+        Display a help message in the notification zone and disables the "next" button"""
         self.notif_zone.display_text(Config.REC_TOO_SHORT_TOOLTIP_MSG, Config.NOTIFICATION_MESSAGES_TIMEOUT)
         self.go_button.setEnabled(False)
