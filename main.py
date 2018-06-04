@@ -19,14 +19,20 @@ from MainWidget import MainWidget
 
 
 class MainWindow(QMainWindow):
+    """Main window of the app.
+
+    self.main_widget: central widget that each QMainWindow has to set.
+    self.quit_shortcut: Ctrl+Q shortcut to quit the app"""
 
     def __init__(self):
+        """Initialize the UI of the main window as well as its associated actions"""
         super().__init__()
         self._set_style()
         self.init_ui()
         self.main_widget.after_show_init()
 
     def init_ui(self):
+        """Initialize widgets inside the window, actions, and window geometry."""
         self.main_widget = MainWidget()
         self.setCentralWidget(self.main_widget)
 
@@ -40,10 +46,12 @@ class MainWindow(QMainWindow):
         self.showFullScreen() if Config.FULLSCREEN else self.show()
 
     def closeEvent(self, event):
+        """Extend superclass method by closing window created by the central widget"""
         self.main_widget.close_child_windows()
         super().closeEvent(event)
 
     def _set_style(self):
+        """Set window's stylesheet"""
         self.setStyleSheet("""
             QWidget {
                 background: """ + Config.LIGHT_LIGHT_BLUE + """;
