@@ -12,9 +12,9 @@ import contextlib
 import os
 import wave
 
-from PyQt5.QtCore import pyqtSlot, QUrl, QDateTime, QFile, QIODevice, pyqtSignal
+from PyQt5.QtCore import pyqtSlot, QUrl, QDateTime, QFile, QIODevice, pyqtSignal, QPropertyAnimation, QRect
 from PyQt5.QtMultimedia import QSoundEffect, QAudioInput, QAudioFormat, QAudioDeviceInfo
-from PyQt5.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout
+from PyQt5.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QLabel
 
 from Config import Config
 from ImageButton import ImageButton
@@ -22,8 +22,8 @@ from WaveformDisplay import WaveformDisplay
 
 
 class AudioPlayer(QWidget):
-    was_recorded = pyqtSignal()         # This signal is emited when a sound was recorded the first time
-    recorded_too_short = pyqtSignal()   # This signal is emited when the user recorded a sound that was too short
+    was_recorded = pyqtSignal()  # This signal is emited when a sound was recorded the first time
+    recorded_too_short = pyqtSignal()  # This signal is emited when the user recorded a sound that was too short
 
     def __init__(self, recordable=False):
         super().__init__()
@@ -89,10 +89,14 @@ class AudioPlayer(QWidget):
         self.main_layout.addLayout(self.buttons_layout)
         self.main_layout.addWidget(self.wave_display)
 
+        # Setup plaback cursor
+        self.cursor = AudioCursor(self.wave_display)
+
     @pyqtSlot()
     def play_sound(self):
         assert self.sound_path is not None, "Trying to play a sound but none were loaded in this AudioPlayer"
 
+        self.cursor.pass_through()
         self.play_button.setEnabled(False)
         self.player.play()
 
@@ -100,10 +104,15 @@ class AudioPlayer(QWidget):
         self.sound_path = sound_path
         self.wave_display.load_audio(sound_path)
         self.player.setSource(QUrl.fromLocalFile(sound_path))
+
+        # Handle cursor
+        self.cursor.stop()
+        self.cursor.set_duration(self.get_wav_duration(sound_path) * 1000)
         self.play_button.setEnabled(True)
 
     @pyqtSlot()
     def start_recording(self):
+        # TODO: faire clignoter quelque-chose pendant l'enregistrement
         print("recording")
         assert self.recordable
         datetime_stamp = QDateTime.currentDateTime().toString("yyyyMMdd_hhmmss")
@@ -151,15 +160,16 @@ class AudioPlayer(QWidget):
     def playing_changed_action(self):
         if not self.player.isPlaying():
             self.play_button.setEnabled(True)
+            self.cursor.stop()
 
     @staticmethod
     def pcm_to_wav(pcm_input_file_path, wav_output_file_path):
         with open(pcm_input_file_path, 'rb') as pcmfile:
             pcmdata = pcmfile.read()
         with wave.open(wav_output_file_path, 'wb') as wavfile:
-            wavfile.setparams((Config.N_CHANNELS,           # nchannels
-                               Config.SAMPLE_SIZE // 8,     # sampwidth (in bytes) (= sample size)
-                               Config.SAMPLE_RATE,          # framerate (in hertz) (= sample rate)
+            wavfile.setparams((Config.N_CHANNELS,  # nchannels
+                               Config.SAMPLE_SIZE // 8,  # sampwidth (in bytes) (= sample size)
+                               Config.SAMPLE_RATE,  # framerate (in hertz) (= sample rate)
                                0, "NONE", "NONE"))
             wavfile.writeframes(pcmdata)
 
@@ -170,3 +180,42 @@ class AudioPlayer(QWidget):
             rate = f.getframerate()
             duration = frames / float(rate)
         return duration
+
+
+class AudioCursor(QLabel):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # config
+        self.padding = 2    # equal to the border width of the waveform display, here
+        self.width = 4
+        self.height = Config.WAVEFORM_DISPLAY_HEIGHT - 2 * 2
+
+        self.default_geometry = QRect(self.padding, self.padding, self.width, self.height)
+        self.setFixedSize(self.width, self.height)
+        self.setGeometry(self.default_geometry)
+        self.setStyleSheet("""
+            AudioCursor {
+                background-color: green;
+            }
+        """)
+
+        # Setup animation
+        self.animation = QPropertyAnimation(self, b"geometry")
+        self.animation.setStartValue(self.default_geometry)
+        self.animation.finished.connect(lambda: self.setGeometry(self.default_geometry))
+
+    def set_duration(self, duration):
+        self.animation.setDuration(duration)
+
+    def pass_through(self):
+        parent_size = self.parentWidget().size()
+        self.animation.setEndValue(QRect(parent_size.width()-self.padding-self.width,
+                                         self.padding,
+                                         self.width,  self.height))
+        self.animation.start()
+
+    def stop(self):
+        self.setGeometry(self.default_geometry)
+        self.animation.stop()
