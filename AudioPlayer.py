@@ -22,7 +22,12 @@ from WaveformDisplay import WaveformDisplay
 
 
 class AudioPlayer(QWidget):
-    was_recorded = pyqtSignal()  # This signal is emited when a sound was recorded the first time
+    """This class implements an audio reader and recorder.
+
+    signal was_recorded: emited when a sound was recorded
+    signal recording_started: This signal is emited when the user just started recording"""
+
+    was_recorded = pyqtSignal()
     recording_started = pyqtSignal()
 
     def __init__(self, recordable=False):

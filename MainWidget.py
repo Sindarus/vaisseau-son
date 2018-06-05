@@ -25,16 +25,19 @@ class MainWidget(QWidget):
     """QWidget that displays the sound chooser, the sound recorder, the reset button and a "next" button.
 
     This widget also deals with calling a new thread for sound processing through the three methods
-    step1_process_comparison, step2_wait_for_results and step3_show_results. Those three methods are called in
-    sequence : the "go" button is connected to the step1_process_comparison method, which starts a new thread,
-    shows a waiting window with a spinner, and then calls step2_wait_for_results. step2_wait_for_results implements a
-    loop for pooling the status of the thread, by calling itself again if the thread is not finished yet. When the
-    thread is finished, step2_wait_for_results calls step3_show_results which displays the result window.
+    :py:func:`step1_process_comparison`, :py:func:`step2_wait_for_results and step3_show_results`. Those three
+    methods are called in sequence : the "go" button is connected to the :py:func:`step1_process_comparison` method,
+    which starts a new thread, shows a waiting window with a spinner, and then calls
+    :py:func:`step2_wait_for_results`. :py:func:`step2_wait_for_results` implements a loop for pooling the status of
+    the thread, by calling itself again if the thread is not finished yet. When the thread is finished,
+    :py:func:`step2_wait_for_results` calls :py:func:`step3_show_results` which displays the result window.
 
-    self.results: results of the processing. This variable should be a list of 2-tuples containing the
-                  name of the sound and the probability that the user tried to imitate this sound.
-                  example: [("lion", 85), ("police", 20), ("cow", 5), ("wind", 3)]
-    self.classifier: runable thread that holds the sound processing algorithm, loaded in step1_process_comparison"""
+    *self.results*: results of the processing. This variable should be a list of 2-tuples containing the name
+    of the sound and the probability that the user tried to imitate this sound. example: [("lion", 85), ("police",
+    20), ("cow", 5), ("wind", 3)]
+
+    *self.classifier*: runable thread that holds the sound processing algorithm, loaded in
+    :py:func:`step1_process_comparison`. """
 
     def __init__(self):
         super().__init__()
