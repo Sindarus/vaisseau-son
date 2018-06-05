@@ -23,7 +23,7 @@ from WaveformDisplay import WaveformDisplay
 
 class AudioPlayer(QWidget):
     was_recorded = pyqtSignal()  # This signal is emited when a sound was recorded the first time
-    recorded_too_short = pyqtSignal()  # This signal is emited when the user recorded a sound that was too short
+    recording_started = pyqtSignal()
 
     def __init__(self, recordable=False):
         super().__init__()
@@ -34,6 +34,7 @@ class AudioPlayer(QWidget):
         self.init_ui()
         self.init_player()
         self.is_recorded = False  # Set to true if a sound was recorded at least once
+        self.is_currently_recording = False
         if recordable:
             self.init_recorder()
             # check output folder
@@ -74,8 +75,7 @@ class AudioPlayer(QWidget):
         if self.recordable:
             self.rec_button = ImageButton("images/record.png")
             self.rec_button.resize_image(Config.PLAYBACK_BUTTON_ICON_SIZE, Config.PLAYBACK_BUTTON_ICON_SIZE)
-            self.rec_button.pressed.connect(self.start_recording)
-            self.rec_button.released.connect(self.stop_recording)
+            self.rec_button.clicked.connect(self.rec_button_clicked_action)
 
         # Setup layout for play and rec buttons
         self.buttons_layout = QVBoxLayout()
@@ -111,36 +111,43 @@ class AudioPlayer(QWidget):
         self.play_button.setEnabled(True)
 
     @pyqtSlot()
+    def rec_button_clicked_action(self):
+        if not self.is_currently_recording:
+            self.start_recording()
+        else:
+            self.stop_recording()
+
     def start_recording(self):
         # TODO: faire clignoter quelque-chose pendant l'enregistrement
         print("recording")
         assert self.recordable
-        datetime_stamp = QDateTime.currentDateTime().toString("yyyyMMdd_hhmmss")
 
+        self.reset()
+
+        datetime_stamp = QDateTime.currentDateTime().toString("yyyyMMdd_hhmmss")
         self.recorded_pcm_path = "user_sounds/user_sound_" + datetime_stamp + ".pcm"
         self.recorded_wav_path = "user_sounds/user_sound_" + datetime_stamp + ".wav"  # for use in stop_recording
         self.file_to_record.setFileName(self.recorded_pcm_path)
         self.file_to_record.open(QIODevice.WriteOnly | QIODevice.Truncate)
 
         self.recorder.start(self.file_to_record)
+        self.is_currently_recording = True
+        self.recording_started.emit()
+        self.rec_button.change_image("images/stop_record.png")
 
-    @pyqtSlot()
     def stop_recording(self):
         print("not recording")
         self.recorder.stop()
         self.file_to_record.close()
 
         self.pcm_to_wav(self.recorded_pcm_path, self.recorded_wav_path)
-        if self.get_wav_duration(self.recorded_wav_path) < 0.5:
-            self.wave_display.reset()
-            self.reset()
-            self.recorded_too_short.emit()
-            return
-
         self.load_sound(self.recorded_wav_path)
         if not self.is_recorded:
             self.is_recorded = True
             self.was_recorded.emit()
+
+        self.is_currently_recording = False
+        self.rec_button.change_image("images/record.png")
 
     def reset(self):
         self.sound_path = None
@@ -149,7 +156,7 @@ class AudioPlayer(QWidget):
         self.is_recorded = False
 
         self.player.stop()
-        self.play_button.setEnabled(True)
+        self.play_button.setEnabled(False)
 
         self.wave_display.reset()
 

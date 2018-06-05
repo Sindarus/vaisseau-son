@@ -39,6 +39,7 @@ class Config:
     NAV_ICON_SIZE = 75
     LITTLE_NAV_ICON_SIZE = 50
     NOTIFICATION_MESSAGES_TIMEOUT = 5000  # in msec
+    IMAGE_BUTTON_HOLD_BORDER_WIDTH = 4
 
     # Waveform
     WAVEFORM_IMG_SIZE = "1500x270"
@@ -64,8 +65,8 @@ class Config:
     RELOAD_ICON_TEXT = "Tout recommencer"
     RESULT_ITEM_TEXT = "L'IA a reconnu %s\navec une certitude de %i%%"
     EXTRA_RESULT_ITEM_TEXT = "%i%%"
-    REC_TOO_SHORT_TOOLTIP_MSG = "Maintenez le bouton rouge enfoncé pour enregistrer"
     WAVEFORM_DISPLAY_PLACEHOLDER_MSG = "Votre extrait sonore apparaitra ici après enregistrement"
+    CURRENTLY_RECORDING_MSG = "Enregistrement en cour !"
 
     # Audio
     N_CHANNELS = 1

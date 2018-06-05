@@ -22,6 +22,8 @@ class ImageButton(QPushButton):
 
         self.img_path = img_path
         self.img = QPixmap(img_path)
+        self.width = self.img.width()
+        self.height = self.img.height()
 
         icon = QIcon(self.img)
         self.setIcon(icon)
@@ -32,14 +34,24 @@ class ImageButton(QPushButton):
 
     def resize_image(self, width, height):
         self.setIconSize(QSize(width, height))
+        self.width = width
+        self.height = height
 
         if self.is_round:
-            # we have to pick the minimum of the two sizes, otherwise, the border-radius property will be ignored
-            self._set_style(border_radius=str(min(width, height)//2) + "px")
-            # reload style
-            self.style().unpolish(self)
-            self.style().polish(self)
-            self.update()
+            self.update_round_style()
+
+    def change_image(self, img_path):
+        self.img = QPixmap(img_path)
+        icon = QIcon(self.img)
+        self.setIcon(icon)
+
+    def update_round_style(self):
+        # we have to pick the minimum of the two sizes, otherwise, the border-radius property will be ignored
+        self._set_style(border_radius=str(min(self.width, self.height) // 2) + "px")
+        # reload style
+        self.style().unpolish(self)
+        self.style().polish(self)
+        self.update()
 
     def _set_style(self, border_radius="0px"):
         self.setStyleSheet("""
@@ -51,7 +63,7 @@ class ImageButton(QPushButton):
             }
             ImageButton:pressed
             {
-                border: 4px solid """ + Config.BORDER_BLUE + """;
+                border: """ + str(Config.IMAGE_BUTTON_HOLD_BORDER_WIDTH) + """px solid """ + Config.BORDER_BLUE + """;
                 border-radius: """ + border_radius + """;
                 background-color: #cccccc;
             }

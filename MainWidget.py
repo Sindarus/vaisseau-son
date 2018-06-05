@@ -64,6 +64,10 @@ class MainWidget(QWidget):
         self.go_button = LabeledImageButton(Config.VALIDATE_BUTTON, "images/right-arrow.png")
         self.go_button.setEnabled(False)
         self.sound_recorder.player_recorder.was_recorded.connect(lambda: self.go_button.setEnabled(True))
+        self.sound_recorder.player_recorder.was_recorded.connect(
+            lambda: self.notif_zone.setText(""))
+        self.sound_recorder.player_recorder.recording_started.connect(
+            lambda: self.notif_zone.setText(Config.CURRENTLY_RECORDING_MSG))
         self.go_button.resize_image(Config.NAV_ICON_SIZE, Config.NAV_ICON_SIZE)
         self.go_button.clicked.connect(self.step1_process_comparison)
 
@@ -80,7 +84,6 @@ class MainWidget(QWidget):
                 color: #ff0000;
             }
         """)
-        self.sound_recorder.player_recorder.recorded_too_short.connect(self.recorded_too_short_action)
 
         # Create Layouts
         main_layout = QVBoxLayout()
@@ -181,11 +184,3 @@ class MainWidget(QWidget):
     def after_show_init(self):
         """Performs initializations that needs to be done after the main window has been shown"""
         self.sound_chooser.after_show_init()
-
-    @pyqtSlot()
-    def recorded_too_short_action(self):
-        """Action following the event when the user recorded a sound that is too short to be valid.
-
-        Display a help message in the notification zone and disables the "next" button"""
-        self.notif_zone.display_text(Config.REC_TOO_SHORT_TOOLTIP_MSG, Config.NOTIFICATION_MESSAGES_TIMEOUT)
-        self.go_button.setEnabled(False)
