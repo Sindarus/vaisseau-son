@@ -2,4 +2,4 @@ __pycache__/*
 waveforms/*
 user_sounds/*
 .idea/*
-
+docs/_*
