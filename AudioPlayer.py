@@ -160,7 +160,7 @@ class AudioPlayer(QWidget):
     def playing_changed_action(self):
         if not self.player.isPlaying():
             self.play_button.setEnabled(True)
-            self.cursor.stop()
+            self.cursor.stop()  # interrupt the cursor animation before its end, since the sound is finished playing
 
     @staticmethod
     def pcm_to_wav(pcm_input_file_path, wav_output_file_path):
