@@ -31,6 +31,14 @@ class AudioPlayer(QWidget):
     recording_started = pyqtSignal()
 
     def __init__(self, recordable=False):
+        """Initialize an AudioPlayer object.
+
+        *recordable* should be set to true if you want the AudioPlayer to have recording abilities and a "rec" button.
+        Recorded audio files will be stored in the usersounds/ folder. If this folder does not exist, it is created.
+
+        *self.sound_path* holds the path of the sound that is currently loaded in the player. *None* if no sound was
+        loaded
+        """
         super().__init__()
         self.recordable = recordable
         self.sound_path = None
@@ -47,11 +55,13 @@ class AudioPlayer(QWidget):
                 os.makedirs("user_sounds/")
 
     def init_player(self):
+        """Initialize the internal audio player"""
         self.player = QSoundEffect()
         self.player.setVolume(1)
         self.player.playingChanged.connect(self.playing_changed_action)
 
     def init_recorder(self):
+        """Initialize the internal audio recorder"""
         self.file_to_record = QFile()
 
         audio_format = QAudioFormat()
@@ -71,6 +81,7 @@ class AudioPlayer(QWidget):
         self.recorder = QAudioInput(device_info, audio_format)
 
     def init_ui(self):
+        """Initialize child widgets and layout"""
         # Create widgets
         self.wave_display = WaveformDisplay()
         self.play_button = ImageButton("images/play2.png")
@@ -99,6 +110,7 @@ class AudioPlayer(QWidget):
 
     @pyqtSlot()
     def play_sound(self):
+        """Start playing sound through the system's default output"""
         assert self.sound_path is not None, "Trying to play a sound but none were loaded in this AudioPlayer"
 
         self.cursor.pass_through()
@@ -106,6 +118,7 @@ class AudioPlayer(QWidget):
         self.player.play()
 
     def load_sound(self, sound_path):
+        """Load a sound into the player by passing its path"""
         self.sound_path = sound_path
         self.wave_display.load_audio(sound_path)
         self.player.setSource(QUrl.fromLocalFile(sound_path))
@@ -117,13 +130,19 @@ class AudioPlayer(QWidget):
 
     @pyqtSlot()
     def rec_button_clicked_action(self):
+        """Handle what happens when the rec_button is clicked"""
         if not self.is_currently_recording:
             self.start_recording()
         else:
             self.stop_recording()
 
     def start_recording(self):
+        """Start recording sound through the system's default microphone.
+
+        Audio data is saved as a pcm (Pulse Code Modulation) file at first, using settings in :py:module:`Config`.
+        This function also handles changing the "rec" button into a "stop rec" button by changing its image."""
         # TODO: faire clignoter quelque-chose pendant l'enregistrement
+        # TODO: mettre un délai de 10 ou 12 secondes avant de couper l'enregistrement
         print("recording")
         assert self.recordable
 
@@ -141,6 +160,9 @@ class AudioPlayer(QWidget):
         self.rec_button.change_image("images/stop_record.png")
 
     def stop_recording(self):
+        """Stop recording audio.
+
+        The recorded audio PCM file is converted to WAV for use later on."""
         print("not recording")
         self.recorder.stop()
         self.file_to_record.close()
@@ -155,6 +177,7 @@ class AudioPlayer(QWidget):
         self.rec_button.change_image("images/record.png")
 
     def reset(self):
+        """Reset the AudioPlayer to the state it was when it was just created."""
         self.sound_path = None
         self.recorded_wav_path = None
         self.recorded_pcm_path = None
@@ -166,16 +189,19 @@ class AudioPlayer(QWidget):
         self.wave_display.reset()
 
     def get_recorded_sound_path(self):
+        """Getter function for the *recorded_wav_path* attribute"""
         return self.recorded_wav_path
 
     @pyqtSlot()
     def playing_changed_action(self):
+        """handle what happens when the audio playback is finished playing."""
         if not self.player.isPlaying():
             self.play_button.setEnabled(True)
             self.cursor.stop()  # interrupt the cursor animation before its end, since the sound is finished playing
 
     @staticmethod
     def pcm_to_wav(pcm_input_file_path, wav_output_file_path):
+        """Convert pcm file to wav file. PCM file settings are specified in the :py:module:`Config` module."""
         with open(pcm_input_file_path, 'rb') as pcmfile:
             pcmdata = pcmfile.read()
         with wave.open(wav_output_file_path, 'wb') as wavfile:
@@ -187,6 +213,7 @@ class AudioPlayer(QWidget):
 
     @staticmethod
     def get_wav_duration(wav_file_path):
+        """Get the duration a wav audio file."""
         with contextlib.closing(wave.open(wav_file_path, 'r')) as f:
             frames = f.getnframes()
             rate = f.getframerate()
@@ -195,8 +222,16 @@ class AudioPlayer(QWidget):
 
 
 class AudioCursor(QLabel):
+    """Class meant to be used only by AudioPlayer to implement a cursor that moves as the sound is being played.
+
+    This is a QLabel whose size has been fixed to a thin vertical bar to look like a cursor. When initialized,
+    you should specify its parent widget to be the WaveformDisplay on which you want to display a cursor. That was,
+    the cursor can position itself above the WaveformDisplay with the setGeometry function. Call "pass_through" to
+    animate the cursor from the topleft position to the topright position. Internally, the mechanism of "property
+    animation" of qt is used to translate the cursor from left to right."""
 
     def __init__(self, *args, **kwargs):
+        """Initialize object"""
         super().__init__(*args, **kwargs)
 
         # config
@@ -219,9 +254,11 @@ class AudioCursor(QLabel):
         self.animation.finished.connect(lambda: self.setGeometry(self.default_geometry))
 
     def set_duration(self, duration):
+        """Set the animation duration to be *duration*. This has to be the duration of the audio file."""
         self.animation.setDuration(duration)
 
     def pass_through(self):
+        """Launch the animation"""
         parent_size = self.parentWidget().size()
         self.animation.setEndValue(QRect(parent_size.width()-self.padding-self.width,
                                          self.padding,
@@ -229,5 +266,6 @@ class AudioCursor(QLabel):
         self.animation.start()
 
     def stop(self):
-        self.setGeometry(self.default_geometry)
+        """Interrupt the animation and put the cursor back to its topleft position"""
         self.animation.stop()
+        self.setGeometry(self.default_geometry)

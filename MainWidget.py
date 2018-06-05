@@ -37,7 +37,7 @@ class MainWidget(QWidget):
     20), ("cow", 5), ("wind", 3)]
 
     *self.classifier*: runable thread that holds the sound processing algorithm, loaded in
-    :py:func:`step1_process_comparison`. """
+    :py:func:`step1_process_comparison`."""
 
     def __init__(self):
         super().__init__()
