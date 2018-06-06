@@ -14,8 +14,10 @@ from PyQt5.QtWidgets import QWidget, QLabel, QHBoxLayout, QVBoxLayout, QSizePoli
 
 
 class CaptionedImage(QWidget):
+    """Widget that displays an image with caption centered beneath it."""
 
     def __init__(self, text=None, image_path=None):
+        """The caption and image can either be passed at init time or loaded afterwards with the appropriate methods."""
         super().__init__()
         self._set_style()
 
@@ -52,8 +54,10 @@ class CaptionedImage(QWidget):
             self.load_image(image_path)
 
     def resize_image(self, width, height):
-        """If this function is called before an image was loaded, we will keep the requested size in memory for
-        future images to be correctly resized"""
+        """Resize the image display. The image data is kept unaltered.
+
+        If this function is called before an image was loaded, the requested size is kept in memory for future images
+        to be correctly resized."""
         if self.img is not None:
             self.image_label.setPixmap(self.img.scaled(width, height,
                                                        transformMode=Qt.SmoothTransformation))
@@ -62,9 +66,13 @@ class CaptionedImage(QWidget):
         self.resized_height = height
 
     def load_caption(self, text):
+        """Load a caption to be displayed beneath the picture."""
         self.text_label.setText(text)
 
     def load_image(self, image_path):
+        """Load an image to be displayed.
+
+        If :py:func:`resize_image` was called before, the new image is resized to that size."""
         self.img = QPixmap(image_path)
         if self.resized:
             self.image_label.setPixmap(self.img.scaled(self.resized_width,
@@ -74,6 +82,7 @@ class CaptionedImage(QWidget):
             self.image_label.setPixmap(self.img)
 
     def clear(self):
+        """Unload image and label"""
         self.text_label.clear()
         self.image_label.clear()
 
