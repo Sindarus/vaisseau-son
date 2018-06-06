@@ -25,9 +25,9 @@ class MainWidget(QWidget):
     """QWidget that displays the sound chooser, the sound recorder, the reset button and a "next" button.
 
     This widget also deals with calling a new thread for sound processing through the three methods
-    :py:func:`step1_process_comparison`, :py:func:`step2_wait_for_results and step3_show_results`. Those three
-    methods are called in sequence : the "go" button is connected to the :py:func:`step1_process_comparison` method,
-    which starts a new thread, shows a waiting window with a spinner, and then calls
+    :py:func:`step1_process_comparison`, :py:func:`step2_wait_for_results` and :py:func:`step3_show_results`. Those
+    three methods are called in sequence : the "go" button is connected to the :py:func:`step1_process_comparison`
+    method, which starts a new thread, shows a waiting window with a spinner, and then calls
     :py:func:`step2_wait_for_results`. :py:func:`step2_wait_for_results` implements a loop for pooling the status of
     the thread, by calling itself again if the thread is not finished yet. When the thread is finished,
     :py:func:`step2_wait_for_results` calls :py:func:`step3_show_results` which displays the result window.
@@ -43,7 +43,7 @@ class MainWidget(QWidget):
         super().__init__()
         self.init_ui()
 
-        self.results = None  # Results of the classifying process
+        self.results = None
 
         self.loading_window = LoadingTime()
         self.loading_window.back_button.clicked.connect(self.interrupt)
@@ -115,11 +115,12 @@ class MainWidget(QWidget):
 
     @pyqtSlot()
     def step1_process_comparison(self):
-        """Start classifier in a new thread, show a loading window and call the wait_for_result routine.
+        """Start classifier in a new thread, show a loading window and call the :py:func`step2_wait_for_result` routine.
 
-        This function retrieves the path of the sound that was recorded by the user, loads a new SoundClassifier object
-        with this path, and launches the processing. It also shows a loading window with a spinner while the processing
-        is ongoing, and calls the step2_wait_for_results function."""
+        This function retrieves the path of the sound that was recorded by the user, loads a new
+        :py:class:`SoundClassifier` object with this path, and launches the processing. It also shows a loading
+        window with a spinner while the processing is ongoing, and calls the :py:func`step2_wait_for_results
+        function.`"""
         rec_sound_path = self.sound_recorder.player_recorder.get_recorded_sound_path()
         selected_sound_name = self.sound_chooser.get_selected_sound_name()
         selected_sound_path = Config.SOUNDS[selected_sound_name]['sound_path']
@@ -132,14 +133,14 @@ class MainWidget(QWidget):
         self.loading_window.center()
 
     def step2_wait_for_results(self, ident_classifier_thread):
-        """Wait for the sound classifier thread to be finished and calls step3_show_results.
+        """Wait for the sound classifier thread to be finished and calls :py:func`step3_show_results`.
 
-        The ident_classifier_thread argument should be the ident of the thread that this function is waiting for.
-        When this function is called, it creates a loop (because it asks qt to call it again if the classifier thread
-        has not ended). If the user demands to cancel the classifying process, self.classifier.should_stop will be set
-        to 1 and the step2_wait_for_results will know that it should stop its loop. If however the user has demanded
-        a new classifying process to start, self.classifier.should_stop will be false, but the self.classifier.ident
-        will be different, and the step2_wait_for_results will still know it should stop its loop."""
+        The *ident_classifier_thread* argument should be the ident of the thread that this function is waiting for.
+        When this function is called, it creates a loop (using :py:func`QTimer.singleShot`). If the user demands to
+        cancel the classifying process, *self.classifier.should_stop* will be set to 1 and the
+        :py:func`step2_wait_for_results` will know that it should stop its loop. If however the user has demanded a
+        new classifying process to start, *self.classifier.should_stop* will be false, but the *self.classifier.ident*
+        will be different, and the :py:func`step2_wait_for_results` will still know it should stop its loop."""
         if self.classifier.ident != ident_classifier_thread or self.classifier.should_stop:
             return
             # this defuses this wait_for_results loop, because the classifier we were waiting for has been canceled
@@ -152,8 +153,8 @@ class MainWidget(QWidget):
     def step3_show_results(self):
         """Load results into the result window then show it.
 
-        This function is called by step2_wait_for_results when the sound classifier proccess is finished. It loads
-        the results into the results window and then show the said window."""
+        This function is called by :py:func`step2_wait_for_results` when the sound classifier proccess is finished.
+        It loads the results into the :py:class:`ResultsWindow` and then show the said window."""
         assert self.results is not None, "No results to show"
         print("results:", self.results)
         self.loading_window.hide()
@@ -164,7 +165,7 @@ class MainWidget(QWidget):
         """Set the results instance variable to what has been passed in argument.
 
         Function called by the classifier thread to return its results. Albeit this function is run in another thread,
-        it still updates the instance variable that is then accessible by the main thread."""
+        it does update the instance variable that is then accessible by the main thread."""
         self.results = results
 
     def close_child_windows(self):

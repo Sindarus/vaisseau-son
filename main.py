@@ -21,8 +21,8 @@ from MainWidget import MainWidget
 class MainWindow(QMainWindow):
     """Main window of the app.
 
-    self.main_widget: central widget that each QMainWindow has to set.
-    self.quit_shortcut: Ctrl+Q shortcut to quit the app"""
+    *self.main_widget*: central widget that each QMainWindow has to set.
+    *self.quit_shortcut*: Ctrl+Q shortcut to quit the app"""
 
     def __init__(self):
         """Initialize the UI of the main window as well as its associated actions"""

@@ -22,22 +22,22 @@ from WaveformDisplay import WaveformDisplay
 
 
 class AudioPlayer(QWidget):
-    """This class implements an audio reader and recorder.
-
-    signal was_recorded: emited when a sound was recorded
-    signal recording_started: This signal is emited when the user just started recording"""
+    """This class implements an audio reader and recorder."""
 
     was_recorded = pyqtSignal()
+    """Signal that is emited when a sound was recorded"""
     recording_started = pyqtSignal()
+    """Signal that is emited when the user just started recording"""
 
     def __init__(self, recordable=False):
-        """Initialize an AudioPlayer object.
+        """Initialize an :py:class`AudioPlayer` object.
 
-        *recordable* should be set to true if you want the AudioPlayer to have recording abilities and a "rec" button.
-        Recorded audio files will be stored in the usersounds/ folder. If this folder does not exist, it is created.
+        *recordable* should be set to true if you want the :py:class`AudioPlayer` to have recording abilities and a
+        "rec" button. Recorded audio files will be stored in the *usersounds/* folder. If this folder does not exist,
+        it is created.
 
         *self.sound_path* holds the path of the sound that is currently loaded in the player. *None* if no sound was
-        loaded
+        loaded.
         """
         super().__init__()
         self.recordable = recordable
@@ -130,7 +130,7 @@ class AudioPlayer(QWidget):
 
     @pyqtSlot()
     def rec_button_clicked_action(self):
-        """Handle what happens when the rec_button is clicked"""
+        """Handle what happens when the "rec" button is clicked"""
         if not self.is_currently_recording:
             self.start_recording()
         else:
@@ -139,10 +139,8 @@ class AudioPlayer(QWidget):
     def start_recording(self):
         """Start recording sound through the system's default microphone.
 
-        Audio data is saved as a pcm (Pulse Code Modulation) file at first, using settings in :py:module:`Config`.
+        Audio data is saved as a pcm (Pulse Code Modulation) file at first, using settings in :py:mod:`Config`.
         This function also handles changing the "rec" button into a "stop rec" button by changing its image."""
-        # TODO: faire clignoter quelque-chose pendant l'enregistrement
-        # TODO: mettre un délai de 10 ou 12 secondes avant de couper l'enregistrement
         print("recording")
         assert self.recordable
 
@@ -201,7 +199,7 @@ class AudioPlayer(QWidget):
 
     @staticmethod
     def pcm_to_wav(pcm_input_file_path, wav_output_file_path):
-        """Convert pcm file to wav file. PCM file settings are specified in the :py:module:`Config` module."""
+        """Convert pcm file to wav file. PCM file settings are specified in the :py:mod:`Config` module."""
         with open(pcm_input_file_path, 'rb') as pcmfile:
             pcmdata = pcmfile.read()
         with wave.open(wav_output_file_path, 'wb') as wavfile:
@@ -225,10 +223,10 @@ class AudioCursor(QLabel):
     """Class meant to be used only by AudioPlayer to implement a cursor that moves as the sound is being played.
 
     This is a QLabel whose size has been fixed to a thin vertical bar to look like a cursor. When initialized,
-    you should specify its parent widget to be the WaveformDisplay on which you want to display a cursor. That was,
+    you should specify its parent widget to be the WaveformDisplay on which you want to display a cursor. That way,
     the cursor can position itself above the WaveformDisplay with the setGeometry function. Call "pass_through" to
     animate the cursor from the topleft position to the topright position. Internally, the mechanism of "property
-    animation" of qt is used to translate the cursor from left to right."""
+    animation" of Qt is used to translate the cursor from left to right."""
 
     def __init__(self, *args, **kwargs):
         """Initialize object"""
