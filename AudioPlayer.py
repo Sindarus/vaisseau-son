@@ -12,7 +12,7 @@ import contextlib
 import os
 import wave
 
-from PyQt5.QtCore import pyqtSlot, QUrl, QDateTime, QFile, QIODevice, pyqtSignal, QPropertyAnimation, QRect
+from PyQt5.QtCore import pyqtSlot, QUrl, QDateTime, QFile, QIODevice, pyqtSignal, QPropertyAnimation, QRect, QTimer
 from PyQt5.QtMultimedia import QSoundEffect, QAudioInput, QAudioFormat, QAudioDeviceInfo
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QLabel
 
@@ -155,6 +155,13 @@ class AudioPlayer(QWidget):
         self.recording_started.emit()
         self.rec_button.change_image("images/stop_record.png")
 
+        # In a while, check if the recording is not too long. The recording is identified by its pcm file saving
+        # path, passed to the check-function. This argument HAS to be litteral : if we did use
+        # self.recorded_pcm_path as argument, the check function would be called with the value of
+        # self.recorded_pcm_path for the moment it is called, not the moment we define the timer.
+        QTimer.singleShot(Config.AUDIO_RECORD_TIMOUT,
+                          lambda: self.recording_timeout_check("user_sounds/user_sound_" + datetime_stamp + ".pcm"))
+
     def stop_recording(self):
         """Stop recording audio.
 
@@ -171,6 +178,17 @@ class AudioPlayer(QWidget):
 
         self.is_currently_recording = False
         self.rec_button.change_image("images/record.png")
+
+    def recording_timeout_check(self, specific_recorded_pcm_path):
+        """Checks that the recording of file *specific_recorded_pcm_path* has ended. If not, then end it.
+
+        This function is set (in :py:func:`start_recording`) to be called after Config.AUDIO_RECORD_TIMOUT ms,
+        and is used to limit the maximum duration of a recording. First, we verify that the recording we're checking
+        on hasn't ended and been replaced with a new one, then, if the recording is still ongoing, we stop it.
+        """
+        if self.recorded_pcm_path == specific_recorded_pcm_path:
+            if self.is_currently_recording:
+                self.stop_recording()
 
     def reset(self):
         """Reset the :py:class:`AudioPlayer` to the state it was when it was just created."""
@@ -231,7 +249,7 @@ class AudioCursor(QLabel):
         super().__init__(*args, **kwargs)
 
         # config
-        self.padding = 2    # equal to the border width of the waveform display, here
+        self.padding = 2  # equal to the border width of the waveform display, here
         self.width = 4
         self.height = Config.WAVEFORM_DISPLAY_HEIGHT - 2 * 2
 
@@ -256,9 +274,9 @@ class AudioCursor(QLabel):
     def pass_through(self):
         """Launch the animation"""
         parent_size = self.parentWidget().size()
-        self.animation.setEndValue(QRect(parent_size.width()-self.padding-self.width,
+        self.animation.setEndValue(QRect(parent_size.width() - self.padding - self.width,
                                          self.padding,
-                                         self.width,  self.height))
+                                         self.width, self.height))
         self.animation.start()
 
     def stop(self):
