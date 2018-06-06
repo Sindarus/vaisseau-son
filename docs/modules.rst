@@ -36,7 +36,7 @@ All modules on one page
 
 ------------
 
-.. automodule:: LoadingTime
+.. automodule:: LoadingTimeWindow
    :members:
 
 ------------
