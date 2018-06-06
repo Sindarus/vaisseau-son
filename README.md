@@ -10,7 +10,10 @@ Install pyqt5
 `pip3 install pyqt5`
 
 Install ffmpeg
-`sudo apt insatll ffmpeg`
+`sudo apt install ffmpeg`
+
+Install sphinx
+`sudo apt install sphinx`
 
 # Tips
 ### Tip for debugging
