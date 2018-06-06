@@ -131,7 +131,6 @@ class MainWidget(QWidget):
         self.classifier.start()
         self.step2_wait_for_results(self.classifier.ident)
         self.loading_window.show()
-        self.loading_window.center()
 
     def step2_wait_for_results(self, ident_classifier_thread):
         """Wait for the sound classifier thread to be finished and calls :py:func`step3_show_results`.

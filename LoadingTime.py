@@ -10,7 +10,7 @@ Reference for style conventions : https://www.python.org/dev/peps/pep-0008
 
 from PyQt5.QtCore import Qt, QRect
 from PyQt5.QtGui import QMovie
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout, QPushButton
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout, QDesktopWidget
 
 from Config import Config
 from LabeledImageButton import LabeledImageButton
@@ -61,10 +61,18 @@ class LoadingTime(QWidget):
 
     def center(self):
         self_rect = self.frameGeometry()
-        reference_rect = QRect(0, 0, Config.WINDOW_MODE_WIDTH, Config.WINDOW_MODE_HEIGHT)
+        if Config.FULLSCREEN:
+            reference_rect = QDesktopWidget().availableGeometry()
+        else:
+            reference_rect = QRect(0, 0, Config.WINDOW_MODE_WIDTH, Config.WINDOW_MODE_HEIGHT)
         center_point = reference_rect.center()
         self_rect.moveCenter(center_point)
+
         self.move(self_rect.topLeft())
+
+    def showEvent(self, a):
+        super().showEvent(a)
+        self.center()
 
     def _set_style(self):
         self.setStyleSheet("""
