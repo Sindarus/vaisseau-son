@@ -11,6 +11,7 @@ Welcome to Vaisseau-son's documentation!
    :caption: Contents:
 
    modules
+   todo
 
 
 Indices and tables
