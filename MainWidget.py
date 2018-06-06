@@ -13,7 +13,7 @@ from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel
 
 from Config import Config
 from LabeledImageButton import LabeledImageButton
-from LoadingTime import LoadingTime
+from LoadingTimeWindow import LoadingTimeWindow
 from MessageDisplay import MessageDisplay
 from ResultsWindow import ResultsWindow
 from SoundChooser import SoundChooser
@@ -45,7 +45,7 @@ class MainWidget(QWidget):
 
         self.results = None
 
-        self.loading_window = LoadingTime()
+        self.loading_window = LoadingTimeWindow()
         self.loading_window.back_button.clicked.connect(self.interrupt)
         self.results_window = ResultsWindow()
         self.results_window.back_arrow.clicked.connect(self.results_window.hide)

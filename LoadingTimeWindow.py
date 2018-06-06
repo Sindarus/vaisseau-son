@@ -16,7 +16,7 @@ from Config import Config
 from LabeledImageButton import LabeledImageButton
 
 
-class LoadingTime(QWidget):
+class LoadingTimeWindow(QWidget):
     """Widget that shows a message and a spinner or a progress bar, to be shown while the program
     is processing/loading."""
 
@@ -76,7 +76,7 @@ class LoadingTime(QWidget):
 
     def _set_style(self):
         self.setStyleSheet("""
-            LoadingTime {
+            LoadingTimeWindow {
                 background: """ + Config.LIGHT_LIGHT_BLUE + """;
                 color: """ + Config.FONT_COLOR + """;
             }
