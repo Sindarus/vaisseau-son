@@ -32,7 +32,7 @@ class MainWindow(QMainWindow):
 
     def init_ui(self):
         """Initialize widgets inside the window, actions, and window geometry."""
-        self.main_widget = MainWidget()
+        self.main_widget = MainWidget(self)
         self.setCentralWidget(self.main_widget)
 
         # actions

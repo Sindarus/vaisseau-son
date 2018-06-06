@@ -39,8 +39,8 @@ class MainWidget(QWidget):
     *self.classifier*: runable thread that holds the sound processing algorithm, loaded in
     :py:func:`step1_process_comparison`."""
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.init_ui()
 
         self.results = None
@@ -50,6 +50,8 @@ class MainWidget(QWidget):
         self.results_window = ResultsWindow()
         self.results_window.back_arrow.clicked.connect(self.results_window.hide)
         self.results_window.reload_arrow.clicked.connect(self.full_reset)
+        self.results_window.window_shown.connect(self.parentWidget().hide)
+        self.results_window.window_hidden.connect(self.parentWidget().show)
 
     def init_ui(self):
         # Create sound chooser and recorder widgets

@@ -8,7 +8,7 @@ Creation date: 2018-05-28
 Reference for style conventions : https://www.python.org/dev/peps/pep-0008
 """
 
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtGui import QKeySequence
 from PyQt5.QtWidgets import QWidget, QShortcut, qApp, QHBoxLayout, QVBoxLayout, QDesktopWidget, QSizePolicy
 
@@ -19,6 +19,8 @@ from LabeledImageButton import LabeledImageButton
 
 
 class ResultsWindow(QWidget):
+    window_shown = pyqtSignal()
+    window_hidden = pyqtSignal()
 
     def __init__(self):
         super().__init__()
@@ -114,6 +116,14 @@ class ResultsWindow(QWidget):
         self.main_result_widget.clear()
         for cur_result_widget in self.extra_results_widgets:
             cur_result_widget.clear()
+
+    def show(self):
+        self.window_shown.emit()
+        super().show()
+
+    def hideEvent(self, e):
+        self.window_hidden.emit()
+        super().hideEvent(e)
 
     def _set_style(self):
         self.setStyleSheet("""
