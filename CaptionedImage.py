@@ -8,13 +8,12 @@ Creation date: 2018-05-28
 Reference for style conventions : https://www.python.org/dev/peps/pep-0008
 """
 
-from PyQt5.QtCore import Qt, pyqtSignal
+from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QWidget, QLabel, QHBoxLayout, QVBoxLayout, QSizePolicy
 
 
 class CaptionedImage(QWidget):
-    clicked = pyqtSignal()
 
     def __init__(self, text=None, image_path=None):
         super().__init__()
