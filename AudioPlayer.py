@@ -30,9 +30,7 @@ class AudioPlayer(QWidget):
     """Signal that is emited when the user just started recording"""
 
     def __init__(self, recordable=False):
-        """Initialize an :py:class`AudioPlayer` object.
-
-        *recordable* should be set to true if you want the :py:class`AudioPlayer` to have recording abilities and a
+        """*recordable* should be set to true if you want the :py:class`AudioPlayer` to have recording abilities and a
         "rec" button. Recorded audio files will be stored in the *usersounds/* folder. If this folder does not exist,
         it is created.
 
@@ -175,7 +173,7 @@ class AudioPlayer(QWidget):
         self.rec_button.change_image("images/record.png")
 
     def reset(self):
-        """Reset the AudioPlayer to the state it was when it was just created."""
+        """Reset the :py:class:`AudioPlayer` to the state it was when it was just created."""
         self.sound_path = None
         self.recorded_wav_path = None
         self.recorded_pcm_path = None
@@ -220,13 +218,13 @@ class AudioPlayer(QWidget):
 
 
 class AudioCursor(QLabel):
-    """Class meant to be used only by AudioPlayer to implement a cursor that moves as the sound is being played.
+    """Class meant to be used only by :py:class:`AudioPlayer` to implement a cursor that moves as the sound is being played.
 
     This is a QLabel whose size has been fixed to a thin vertical bar to look like a cursor. When initialized,
-    you should specify its parent widget to be the WaveformDisplay on which you want to display a cursor. That way,
-    the cursor can position itself above the WaveformDisplay with the setGeometry function. Call "pass_through" to
-    animate the cursor from the topleft position to the topright position. Internally, the mechanism of "property
-    animation" of Qt is used to translate the cursor from left to right."""
+    you should specify its parent widget to be the :py:class:`WaveformDisplay` on which you want to display a cursor.
+    That way, the cursor can position itself above the WaveformDisplay with the :py:func:`setGeometry` function. Call
+    :py:func:`pass_through` to animate the cursor from the topleft position to the topright position. Internally,
+    the mechanism of "property animation" of Qt is used to translate the cursor from left to right. """
 
     def __init__(self, *args, **kwargs):
         """Initialize object"""

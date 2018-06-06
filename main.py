@@ -25,7 +25,6 @@ class MainWindow(QMainWindow):
     *self.quit_shortcut*: Ctrl+Q shortcut to quit the app"""
 
     def __init__(self):
-        """Initialize the UI of the main window as well as its associated actions"""
         super().__init__()
         self._set_style()
         self.init_ui()

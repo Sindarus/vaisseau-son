@@ -52,7 +52,6 @@ class MainWidget(QWidget):
         self.results_window.reload_arrow.clicked.connect(self.full_reset)
 
     def init_ui(self):
-        """Initialize child widgets and layout"""
         # Create sound chooser and recorder widgets
         title = QLabel(Config.TITLE, self)
         title.setStyleSheet("""
