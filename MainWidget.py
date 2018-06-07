@@ -171,6 +171,7 @@ class MainWidget(QWidget):
     def close_child_windows(self):
         """Hide or close windows that were created by this class"""
         self.loading_window.hide()
+        self.results_window.hide()
 
     @pyqtSlot()
     def interrupt(self):
