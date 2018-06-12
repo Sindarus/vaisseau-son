@@ -56,14 +56,16 @@ class SoundChooser(CustomStyleGroupBox):
 
     def after_show_init(self):
         """Initializations that need to be done right after the mainwindow has been .show()'ed """
-        # Selecting first sound at startup. We need to do that after the mainwindow has been .show()'ed (and not before)
+        # Selecting first sound at startup. We need to do that after the mainwindow has been .show()'n (and not before)
         # to avoid a display bug where the border of the sound_button widget would be taken into account to define its
         # size, which would make it bigger than the other buttons forever.
         self.sounds_buttons[0].setChecked(True)
 
     @pyqtSlot()
     def selected_sound_action(self):
-        """Should get called when a sound gets selected"""
+        """Load sound into the player and update selected_sound_name.
+
+        Is called when a sound gets selected."""
         sound_name = self.sender().get_name()  # get the name of the sound that was selected
         self.selected_sound_name = sound_name
         self.player.load_sound(self.sound_bank[self.selected_sound_name]['sound_path'])

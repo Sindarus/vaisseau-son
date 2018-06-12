@@ -15,7 +15,10 @@ from ImageButton import ImageButton
 
 
 class LabeledImageButton(QWidget):
+    """Widget that contains an :py:class:`ImageButton` and a label"""
+
     clicked = pyqtSignal()
+    """This signal is emited when the :py:class:`ImageButton` is clicked"""
 
     def __init__(self, text, image_path):
         super().__init__()

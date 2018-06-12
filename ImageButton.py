@@ -16,6 +16,7 @@ from Config import Config
 
 
 class ImageButton(QPushButton):
+    """Push button with an image as the display."""
 
     def __init__(self, img_path, is_round=True):
         super().__init__()
@@ -33,6 +34,8 @@ class ImageButton(QPushButton):
         self._set_style()
 
     def resize_image(self, width, height):
+        """Set a new display size for the picture. If another picture is loaded afterwards, it'll get the same size
+        automatially. This is because the picture is loaded inside a QIcon that is resized."""
         self.setIconSize(QSize(width, height))
         self.width = width
         self.height = height
@@ -41,11 +44,13 @@ class ImageButton(QPushButton):
             self.update_round_style()
 
     def change_image(self, img_path):
+        """Change the picture to display"""
         self.img = QPixmap(img_path)
         icon = QIcon(self.img)
         self.setIcon(icon)
 
     def update_round_style(self):
+        """Update this object's style to match its size."""
         # we have to pick the minimum of the two sizes, otherwise, the border-radius property will be ignored
         self._set_style(border_radius=str(min(self.width, self.height) // 2) + "px")
         # reload style

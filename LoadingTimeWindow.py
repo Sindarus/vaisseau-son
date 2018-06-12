@@ -17,8 +17,9 @@ from LabeledImageButton import LabeledImageButton
 
 
 class LoadingTimeWindow(QWidget):
-    """Widget that shows a message and a spinner or a progress bar, to be shown while the program
-    is processing/loading."""
+    """Widget that shows a message and a spinner to be shown while the program is processing/loading.
+
+    It is meant to be used as a modal window."""
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -60,6 +61,7 @@ class LoadingTimeWindow(QWidget):
         self.setLayout(layout)
 
     def center(self):
+        """Center the window in relation to its parent widget, or the screen, if the app is in fullscreen."""
         self_rect = self.frameGeometry()
         if Config.FULLSCREEN:
             reference_rect = QDesktopWidget().availableGeometry()
@@ -71,6 +73,7 @@ class LoadingTimeWindow(QWidget):
         self.move(self_rect.topLeft())
 
     def showEvent(self, a):
+        """Extend showEvent handler function to automatically center this window when is is shown."""
         super().showEvent(a)
         self.center()
 

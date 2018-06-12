@@ -13,6 +13,7 @@ from threading import Thread
 
 
 class SoundClassifier(Thread):
+    """Thread that contains the classifying logic"""
 
     def __init__(self, user_sound_path, set_results_func):
         super().__init__()
@@ -21,6 +22,7 @@ class SoundClassifier(Thread):
         self.should_stop = False  # Is set to True if someone requested that this thread terminates asap
 
     def run(self):
+        """Is called when the threads is started"""
         time.sleep(3)
         # TODO: do some real calculation
         results = [("lion", 85), ("police", 20), ("cow", 5), ("wind", 3)]
@@ -29,7 +31,8 @@ class SoundClassifier(Thread):
         self.set_results_func(results)
 
     def please_stop_asap(self):
-        """This is a function to call when you want this thread to terminate.
+        """Tell this thread to stop as soon as possible.
+
         This is indeed the prefered method to stop a thread :
         https://stackoverflow.com/questions/323972/is-there-any-way-to-kill-a-thread-in-python#325528"""
         self.should_stop = True

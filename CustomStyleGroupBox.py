@@ -14,6 +14,7 @@ from Config import Config
 
 
 class CustomStyleGroupBox(QGroupBox):
+    """Groupbox that implements required style"""
 
     def __init__(self, *args):
         super().__init__(*args)

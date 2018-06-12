@@ -19,8 +19,12 @@ from LabeledImageButton import LabeledImageButton
 
 
 class ResultsWindow(QWidget):
+    """Window to display the results of the classification process"""
+
     window_shown = pyqtSignal()
+    """Signal that is emited when the "show" method is called. Needed for the main window to hide itself on time."""
     window_hidden = pyqtSignal()
+    """Signal that is emited when the "hide" method is called. Needed for the main window to show itself on time."""
 
     def __init__(self):
         super().__init__()
@@ -87,7 +91,9 @@ class ResultsWindow(QWidget):
             self.extra_results_layout.addWidget(cur_result_widget)
 
     def load_results(self, results):
-        """Results must be a list of 2-tuples containing the name of the sound and the probability"""
+        """Load result data in display widgets
+
+        *results* must be a list of 2-tuples containing the name of the sound and the probability"""
 
         # Only keep the first 4 results (this operation will not alter the list objet in argument)
         results = results[:4]
@@ -113,6 +119,7 @@ class ResultsWindow(QWidget):
         self.move(qr.topLeft())
 
     def reset(self):
+        """Unload results from the display widgets."""
         self.main_result_widget.clear()
         for cur_result_widget in self.extra_results_widgets:
             cur_result_widget.clear()

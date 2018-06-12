@@ -15,7 +15,11 @@ from ImageButton import ImageButton
 
 
 class ImageOptionButton(ImageButton):
+    """This is an :py:class:`ImageButton` that is checkable (option button). A name has to be given to this button,
+    for identification convenience"""
+
     selected = pyqtSignal()
+    """This signal is emited when the button gets selected"""
 
     def __init__(self, img_path, name):
         super().__init__(img_path, is_round=False)  # ImageOptionButtons should never be round
@@ -45,4 +49,5 @@ class ImageOptionButton(ImageButton):
             """)
 
     def get_name(self):
+        """Return the name of the button"""
         return self.name

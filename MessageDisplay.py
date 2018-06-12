@@ -13,11 +13,13 @@ from PyQt5.QtWidgets import QLabel
 
 
 class MessageDisplay(QLabel):
+    """Simple Widget to display a message and erase it automatically after a given time."""
 
     def __init__(self):
         super().__init__()
 
     def display_text(self, text, timeout):
+        """Load a text"""
         self.setText(text)
         QTimer.singleShot(timeout, lambda: self.clear())
 
