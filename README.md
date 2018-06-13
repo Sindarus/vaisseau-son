@@ -15,8 +15,18 @@ Install ffmpeg
 Install sphinx
 `sudo apt install sphinx`
 
+# Documentation
+The documentation was written for use by Sphinx and its the autodoc plugin. To generate the documentation from the source code, add this directory to your python path (so that Sphinx can import the modules) :
+`export PYTHONPATH="${PYTHONPATH}:/path_to_Vaisseau_son"`
+
+Then run `make html` inside the `doc/` directory.
+`cd docs`
+`make html`
+
+Open `docs/_build/html/index.html` in a web browser to read the documentation.
+
 # Tips
 ### Tip for debugging
 Set the `QT_DEBUG_PLUGINS` environement variable to `1` to enable more verbosity about plugins
-`export QT_DEBUG_PLUGINS="1"`
+`export QT_DEBUG_PLUGINS="1"`.
 
