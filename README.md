@@ -12,11 +12,11 @@ If you don't have virtualenv installed, install it with<br/>
 
 Create a new virtual env just for this project.<br/>
 `virtualenv path_to_new_env -p python3`<br/>
-Replace `path_to_new_env` by the path to the directory that you want virtualenv to create to store the new environment, preferably outside the directory of the project.
+Replace `path_to_new_env` by the path to the directory where you want virtualenv to store the new environment, preferably outside the directory of the project.
 
 Activate the newly create virtualenv.<br/>
 `source path_to_new_env/bin/activate`<br/>
-You should now see the name of the new environement appear next to your command line prompt. When you are done running the project, you can return to using your global python by running `deactivate`.
+You should now see the name of the new environement appear next to your command line prompt. When you are done running the project, you can return to using your global python version by using the `deactivate` command. You should see your shell prompt being updated.
 
 ## Install required python modules with `pip -r`
 
