@@ -39,6 +39,9 @@ Unfortunately, this will install the modules in the system's python directory (u
 `cp -R /usr/lib/python3/dist-packages/sip   /path_to_env/lib/python3.x/site-packages`
 
 ## Install other dependancies
+Install pulseaudio if not already installed<br/>
+`sudo apt install pulseaudio`
+
 Install ffmpeg<br/>
 `sudo apt install ffmpeg`
 
