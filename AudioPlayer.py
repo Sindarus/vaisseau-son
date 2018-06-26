@@ -30,7 +30,7 @@ class AudioPlayer(QWidget):
     """Signal that is emited when the user just started recording"""
 
     def __init__(self, recordable=False):
-        """*recordable* should be set to true if you want the :py:class`AudioPlayer` to have recording abilities and a
+        """*recordable* should be set to true if you want the :py:class:`AudioPlayer` to have recording abilities and a
         "rec" button. Recorded audio files will be stored in the *usersounds/* folder. If this folder does not exist,
         it is created.
 
