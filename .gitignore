@@ -3,3 +3,5 @@ waveforms/*
 user_sounds/*
 .idea/*
 docs/_*
+*.xcf
+
