@@ -121,3 +121,28 @@ class Config:
     # Saving sounds to DB
     FINAL_SOUNDS_DIR = "sound_storage/"
     """Root directory where to store sound files as specified in the """
+
+    DB_ADDR = "localhost"
+    """Address of the DBMS (Database Management System)"""
+
+    SOUND_DB_NAME = "user_sounds"
+    """Name of the sound database"""
+
+    DB_USER = "vaisseau_son"
+    """User under which this programm will identify to the DBMS"""
+
+    DB_PASSWD_GET_METHOD = "envvar"
+    """Mothod to get the database password
+
+    Set to "envvar" to get password from a environment variable
+    Set to "config" to get password from the :py:attr:`DB_PASSWD` config variable (not recommended!)
+    """
+
+    DB_PASSWD_ENV_VAR_NAME = "VAISSEAU_SON_DB_PASSWD"
+    """Name of the environment variable which contains the password of :py:attr:`DB_USER`"""
+
+    DB_PASSWD = ""
+    """Database password (not recommended!).
+
+    You can specify the database password here, but it not recommanded, since the password will be visible by anyone with
+    access to this file. This method is however provided for testing environments."""

@@ -21,6 +21,8 @@ from ResultsWindow import ResultsWindow
 from SoundChooser import SoundChooser
 from SoundClassifier import SoundClassifier
 from SoundRecorder import SoundRecorder
+from sound_db_connector import SoundDBConnector
+from AudioPlayer import AudioPlayer
 
 
 class MainWidget(QWidget):
@@ -54,6 +56,8 @@ class MainWidget(QWidget):
         self.results_window.reload_arrow.clicked.connect(self.full_reset)
         self.results_window.window_shown.connect(self.parentWidget().hide)
         self.results_window.window_hidden.connect(self.parentWidget().show)
+
+        self.sound_db = SoundDBConnector()
 
     def init_ui(self):
         # Create sound chooser and recorder widgets
@@ -180,26 +184,31 @@ class MainWidget(QWidget):
                 raise AssertionError("Trying to save a sound but none was recorded and skip_missing is set to False")
             else:
                 return
-        path = self.sound_recorder.player_recorder.get_recorded_sound_path()
+
+        # preparing sound infos
+        temp_file_path = self.sound_recorder.player_recorder.get_recorded_sound_path()
         label = self.sound_chooser.get_selected_sound_name()
         dt = self.sound_recorder.player_recorder.get_recorded_datetime()
-
-        # This could be done with a single one-line string formatting, but the sake of readability I did not do that.
-        final_dir = Config.FINAL_SOUNDS_DIR \
-                    + str(dt.year) + "/" \
+        duration = AudioPlayer.get_wav_duration(temp_file_path)
+        final_dir = str(dt.year) + "/" \
                     + str(dt.year) + "-" + "%.2d" % dt.month + "/" \
                     + str(dt.year) + "-" + "%.2d" % dt.month + "-" + "%.2d" % dt.day
-        print("final dir: ", final_dir)
         final_path = final_dir + "/" + str(int(dt.timestamp())) + ".wav"
+        final_dir_with_root_dir = Config.FINAL_SOUNDS_DIR + final_dir
+        final_path_with_root_dir = Config.FINAL_SOUNDS_DIR + final_path
 
-        if not os.path.isdir(final_dir):
+        # Copying file to final destination folder
+        # This could be done with a single one-line string formatting, but the sake of readability I did not do that.
+        if not os.path.isdir(final_dir_with_root_dir):
             #  makedirs creates all intermediate-level directories needed to contain the leaf directory,
             # while os.mkdir does not.
-            os.makedirs(final_dir)
+            os.makedirs(final_dir_with_root_dir)
+        copyfile(temp_file_path, final_path_with_root_dir)
 
-        copyfile(path, final_path)
+        # Adding sound info in database
+        self.sound_db.add_sound(final_path, label, submitted, dt, duration)
 
-        print("saving sound", path, "with label", label, "recorded on", dt, "and submitted", submitted)
+        print("saving sound", temp_file_path, "with label", label, "recorded on", dt, "and submitted", submitted)
 
     def set_results(self, results):
         """Set the results instance variable to what has been passed in argument.
