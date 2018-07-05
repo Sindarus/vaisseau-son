@@ -5,4 +5,5 @@ user_sounds/*
 docs/_*
 *.xcf
 sound_storage/*
+*.env
 
