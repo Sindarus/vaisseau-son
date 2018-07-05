@@ -206,7 +206,12 @@ class MainWidget(QWidget):
         copyfile(temp_file_path, final_path_with_root_dir)
 
         # Adding sound info in database
-        self.sound_db.add_sound(final_path, label, submitted, dt, duration)
+        try:
+            self.sound_db.add_sound(final_path, label, submitted, dt, duration)
+        except Exception as e:
+            print("Could not add sound info to database. Cancelling changes.")
+            os.remove(final_path_with_root_dir)
+            raise e
 
         print("saving sound", temp_file_path, "with label", label, "recorded on", dt, "and submitted", submitted)
 
