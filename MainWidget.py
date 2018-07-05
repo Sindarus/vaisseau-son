@@ -7,8 +7,6 @@ Creation date: 2018-05-22
 
 Reference for style conventions : https://www.python.org/dev/peps/pep-0008
 """
-import os
-from shutil import copyfile
 
 from PyQt5.QtCore import QTimer, pyqtSlot
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel
@@ -18,11 +16,11 @@ from LabeledImageButton import LabeledImageButton
 from LoadingTimeWindow import LoadingTimeWindow
 from MessageDisplay import MessageDisplay
 from ResultsWindow import ResultsWindow
+from Imitation import Imitation
 from SoundChooser import SoundChooser
 from SoundClassifier import SoundClassifier
 from SoundRecorder import SoundRecorder
 from sound_db_connector import SoundDBConnector
-from AudioPlayer import AudioPlayer
 
 
 class MainWidget(QWidget):
@@ -48,6 +46,7 @@ class MainWidget(QWidget):
         self.init_ui()
 
         self.results = None
+        self.cur_imitation = None
 
         self.loading_window = LoadingTimeWindow()
         self.loading_window.back_button.clicked.connect(self.interrupt)
@@ -77,12 +76,14 @@ class MainWidget(QWidget):
         self.sound_recorder.player_recorder.was_recorded.connect(
             lambda: self.notif_zone.setText(""))
         self.sound_recorder.player_recorder.recording_started.connect(
-            lambda: self.save_sound(submitted=False, skip_missing=True))
+            # record previous sound if existing
+            lambda: self.save_cur_imitation(submitted=False, skip_missing=True))
+        self.sound_recorder.player_recorder.recording_started.connect(self.load_imitation)
         self.sound_recorder.player_recorder.recording_started.connect(
             lambda: self.notif_zone.setText(Config.CURRENTLY_RECORDING_MSG))
         self.go_button.resize_image(Config.NAV_ICON_SIZE, Config.NAV_ICON_SIZE)
         self.go_button.clicked.connect(
-            lambda: self.save_sound(submitted=True, skip_missing=False))
+            lambda: self.save_cur_imitation(submitted=True, skip_missing=False))
         self.go_button.clicked.connect(self.step1_process_comparison)
 
         # Create reload button
@@ -171,49 +172,18 @@ class MainWidget(QWidget):
         self.results_window.load_results(self.results)
         self.results_window.showFullScreen() if Config.FULLSCREEN else self.results_window.show()
 
-    def save_sound(self, submitted, skip_missing=False):
-        """Save the currently recorded sound to its final location, and saves its info in database.
-
-        Save the sound file at the right location according to the specifications of the final directory tree, and
-        save its informations to the database, still according to specs.
-
-        :param bool submitted: whether the currently recorded sound was submitted.
-        :param bool skip_missing: whether the function should be silent when it is called and no sound was recorded."""
-        if not self.sound_recorder.player_recorder.get_is_recorded():
-            if not skip_missing:
-                raise AssertionError("Trying to save a sound but none was recorded and skip_missing is set to False")
-            else:
-                return
-
-        # preparing sound infos
-        temp_file_path = self.sound_recorder.player_recorder.get_recorded_sound_path()
+    def load_imitation(self, temp_path, datetime):
         label = self.sound_chooser.get_selected_sound_name()
-        dt = self.sound_recorder.player_recorder.get_recorded_datetime()
-        duration = AudioPlayer.get_wav_duration(temp_file_path)
-        final_dir = str(dt.year) + "/" \
-                    + str(dt.year) + "-" + "%.2d" % dt.month + "/" \
-                    + str(dt.year) + "-" + "%.2d" % dt.month + "-" + "%.2d" % dt.day
-        final_path = final_dir + "/" + str(int(dt.timestamp())) + ".wav"
-        final_dir_with_root_dir = Config.FINAL_SOUNDS_DIR + final_dir
-        final_path_with_root_dir = Config.FINAL_SOUNDS_DIR + final_path
+        self.cur_imitation = Imitation(temp_path, label, datetime)
 
-        # Copying file to final destination folder
-        # This could be done with a single one-line string formatting, but the sake of readability I did not do that.
-        if not os.path.isdir(final_dir_with_root_dir):
-            #  makedirs creates all intermediate-level directories needed to contain the leaf directory,
-            # while os.mkdir does not.
-            os.makedirs(final_dir_with_root_dir)
-        copyfile(temp_file_path, final_path_with_root_dir)
-
-        # Adding sound info in database
-        try:
-            self.sound_db.add_sound(final_path, label, submitted, dt, duration)
-        except Exception as e:
-            print("Could not add sound info to database. Cancelling changes.")
-            os.remove(final_path_with_root_dir)
-            raise e
-
-        print("saving sound", temp_file_path, "with label", label, "recorded on", dt, "and submitted", submitted)
+    def save_cur_imitation(self, submitted, skip_missing):
+        if self.cur_imitation is None:
+            if skip_missing:
+                return
+            else:
+                raise AssertionError("Trying to save a sound but none was recorded and skip_missing is set to False")
+        else:
+            self.cur_imitation.save(self.sound_db, submitted)
 
     def set_results(self, results):
         """Set the results instance variable to what has been passed in argument.
@@ -236,9 +206,15 @@ class MainWidget(QWidget):
     @pyqtSlot()
     def full_reset(self):
         """Reset the entire UI"""
+        self.reset()
         self.sound_recorder.player_recorder.reset()
         self.results_window.hide()
         self.results_window.reset()
+
+    def reset(self):
+        # Save current imitation if existing, before wiping it
+        self.save_cur_imitation(submitted=False, skip_missing=True)
+        self.cur_imitation = None
 
     def after_show_init(self):
         """Performs initializations that needs to be done after the main window has been shown"""

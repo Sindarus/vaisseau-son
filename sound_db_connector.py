@@ -44,4 +44,3 @@ class SoundDBConnector:
         insert_query = 'INSERT INTO sounds VALUES (0,"%s","%s",%s,"%s",%s);' %\
                        (path, label, int(submitted), datetime_.isoformat(), duration)
         self.db.query(insert_query)
-        print("added sound")

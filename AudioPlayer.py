@@ -27,7 +27,7 @@ class AudioPlayer(QWidget):
 
     was_recorded = pyqtSignal()
     """Signal that is emited when a sound was recorded"""
-    recording_started = pyqtSignal()
+    recording_started = pyqtSignal(str, datetime)
     """Signal that is emited when the user just started recording"""
 
     def __init__(self, recordable=False):
@@ -144,9 +144,6 @@ class AudioPlayer(QWidget):
         print("recording")
         assert self.recordable
 
-        # Some slots rely on this signal being emitted before reseting (the slot that saves the previous sound to DB)
-        # For this reason, please do not delay emitting this signal after self.reset()
-        self.recording_started.emit()
         self.reset()
 
         self.recorded_datetime = datetime.now()
@@ -159,6 +156,8 @@ class AudioPlayer(QWidget):
         self.recorder.start(self.file_to_record)
         self.is_currently_recording = True
         self.rec_button.change_image("images/stop_record.png")
+
+        self.recording_started.emit(self.recorded_wav_path, self.recorded_datetime)
 
         # In a while, check if the recording is not too long. The recording is identified by its pcm file saving
         # path, passed to the check-function. This argument HAS to be litteral : if we did use
