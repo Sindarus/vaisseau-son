@@ -71,8 +71,12 @@ class MainWidget(QWidget):
         self.sound_recorder.player_recorder.was_recorded.connect(
             lambda: self.notif_zone.setText(""))
         self.sound_recorder.player_recorder.recording_started.connect(
+            lambda: self.save_sound_in_db(submitted=False, skip_missing=True))
+        self.sound_recorder.player_recorder.recording_started.connect(
             lambda: self.notif_zone.setText(Config.CURRENTLY_RECORDING_MSG))
         self.go_button.resize_image(Config.NAV_ICON_SIZE, Config.NAV_ICON_SIZE)
+        self.go_button.clicked.connect(
+            lambda: self.save_sound_in_db(submitted=True, skip_missing=False))
         self.go_button.clicked.connect(self.step1_process_comparison)
 
         # Create reload button
@@ -160,6 +164,25 @@ class MainWidget(QWidget):
         self.loading_window.hide()
         self.results_window.load_results(self.results)
         self.results_window.showFullScreen() if Config.FULLSCREEN else self.results_window.show()
+
+    def save_sound_in_db(self, submitted, skip_missing=False):
+        """Save the currently recorded sound to its final location, and saves its info in database.
+
+        Save the sound file at the right location according to the specifications of the final directory tree, and
+        save its informations to the database, still according to specs.
+
+        :param bool submitted: whether the currently recorded sound was submitted.
+        :param bool skip_missing: whether the function should be silent when it is called and no sound was recorded."""
+        if not self.sound_recorder.player_recorder.get_is_recorded():
+            if not skip_missing:
+                raise AssertionError("Trying to save a sound but none was recorded and skip_missing is set to False")
+            else:
+                return
+        path = self.sound_recorder.player_recorder.get_recorded_sound_path()
+        label = self.sound_chooser.get_selected_sound_name()
+        datetime = self.sound_recorder.player_recorder.get_recorded_datetime()
+        print("saving sound", path, "with label", label, "recorded on", datetime, "and submitted", submitted)
+
 
     def set_results(self, results):
         """Set the results instance variable to what has been passed in argument.

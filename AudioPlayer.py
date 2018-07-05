@@ -11,6 +11,7 @@ Reference for style conventions : https://www.python.org/dev/peps/pep-0008
 import contextlib
 import os
 import wave
+from datetime import datetime
 
 from PyQt5.QtCore import pyqtSlot, QUrl, QDateTime, QFile, QIODevice, pyqtSignal, QPropertyAnimation, QRect, QTimer
 from PyQt5.QtMultimedia import QSoundEffect, QAudioInput, QAudioFormat, QAudioDeviceInfo
@@ -40,6 +41,7 @@ class AudioPlayer(QWidget):
         super().__init__()
         self.recordable = recordable
         self.sound_path = None
+        self.recorded_datetime = None
         self.recorded_wav_path = None  # wav file
         self.recorded_pcm_path = None  # pcm file
         self.init_ui()
@@ -142,8 +144,12 @@ class AudioPlayer(QWidget):
         print("recording")
         assert self.recordable
 
+        # Some slots rely on this signal being emitted before reseting (the slot that saves the previous sound to DB)
+        # For this reason, please do not delay emitting this signal after self.reset()
+        self.recording_started.emit()
         self.reset()
 
+        self.recorded_datetime = datetime.now()
         datetime_stamp = QDateTime.currentDateTime().toString("yyyyMMdd_hhmmss")
         self.recorded_pcm_path = "user_sounds/user_sound_" + datetime_stamp + ".pcm"
         self.recorded_wav_path = "user_sounds/user_sound_" + datetime_stamp + ".wav"  # for use in stop_recording
@@ -152,7 +158,6 @@ class AudioPlayer(QWidget):
 
         self.recorder.start(self.file_to_record)
         self.is_currently_recording = True
-        self.recording_started.emit()
         self.rec_button.change_image("images/stop_record.png")
 
         # In a while, check if the recording is not too long. The recording is identified by its pcm file saving
@@ -193,6 +198,7 @@ class AudioPlayer(QWidget):
     def reset(self):
         """Reset the :py:class:`AudioPlayer` to the state it was when it was just created."""
         self.sound_path = None
+        self.recorded_datetime = None
         self.recorded_wav_path = None
         self.recorded_pcm_path = None
         self.is_recorded = False
@@ -201,6 +207,14 @@ class AudioPlayer(QWidget):
         self.play_button.setEnabled(False)
 
         self.wave_display.reset()
+
+    def get_is_recorded(self):
+        """Getter function for the *is_recorded* attribute"""
+        return self.is_recorded
+
+    def get_recorded_datetime(self):
+        """Getter function for the *recorded_datetime* attribute"""
+        return self.recorded_datetime
 
     def get_recorded_sound_path(self):
         """Getter function for the *recorded_wav_path* attribute"""
