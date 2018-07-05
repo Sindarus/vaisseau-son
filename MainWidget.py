@@ -7,6 +7,8 @@ Creation date: 2018-05-22
 
 Reference for style conventions : https://www.python.org/dev/peps/pep-0008
 """
+import os
+from shutil import copyfile
 
 from PyQt5.QtCore import QTimer, pyqtSlot
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel
@@ -71,12 +73,12 @@ class MainWidget(QWidget):
         self.sound_recorder.player_recorder.was_recorded.connect(
             lambda: self.notif_zone.setText(""))
         self.sound_recorder.player_recorder.recording_started.connect(
-            lambda: self.save_sound_in_db(submitted=False, skip_missing=True))
+            lambda: self.save_sound(submitted=False, skip_missing=True))
         self.sound_recorder.player_recorder.recording_started.connect(
             lambda: self.notif_zone.setText(Config.CURRENTLY_RECORDING_MSG))
         self.go_button.resize_image(Config.NAV_ICON_SIZE, Config.NAV_ICON_SIZE)
         self.go_button.clicked.connect(
-            lambda: self.save_sound_in_db(submitted=True, skip_missing=False))
+            lambda: self.save_sound(submitted=True, skip_missing=False))
         self.go_button.clicked.connect(self.step1_process_comparison)
 
         # Create reload button
@@ -165,7 +167,7 @@ class MainWidget(QWidget):
         self.results_window.load_results(self.results)
         self.results_window.showFullScreen() if Config.FULLSCREEN else self.results_window.show()
 
-    def save_sound_in_db(self, submitted, skip_missing=False):
+    def save_sound(self, submitted, skip_missing=False):
         """Save the currently recorded sound to its final location, and saves its info in database.
 
         Save the sound file at the right location according to the specifications of the final directory tree, and
@@ -180,9 +182,24 @@ class MainWidget(QWidget):
                 return
         path = self.sound_recorder.player_recorder.get_recorded_sound_path()
         label = self.sound_chooser.get_selected_sound_name()
-        datetime = self.sound_recorder.player_recorder.get_recorded_datetime()
-        print("saving sound", path, "with label", label, "recorded on", datetime, "and submitted", submitted)
+        dt = self.sound_recorder.player_recorder.get_recorded_datetime()
 
+        # This could be done with a single one-line string formatting, but the sake of readability I did not do that.
+        final_dir = Config.FINAL_SOUNDS_DIR \
+                    + str(dt.year) + "/" \
+                    + str(dt.year) + "-" + "%.2d" % dt.month + "/" \
+                    + str(dt.year) + "-" + "%.2d" % dt.month + "-" + "%.2d" % dt.day
+        print("final dir: ", final_dir)
+        final_path = final_dir + "/" + str(int(dt.timestamp())) + ".wav"
+
+        if not os.path.isdir(final_dir):
+            #  makedirs creates all intermediate-level directories needed to contain the leaf directory,
+            # while os.mkdir does not.
+            os.makedirs(final_dir)
+
+        copyfile(path, final_path)
+
+        print("saving sound", path, "with label", label, "recorded on", dt, "and submitted", submitted)
 
     def set_results(self, results):
         """Set the results instance variable to what has been passed in argument.
