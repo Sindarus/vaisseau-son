@@ -58,3 +58,7 @@ class Imitation:
             print("Could not add sound info to database. Cancelling changes.")
             os.remove(final_path_with_root_dir)
             raise e
+
+    def set_label(self, label):
+        """Setter method for the `label` attribute"""
+        self.label = label

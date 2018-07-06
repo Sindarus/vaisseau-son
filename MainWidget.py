@@ -201,6 +201,9 @@ class MainWidget(QWidget):
             else:
                 raise AssertionError("Trying to save a sound but none was recorded and skip_missing is set to False")
         else:
+            if submitted:
+                # if the imitation is submitted, update its label to the one currently selected
+                self.cur_imitation.set_label(self.sound_chooser.get_selected_sound_name())
             self.cur_imitation.save(self.sound_db, submitted)
 
     def set_results(self, results):
