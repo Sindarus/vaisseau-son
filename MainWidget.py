@@ -89,7 +89,6 @@ class MainWidget(QWidget):
         self.sound_recorder.player_recorder.recording_started.connect(
             lambda: self.notif_zone.setText(Config.CURRENTLY_RECORDING_MSG))
 
-
         # Create reload button
         reload_button = LabeledImageButton(Config.RELOAD_ICON_TEXT, "images/reload.png")
         reload_button.resize_image(Config.NAV_ICON_SIZE, Config.NAV_ICON_SIZE)
@@ -225,8 +224,8 @@ class MainWidget(QWidget):
     @pyqtSlot()
     def full_reset(self):
         """Reset the entire UI"""
-        self.reset()
         self.sound_recorder.player_recorder.reset()
+        self.reset()
         self.results_window.hide()
         self.results_window.reset()
 

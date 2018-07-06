@@ -204,6 +204,9 @@ class AudioPlayer(QWidget):
 
     def reset(self):
         """Reset the :py:class:`AudioPlayer` to the state it was when it was just created."""
+        if self.is_currently_recording:
+            self.stop_recording()
+
         self.sound_path = None
         self.recorded_datetime = None
         self.recorded_wav_path = None
