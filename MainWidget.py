@@ -72,19 +72,22 @@ class MainWidget(QWidget):
         # Create go button
         self.go_button = LabeledImageButton(Config.VALIDATE_BUTTON, "images/right-arrow.png")
         self.go_button.setEnabled(False)
+        self.go_button.resize_image(Config.NAV_ICON_SIZE, Config.NAV_ICON_SIZE)
+        if Config.SAVE_TO_DB:
+            self.go_button.clicked.connect(lambda: self.save_cur_imitation(submitted=True, skip_missing=False))
+        self.go_button.clicked.connect(self.step1_process_comparison)
+
         self.sound_recorder.player_recorder.was_recorded.connect(lambda: self.go_button.setEnabled(True))
-        self.sound_recorder.player_recorder.was_recorded.connect(
-            lambda: self.notif_zone.setText(""))
-        self.sound_recorder.player_recorder.recording_started.connect(
-            # record previous sound if existing
-            lambda: self.save_cur_imitation(submitted=False, skip_missing=True))
-        self.sound_recorder.player_recorder.recording_started.connect(self.load_imitation)
+        self.sound_recorder.player_recorder.was_recorded.connect(lambda: self.notif_zone.setText(""))
+
+        if Config.SAVE_TO_DB:
+            self.sound_recorder.player_recorder.recording_started.connect(
+                # record previous sound if existing
+                lambda: self.save_cur_imitation(submitted=False, skip_missing=True))
+            self.sound_recorder.player_recorder.recording_started.connect(self.load_imitation)
         self.sound_recorder.player_recorder.recording_started.connect(
             lambda: self.notif_zone.setText(Config.CURRENTLY_RECORDING_MSG))
-        self.go_button.resize_image(Config.NAV_ICON_SIZE, Config.NAV_ICON_SIZE)
-        self.go_button.clicked.connect(
-            lambda: self.save_cur_imitation(submitted=True, skip_missing=False))
-        self.go_button.clicked.connect(self.step1_process_comparison)
+
 
         # Create reload button
         reload_button = LabeledImageButton(Config.RELOAD_ICON_TEXT, "images/reload.png")
