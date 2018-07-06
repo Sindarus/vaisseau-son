@@ -75,7 +75,8 @@ class MainWidget(QWidget):
         self.go_button.resize_image(Config.NAV_ICON_SIZE, Config.NAV_ICON_SIZE)
         if Config.SAVE_TO_DB:
             self.go_button.clicked.connect(lambda: self.save_cur_imitation(submitted=True, skip_missing=False))
-        self.go_button.clicked.connect(self.step1_process_comparison)
+        if not Config.DISABLE_ANALYSING_SOUNDS:
+            self.go_button.clicked.connect(self.step1_process_comparison)
 
         self.sound_recorder.player_recorder.was_recorded.connect(lambda: self.go_button.setEnabled(True))
         self.sound_recorder.player_recorder.was_recorded.connect(lambda: self.notif_zone.setText(""))

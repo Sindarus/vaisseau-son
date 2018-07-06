@@ -65,6 +65,9 @@ class Config:
     """width of the border that is displayed around an :py:class:`ImageButton` when it is being pressed down."""
     AUDIO_RECORD_TIMOUT = 10000  # in msec
     """Maximum duration of a user recording. After this time, the recording will be automatically interrupted."""
+    DISABLE_ANALYSING_SOUNDS = False
+    """Disable sending sounds to AI when the user clicks the _send_ button. Sounds are still saved in database as
+    _submitted_. """
 
     # Waveform
     WAVEFORM_IMG_SIZE = "1500x270"
