@@ -103,9 +103,9 @@ class AudioPlayer(QWidget):
 
         # Setup layout for play and rec buttons
         self.buttons_layout = QVBoxLayout()
-        self.buttons_layout.addWidget(self.play_button)
         if self.recordable:
             self.buttons_layout.addWidget(self.rec_button)
+        self.buttons_layout.addWidget(self.play_button)
 
         # Setup main layout
         self.main_layout = QHBoxLayout()
