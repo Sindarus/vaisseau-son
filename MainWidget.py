@@ -172,11 +172,26 @@ class MainWidget(QWidget):
         self.results_window.load_results(self.results)
         self.results_window.showFullScreen() if Config.FULLSCREEN else self.results_window.show()
 
-    def load_imitation(self, temp_path, datetime):
+    def load_imitation(self, temp_path, datetime_):
+        """Create a new :py:class:`Imitation` object containg the current imitation.
+
+        This imitation can then be saved in database when time comes to do so.
+
+        :param str temp_path: path of the sound file (in the temporary directory where all recordingsare stored by
+        default)
+        :param datetime datetime_: datetime when the imitation started being recorded
+        """
         label = self.sound_chooser.get_selected_sound_name()
-        self.cur_imitation = Imitation(temp_path, label, datetime)
+        self.cur_imitation = Imitation(temp_path, label, datetime_)
 
     def save_cur_imitation(self, submitted, skip_missing):
+        """Wrapper for `Imitation.save`.
+
+        Also handles the case when there's no imitation to save.
+
+        :param bool submitted: whether the sound was submitted.
+        :param bool skip_missing: whether the function should remain silent when it is called whereas no imitation
+                                  was loaded."""
         if self.cur_imitation is None:
             if skip_missing:
                 return

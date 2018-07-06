@@ -15,6 +15,9 @@ from Config import Config
 
 
 class Imitation:
+    """Represents an imitation from a user, consisting mainly of a sound file and a label.
+
+    This class also implements the function that saves the imitation in database."""
 
     def __init__(self, temp_path, label, datetime):
         self.temp_path = temp_path
