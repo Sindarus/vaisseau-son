@@ -6,4 +6,5 @@ docs/_*
 *.xcf
 sound_storage/*
 *.env
+*.old
 
