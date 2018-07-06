@@ -48,6 +48,9 @@ Install ffmpeg<br/>
 Install sphinx (if you want to build the docs)<br/>
 `sudo apt install sphinx`
 
+## Prepare database
+This software is designed to produce a database & file tree containing imitations from users. If you do not wish to use this feature, you can disable it in `Config.py`. If you want to use it, then you have to setup a mysql/mariadb database and a DB user for use by the software. It is recommended that you call the database "user_sounds" and that you create a table "sounds" on which the user "vaisseau_son" has _insert_ privileges. Make sure the software is well configured in `Config.py`. The software will also create a file & directory tree containing the sounds of the user. By default, the root directory for this tree is "sound_storage/" but you can change it in `Config.py`.
+
 # Documentation
 The documentation was written for use by Sphinx and its the autodoc plugin. To generate the documentation from the source code, add the project's directory to your python path (so that Sphinx can import the modules):<br/>
 `export PYTHONPATH="${PYTHONPATH}:/path_to_Vaisseau_son"`
