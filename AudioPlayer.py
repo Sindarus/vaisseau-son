@@ -14,7 +14,7 @@ import wave
 from datetime import datetime
 
 from PyQt5.QtCore import pyqtSlot, QUrl, QDateTime, QFile, QIODevice, pyqtSignal, QPropertyAnimation, QRect, QTimer
-from PyQt5.QtMultimedia import QSoundEffect, QAudioInput, QAudioFormat, QAudioDeviceInfo
+from PyQt5.QtMultimedia import QSoundEffect, QAudioInput, QAudioFormat, QAudioDeviceInfo, QAudio
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QLabel
 
 from Config import Config
@@ -72,7 +72,15 @@ class AudioPlayer(QWidget):
         audio_format.setByteOrder(QAudioFormat.LittleEndian)
         audio_format.setSampleType(QAudioFormat.SignedInt)
 
-        device_info = QAudioDeviceInfo.defaultInputDevice()
+        # Selecting input device
+        device_info = None
+        for cur_device in QAudioDeviceInfo.availableDevices(QAudio.AudioInput):
+            if "input" in cur_device.deviceName():
+                device_info = cur_device
+        if device_info is None:
+            device_info = QAudioDeviceInfo.defaultInputDevice()
+        print("Selecting input device", device_info.deviceName())
+
         if not device_info.isFormatSupported(audio_format):
             print("Default format not supported, trying to use the nearest. Supported formats:")
             print(device_info.supportedCodecs())
