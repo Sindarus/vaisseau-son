@@ -7,4 +7,5 @@ docs/_*
 sound_storage/*
 *.env
 *.old
+model/*
 

@@ -8,8 +8,11 @@ Creation date: 2018-05-29
 Reference for style conventions : https://www.python.org/dev/peps/pep-0008
 """
 
-import time
 from threading import Thread
+
+from Config import Config
+from ai_running_unit import AIRunningUnit
+from feature_extractor import FeatureExtractor
 
 
 class SoundClassifier(Thread):
@@ -21,14 +24,27 @@ class SoundClassifier(Thread):
         self.set_results_func = set_results_func
         self.should_stop = False  # Is set to True if someone requested that this thread terminates asap
 
+        self.my_feat_extr = FeatureExtractor()
+        self.ai = AIRunningUnit(Config.MODEL_DIR_PATH)
+
     def run(self):
-        """Is called when the threads is started"""
-        time.sleep(3)
-        # TODO: do some real calculation
-        results = [("lion", 85), ("police", 20), ("cow", 5), ("wind", 3)]
+        """Is called when the thread is started"""
+        if self.should_stop:
+            return
+        self.my_feat_extr.load_file(self.user_sound_path)
+        if self.should_stop:
+            return
+        self.features = self.my_feat_extr.get_all_summarized_features(as_dict=True)
+        if self.should_stop:
+            return
+        self.probas = self.ai.predict(self.features)
+        if self.should_stop:
+            return
+        results = [(Config.SOUND_NAME_NUMBER[i], int(proba*100)) for i, proba in enumerate(self.probas)]
         if self.should_stop:
             return
         self.set_results_func(results)
+        return
 
     def please_stop_asap(self):
         """Tell this thread to stop as soon as possible.
@@ -36,6 +52,3 @@ class SoundClassifier(Thread):
         This is indeed the prefered method to stop a thread :
         https://stackoverflow.com/questions/323972/is-there-any-way-to-kill-a-thread-in-python#325528"""
         self.should_stop = True
-        # TODO: In the "run" function, check this value on a regular basis so that the thread can stop itself.
-        # TODO: If this is not done properly, there's a risk that the thread will remain alive even after all other
-        # TODO: windows have been closed, until run() reaches an end.

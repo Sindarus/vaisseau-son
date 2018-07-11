@@ -137,9 +137,7 @@ class MainWidget(QWidget):
         window with a spinner while the processing is ongoing, and calls the :py:func`step2_wait_for_results
         function.`"""
         rec_sound_path = self.sound_recorder.player_recorder.get_recorded_sound_path()
-        selected_sound_name = self.sound_chooser.get_selected_sound_name()
-        selected_sound_path = Config.SOUNDS[selected_sound_name]['sound_path']
-        print("comparing", rec_sound_path, "to", selected_sound_path)
+        print("sending", rec_sound_path, "for prediciton")
 
         self.classifier = SoundClassifier(rec_sound_path, self.set_results)
         self.classifier.start()

@@ -145,3 +145,17 @@ class Config:
 
     You can specify the database password here, but it not recommanded, since the password will be visible by anyone with
     access to this file. This method is however provided for testing environments."""
+
+    # AI
+    MODEL_DIR_PATH = "model/1531299021"
+    """Path of the saved model directory produced by tensorflow"""
+    SOUND_NAME_NUMBER = {
+        0: "lion",
+        1: "cow",
+        2: "police",
+        3: "wind"
+    }
+    """Map sound index to sound names.
+
+    When predicting new data, the model yields a list of probabilities. This Dict is used to associate each
+    probability to a sound. """

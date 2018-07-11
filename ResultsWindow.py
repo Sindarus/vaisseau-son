@@ -93,10 +93,14 @@ class ResultsWindow(QWidget):
     def load_results(self, results):
         """Load result data in display widgets
 
+
         *results* must be a list of 2-tuples containing the name of the sound and the probability"""
 
         # Only keep the first 4 results (this operation will not alter the list objet in argument)
         results = results[:4]
+        # sort from biggest scoring to lowest scoring
+        results.sort(key=lambda x: x[1])
+        results.reverse()
 
         # Adding main result
         (main_result_name, main_result_percent) = results.pop(0)
