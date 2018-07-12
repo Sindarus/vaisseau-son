@@ -25,6 +25,7 @@ class SoundClassifier(Thread):
         self.should_stop = False  # Is set to True if someone requested that this thread terminates asap
 
         self.my_feat_extr = FeatureExtractor()
+        self.my_feat_extr.config(do_deltas=True, do_squares=False)
         self.ai = AIRunningUnit(Config.MODEL_DIR_PATH)
 
     def run(self):
@@ -34,7 +35,7 @@ class SoundClassifier(Thread):
         self.my_feat_extr.load_file(self.user_sound_path)
         if self.should_stop:
             return
-        self.features = self.my_feat_extr.get_all_summarized_features(as_dict=True)
+        self.features = self.my_feat_extr.get_features(as_dict=True)
         if self.should_stop:
             return
         self.probas = self.ai.predict(self.features)

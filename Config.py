@@ -147,7 +147,7 @@ class Config:
     access to this file. This method is however provided for testing environments."""
 
     # AI
-    MODEL_DIR_PATH = "model/1531299021"
+    MODEL_DIR_PATH = "model/1531400198"
     """Path of the saved model directory produced by tensorflow"""
     SOUND_NAME_NUMBER = {
         0: "lion",
