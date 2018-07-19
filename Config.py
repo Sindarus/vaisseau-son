@@ -21,7 +21,7 @@ class Config:
                 'display_name': "un beuglement"},
         "police": {'sound_path': "sounds/90014__thfc140491__police-siren-perpignan_cropped.wav",
                    'image_path': "images/police.png",
-                   'display_name': "un sifflement de vent"},
+                   'display_name': "une sirène de police"},
         "wind": {'sound_path': "sounds/84111__benboncan__wind-on-door-short_cropped.wav",
                  'image_path': "images/wind.png",
                  'display_name': "un sifflement de vent"}
@@ -112,7 +112,7 @@ class Config:
     classifier. """
     WAVEFORM_DISPLAY_PLACEHOLDER_MSG = "Votre extrait sonore apparaitra ici après enregistrement"
     """Placeholder message to display on a :py:class:`WaveformDisplay` when the user hasn't recorded a sound yet."""
-    CURRENTLY_RECORDING_MSG = "Enregistrement en cour !"
+    CURRENTLY_RECORDING_MSG = "Enregistrement en cours !"
     """Notification message to display while a recording is running"""
 
     # Audio
