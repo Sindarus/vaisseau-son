@@ -74,9 +74,10 @@ class AudioPlayer(QWidget):
 
         # Selecting input device
         device_info = None
-        for cur_device in QAudioDeviceInfo.availableDevices(QAudio.AudioInput):
-            if "input" in cur_device.deviceName():
-                device_info = cur_device
+        if Config.SMART_INPUT_DEVICE_SELECTION:
+            for cur_device in QAudioDeviceInfo.availableDevices(QAudio.AudioInput):
+                if "input" in cur_device.deviceName():
+                    device_info = cur_device
         if device_info is None:
             device_info = QAudioDeviceInfo.defaultInputDevice()
         print("Selecting input device", device_info.deviceName())

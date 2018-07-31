@@ -116,6 +116,9 @@ class Config:
     """Notification message to display while a recording is running"""
 
     # Audio
+    SMART_INPUT_DEVICE_SELECTION = False
+    """If true, we will select the first input device that has the substring "input" in its name. If false,
+    or if no input device with "input" in the name were found, we just select the OS's default input device."""
     N_CHANNELS = 1
     SAMPLE_SIZE = 32  # in bits
     SAMPLE_RATE = 44100  # in hertz
