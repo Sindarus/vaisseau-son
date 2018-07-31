@@ -122,7 +122,8 @@ class Config:
     N_CHANNELS = 1
     SAMPLE_SIZE = 32  # in bits
     SAMPLE_RATE = 44100  # in hertz
-    TOO_SHORT_THRESHOLD = 0.5  # minimum duration of a user recording. If shorter, it will not be taken into account
+    TOO_SHORT_THRESHOLD = 0.5
+    """Minimum duration of a user recording. If shorter, it will not be taken into account."""
 
     # Saving sounds to DB
     SAVE_TO_DB = True
@@ -146,8 +147,8 @@ class Config:
     DB_PASSWD = ""
     """Database password (not recommended!).
 
-    You can specify the database password here, but it not recommanded, since the password will be visible by anyone with
-    access to this file. This method is however provided for testing environments."""
+    You can specify the database password here, but it not recommanded, since the password will be visible by anyone
+    with access to this file. This method is however provided for testing environments."""
 
     # AI
     MODEL_DIR_PATH = "model/1531400198"
@@ -161,4 +162,4 @@ class Config:
     """Map sound index to sound names.
 
     When predicting new data, the model yields a list of probabilities. This Dict is used to associate each
-    probability to a sound. """
+    probability to a sound."""
