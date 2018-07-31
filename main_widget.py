@@ -11,15 +11,15 @@ Reference for style conventions : https://www.python.org/dev/peps/pep-0008
 from PyQt5.QtCore import QTimer, pyqtSlot
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel
 
-from Config import Config
-from LabeledImageButton import LabeledImageButton
-from LoadingTimeWindow import LoadingTimeWindow
-from MessageDisplay import MessageDisplay
-from ResultsWindow import ResultsWindow
-from Imitation import Imitation
-from SoundChooser import SoundChooser
-from SoundClassifier import SoundClassifier
-from SoundRecorder import SoundRecorder
+from config import Config
+from labeled_image_button import LabeledImageButton
+from loading_time_window import LoadingTimeWindow
+from message_display import MessageDisplay
+from results_window import ResultsWindow
+from imitation import Imitation
+from sound_chooser import SoundChooser
+from sound_classifier import SoundClassifier
+from sound_recorder import SoundRecorder
 from sound_db_connector import SoundDBConnector
 
 

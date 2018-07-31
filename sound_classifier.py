@@ -10,7 +10,7 @@ Reference for style conventions : https://www.python.org/dev/peps/pep-0008
 
 from threading import Thread
 
-from Config import Config
+from config import Config
 from ai_running_unit import AIRunningUnit
 from feature_extractor import FeatureExtractor
 

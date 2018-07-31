@@ -12,7 +12,7 @@ from PyQt5.QtCore import QSize
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import QPushButton
 
-from Config import Config
+from config import Config
 
 
 class ImageButton(QPushButton):

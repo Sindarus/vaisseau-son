@@ -17,9 +17,9 @@ from PyQt5.QtCore import pyqtSlot, QUrl, QDateTime, QFile, QIODevice, pyqtSignal
 from PyQt5.QtMultimedia import QSoundEffect, QAudioInput, QAudioFormat, QAudioDeviceInfo, QAudio
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QLabel
 
-from Config import Config
-from ImageButton import ImageButton
-from WaveformDisplay import WaveformDisplay
+from config import Config
+from image_button import ImageButton
+from waveform_display import WaveformDisplay
 
 
 class AudioPlayer(QWidget):

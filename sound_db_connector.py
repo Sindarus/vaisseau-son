@@ -10,7 +10,7 @@ Reference for style conventions : https://www.python.org/dev/peps/pep-0008
 import _mysql
 import os
 
-from Config import Config
+from config import Config
 
 
 class SoundDBConnector:

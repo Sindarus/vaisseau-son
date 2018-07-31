@@ -10,8 +10,8 @@ Reference for style conventions : https://www.python.org/dev/peps/pep-0008
 
 from PyQt5.QtWidgets import QHBoxLayout
 
-from AudioPlayer import AudioPlayer
-from CustomStyleGroupBox import CustomStyleGroupBox
+from audio_player import AudioPlayer
+from custom_style_groupbox import CustomStyleGroupBox
 
 
 class SoundRecorder(CustomStyleGroupBox):

@@ -14,8 +14,8 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QKeySequence
 from PyQt5.QtWidgets import (QApplication, qApp, QShortcut, QMainWindow)
 
-from Config import Config
-from MainWidget import MainWidget
+from config import Config
+from main_widget import MainWidget
 
 
 class MainWindow(QMainWindow):

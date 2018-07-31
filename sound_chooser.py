@@ -11,10 +11,10 @@ Reference for style conventions : https://www.python.org/dev/peps/pep-0008
 from PyQt5.QtCore import Qt, pyqtSlot
 from PyQt5.QtWidgets import QVBoxLayout, QGridLayout
 
-from AudioPlayer import AudioPlayer
-from Config import Config
-from CustomStyleGroupBox import CustomStyleGroupBox
-from ImageOptionButton import ImageOptionButton
+from audio_player import AudioPlayer
+from config import Config
+from custom_style_groupbox import CustomStyleGroupBox
+from image_option_button import ImageOptionButton
 
 
 class SoundChooser(CustomStyleGroupBox):

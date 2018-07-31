@@ -10,8 +10,8 @@ Reference for style conventions : https://www.python.org/dev/peps/pep-0008
 
 from PyQt5.QtCore import pyqtSignal
 
-from Config import Config
-from ImageButton import ImageButton
+from config import Config
+from image_button import ImageButton
 
 
 class ImageOptionButton(ImageButton):

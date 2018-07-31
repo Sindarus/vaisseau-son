@@ -10,8 +10,8 @@ Reference for style conventions : https://www.python.org/dev/peps/pep-0008
 import os
 from shutil import copyfile
 
-from AudioPlayer import AudioPlayer
-from Config import Config
+from audio_player import AudioPlayer
+from config import Config
 
 
 class Imitation:

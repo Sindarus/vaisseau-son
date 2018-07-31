@@ -12,8 +12,8 @@ from PyQt5.QtCore import Qt, QRect
 from PyQt5.QtGui import QMovie
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout, QDesktopWidget
 
-from Config import Config
-from LabeledImageButton import LabeledImageButton
+from config import Config
+from labeled_image_button import LabeledImageButton
 
 
 class LoadingTimeWindow(QWidget):

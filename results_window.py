@@ -12,10 +12,10 @@ from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtGui import QKeySequence
 from PyQt5.QtWidgets import QWidget, QShortcut, qApp, QHBoxLayout, QVBoxLayout, QDesktopWidget, QSizePolicy
 
-from CaptionedImage import CaptionedImage
-from Config import Config
-from CustomStyleGroupBox import CustomStyleGroupBox
-from LabeledImageButton import LabeledImageButton
+from captioned_image import CaptionedImage
+from config import Config
+from custom_style_groupbox import CustomStyleGroupBox
+from labeled_image_button import LabeledImageButton
 
 
 class ResultsWindow(QWidget):
