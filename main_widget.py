@@ -88,6 +88,9 @@ class MainWidget(QWidget):
             self.sound_recorder.player_recorder.recording_started.connect(self.load_imitation)
         self.sound_recorder.player_recorder.recording_started.connect(
             lambda: self.notif_zone.setText(Config.CURRENTLY_RECORDING_MSG))
+        # Disable go-button when recording :
+        self.sound_recorder.player_recorder.recording_started.connect(
+            lambda: self.go_button.setEnabled(False))
 
         # Create reload button
         reload_button = LabeledImageButton(Config.RELOAD_ICON_TEXT, "images/reload.png")
