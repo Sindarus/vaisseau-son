@@ -126,7 +126,7 @@ class Config:
     """Minimum duration of a user recording. If shorter, it will not be taken into account."""
 
     # Saving sounds to DB
-    SAVE_TO_DB = True
+    SAVE_SOUNDS = True
     """Enable saving sounds to specific folder and sound info to database"""
     FINAL_SOUNDS_DIR = "sound_storage/"
     """Root directory where to store sound files as specified in the """

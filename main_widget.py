@@ -73,7 +73,7 @@ class MainWidget(QWidget):
         self.go_button = LabeledImageButton(Config.VALIDATE_BUTTON, "images/right-arrow.png")
         self.go_button.setEnabled(False)
         self.go_button.resize_image(Config.NAV_ICON_SIZE, Config.NAV_ICON_SIZE)
-        if Config.SAVE_TO_DB:
+        if Config.SAVE_SOUNDS:
             self.go_button.clicked.connect(lambda: self.save_cur_imitation(submitted=True, skip_missing=False))
         if not Config.DISABLE_ANALYSING_SOUNDS:
             self.go_button.clicked.connect(self.step1_process_comparison)
@@ -81,7 +81,7 @@ class MainWidget(QWidget):
         self.sound_recorder.player_recorder.was_recorded.connect(lambda: self.go_button.setEnabled(True))
         self.sound_recorder.player_recorder.was_recorded.connect(lambda: self.notif_zone.setText(""))
 
-        if Config.SAVE_TO_DB:
+        if Config.SAVE_SOUNDS:
             self.sound_recorder.player_recorder.recording_started.connect(
                 # record previous sound if existing
                 lambda: self.save_cur_imitation(submitted=False, skip_missing=True))

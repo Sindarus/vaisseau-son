@@ -60,6 +60,9 @@ class MainWindow(QMainWindow):
 
 
 if __name__ == '__main__':
+    if not Config.SAVE_SOUNDS:
+        print("WARNING: SAVE_SOUNDS is set to False, user sounds info will not be saved to database, and wav files "
+              "will not be tidily copied in the dedicated directory hierarchy.")
     app = QApplication(sys.argv)
     ex = MainWindow()
     sys.exit(app.exec_())
