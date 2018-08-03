@@ -68,7 +68,7 @@ class SoundChooser(CustomStyleGroupBox):
         Is called when a sound gets selected."""
         sound_name = self.sender().get_name()  # get the name of the sound that was selected
         self.selected_sound_name = sound_name
-        self.player.load_sound(self.sound_bank[self.selected_sound_name]['sound_path'])
+        self.player.load_sound(self.sound_bank[self.selected_sound_name]['sound_path'], )
 
     def get_selected_sound_name(self):
         return self.selected_sound_name

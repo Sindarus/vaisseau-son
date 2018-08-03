@@ -45,15 +45,26 @@ class WaveformDisplay(QLabel):
         """Load a placeholder text to be displayed instead of a waveform"""
         self.setText(Config.WAVEFORM_DISPLAY_PLACEHOLDER_MSG)
 
-    def load_audio(self, input_path):
+    def load_audio(self, input_path, no_cache=False):
         """Load an audio recording for display.
 
         This function handles calling the external program *ffmpeg* with a set of arguments to produce a picture of
-        the waveform."""
+        the waveform.
+        :param input_path:
+        :param no_cache: """
         assert os.path.isfile(input_path)
+
         filename = input_path.split('/')[-1]  # "split" gives a list of names, [-1] returns the last one of them
         name = filename.split('.')[0]  # retrieves name without file extension
         output_path = "waveforms/" + name + "_waveform" + ".png"
+
+        # Load image in cache if it is there
+        if not no_cache and os.path.isfile(output_path):
+            print("waveform found in cache")
+            self.img = QPixmap(output_path)
+            self.setPixmap(self.img)
+            return
+
         my_stderr = subprocess.STDOUT if Config.DEBUG_FFMPEG else subprocess.DEVNULL
 
         # check output folder
