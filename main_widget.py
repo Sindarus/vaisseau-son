@@ -188,7 +188,7 @@ class MainWidget(QWidget):
     def save_cur_imitation(self, submitted, skip_missing):
         """Wrapper for `Imitation.save`.
 
-        Also handles the case when there's no imitation to save.
+        Also handles the case when there's no imitation to save, or when the imitation was already saved.
 
         :param bool submitted: whether the sound was submitted.
         :param bool skip_missing: whether the function should remain silent when it is called whereas no imitation
@@ -198,6 +198,9 @@ class MainWidget(QWidget):
                 return
             else:
                 raise AssertionError("Trying to save a sound but none was recorded and skip_missing is set to False")
+        elif self.cur_imitation.is_saved:
+            # imitation is already saved
+            return
         else:
             if submitted:
                 # if the imitation is submitted, update its label to the one currently selected

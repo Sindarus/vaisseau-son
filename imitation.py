@@ -7,6 +7,7 @@ Creation date: 2018-07-05
 
 Reference for style conventions : https://www.python.org/dev/peps/pep-0008
 """
+
 import os
 from shutil import copyfile
 
@@ -23,6 +24,7 @@ class Imitation:
         self.temp_path = temp_path
         self.label = label
         self.dt = datetime
+        self.is_saved = False
 
     def save(self, db, submitted):
         """Save the imitation to its final location, and saves its info in database.
@@ -32,6 +34,7 @@ class Imitation:
 
         :param db: connection object from the _mysql module
         :param bool submitted: whether the currently recorded sound was submitted."""
+        assert not self.is_saved, "This imitation has already been saved"
 
         self.duration = AudioPlayer.get_wav_duration(self.temp_path)
 
@@ -58,6 +61,8 @@ class Imitation:
             print("Could not add sound info to database. Cancelling changes.")
             os.remove(final_path_with_root_dir)
             raise e
+
+        self.is_saved = True
 
     def set_label(self, label):
         """Setter method for the `label` attribute"""
